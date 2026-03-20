@@ -86,7 +86,9 @@
           align-items: center;
           font-size: 48px;
           color: white;
-          animation: playerHurt 0.5s ease-in-out infinite;
+          animation: playerHurt 5s ease-in-out;
+          animation-iteration-count: 1;
+          animation-fill-mode: forwards;
         }
       }
 
@@ -109,12 +111,37 @@
       }
 
       @keyframes playerHurt {
-        0%,
-        100% {
+        0% {
           box-shadow: none;
         }
-        50% {
+        10% {
           box-shadow: 0 0 50px white;
+        }
+        20% {
+          box-shadow: none;
+        }
+        30% {
+          box-shadow: 0 0 50px white;
+        }
+        30% {
+          box-shadow: none;
+        }
+        40% {
+          box-shadow: 0 0 50px white;
+        }
+        50% {
+          box-shadow: none;
+        }
+        60%,
+        100% {
+          /* Game over overlay appears once animation has run for a while - use a decent duration to make this practical */
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: red;
+          content: "GAME OVER!";
         }
       }
     </style>
