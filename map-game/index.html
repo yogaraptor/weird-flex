@@ -21,25 +21,31 @@
       }
 
       .viewport {
+        display: grid;
+        grid-template-columns: repeat(9, 200px);
+        grid-template-rows: repeat(9, 200px);
+        gap: 0;
         width: 600px;
         height: 600px;
         overflow: auto;
         scroll-snap-type: both mandatory;
         border: 4px solid #34495e;
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        container-name: viewport;
       }
 
-      .map {
-        display: grid;
-        grid-template-columns: repeat(9, 200px);
-        grid-template-rows: repeat(9, 200px);
-        gap: 0;
+      .spacer {
+        width: 200px;
+        height: 200px;
+        scroll-snap-align: center center;
+        background: transparent;
       }
 
       .tile {
         width: 200px;
         height: 200px;
-        scroll-snap-align: start;
+        scroll-snap-align: center center;
+        container-type: scroll-state;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -47,6 +53,13 @@
         font-weight: bold;
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      @container scroll-state(snapped: x) or scroll-state(snapped: y) {
+        p {
+          border: 4px solid #f1c40f;
+        }
       }
 
       .tile:nth-child(odd) {
@@ -72,89 +85,104 @@
   </head>
   <body>
     <div class="viewport">
-      <div class="map">
-        <div class="tile">1</div>
-        <div class="tile">2</div>
-        <div class="tile">3</div>
-        <div class="tile">4</div>
-        <div class="tile">5</div>
-        <div class="tile">6</div>
-        <div class="tile">7</div>
-        <div class="tile">8</div>
-        <div class="tile">9</div>
-        <div class="tile">10</div>
-        <div class="tile">11</div>
-        <div class="tile">12</div>
-        <div class="tile">13</div>
-        <div class="tile">14</div>
-        <div class="tile">15</div>
-        <div class="tile">16</div>
-        <div class="tile">17</div>
-        <div class="tile">18</div>
-        <div class="tile">19</div>
-        <div class="tile">20</div>
-        <div class="tile">21</div>
-        <div class="tile">22</div>
-        <div class="tile">23</div>
-        <div class="tile">24</div>
-        <div class="tile">25</div>
-        <div class="tile">26</div>
-        <div class="tile">27</div>
-        <div class="tile">28</div>
-        <div class="tile">29</div>
-        <div class="tile">30</div>
-        <div class="tile">31</div>
-        <div class="tile">32</div>
-        <div class="tile">33</div>
-        <div class="tile">34</div>
-        <div class="tile">35</div>
-        <div class="tile">36</div>
-        <div class="tile">37</div>
-        <div class="tile">38</div>
-        <div class="tile">39</div>
-        <div class="tile">40</div>
-        <div class="tile">41</div>
-        <div class="tile">42</div>
-        <div class="tile">43</div>
-        <div class="tile">44</div>
-        <div class="tile">45</div>
-        <div class="tile">46</div>
-        <div class="tile">47</div>
-        <div class="tile">48</div>
-        <div class="tile">49</div>
-        <div class="tile">50</div>
-        <div class="tile">51</div>
-        <div class="tile">52</div>
-        <div class="tile">53</div>
-        <div class="tile">54</div>
-        <div class="tile">55</div>
-        <div class="tile">56</div>
-        <div class="tile">57</div>
-        <div class="tile">58</div>
-        <div class="tile">59</div>
-        <div class="tile">60</div>
-        <div class="tile">61</div>
-        <div class="tile">62</div>
-        <div class="tile">63</div>
-        <div class="tile">64</div>
-        <div class="tile">65</div>
-        <div class="tile">66</div>
-        <div class="tile">67</div>
-        <div class="tile">68</div>
-        <div class="tile">69</div>
-        <div class="tile">70</div>
-        <div class="tile">71</div>
-        <div class="tile">72</div>
-        <div class="tile">73</div>
-        <div class="tile">74</div>
-        <div class="tile">75</div>
-        <div class="tile">76</div>
-        <div class="tile">77</div>
-        <div class="tile">78</div>
-        <div class="tile">79</div>
-        <div class="tile">80</div>
-        <div class="tile">81</div>
-      </div>
+      <!-- Row 1 of game tiles -->
+      <div class="tile"><p>1</p></div>
+      <div class="tile"><p>2</p></div>
+      <div class="tile"><p>3</p></div>
+      <div class="tile"><p>4</p></div>
+      <div class="tile"><p>5</p></div>
+      <div class="tile"><p>6</p></div>
+      <div class="tile"><p>7</p></div>
+      <div class="tile"><p>8</p></div>
+      <div class="tile"><p>9</p></div>
+
+      <!-- Row 2 of game tiles -->
+      <div class="tile"><p>10</p></div>
+      <div class="tile"><p>11</p></div>
+      <div class="tile"><p>12</p></div>
+      <div class="tile"><p>13</p></div>
+      <div class="tile"><p>14</p></div>
+      <div class="tile"><p>15</p></div>
+      <div class="tile"><p>16</p></div>
+      <div class="tile"><p>17</p></div>
+      <div class="tile"><p>18</p></div>
+
+      <!-- Row 3 of game tiles -->
+      <div class="tile"><p>19</p></div>
+      <div class="tile"><p>20</p></div>
+      <div class="tile"><p>21</p></div>
+      <div class="tile"><p>22</p></div>
+      <div class="tile"><p>23</p></div>
+      <div class="tile"><p>24</p></div>
+      <div class="tile"><p>25</p></div>
+      <div class="tile"><p>26</p></div>
+      <div class="tile"><p>27</p></div>
+
+      <!-- Row 4 of game tiles -->
+      <div class="tile"><p>28</p></div>
+      <div class="tile"><p>29</p></div>
+      <div class="tile"><p>30</p></div>
+      <div class="tile"><p>31</p></div>
+      <div class="tile"><p>32</p></div>
+      <div class="tile"><p>33</p></div>
+      <div class="tile"><p>34</p></div>
+      <div class="tile"><p>35</p></div>
+      <div class="tile"><p>36</p></div>
+
+      <!-- Row 5 of game tiles -->
+      <div class="tile"><p>37</p></div>
+      <div class="tile"><p>38</p></div>
+      <div class="tile"><p>39</p></div>
+      <div class="tile"><p>40</p></div>
+      <div class="tile"><p>41</p></div>
+      <div class="tile"><p>42</p></div>
+      <div class="tile"><p>43</p></div>
+      <div class="tile"><p>44</p></div>
+      <div class="tile"><p>45</p></div>
+
+      <!-- Row 6 of game tiles -->
+      <div class="tile"><p>46</p></div>
+      <div class="tile"><p>47</p></div>
+      <div class="tile"><p>48</p></div>
+      <div class="tile"><p>49</p></div>
+      <div class="tile"><p>50</p></div>
+      <div class="tile"><p>51</p></div>
+      <div class="tile"><p>52</p></div>
+      <div class="tile"><p>53</p></div>
+      <div class="tile"><p>54</p></div>
+
+      <!-- Row 7 of game tiles -->
+      <div class="tile"><p>55</p></div>
+      <div class="tile"><p>56</p></div>
+      <div class="tile"><p>57</p></div>
+      <div class="tile"><p>58</p></div>
+      <div class="tile"><p>59</p></div>
+      <div class="tile"><p>60</p></div>
+      <div class="tile"><p>61</p></div>
+      <div class="tile"><p>62</p></div>
+      <div class="tile"><p>63</p></div>
+
+      <!-- Row 8 of game tiles -->
+      <div class="tile"><p>64</p></div>
+      <div class="tile"><p>65</p></div>
+      <div class="tile"><p>66</p></div>
+      <div class="tile"><p>67</p></div>
+      <div class="tile"><p>68</p></div>
+      <div class="tile"><p>69</p></div>
+      <div class="tile"><p>70</p></div>
+      <div class="tile"><p>71</p></div>
+      <div class="tile"><p>72</p></div>
+
+      <!-- Row 9 of game tiles -->
+      <div class="tile"><p>73</p></div>
+      <div class="tile"><p>74</p></div>
+      <div class="tile"><p>75</p></div>
+      <div class="tile"><p>76</p></div>
+      <div class="tile"><p>77</p></div>
+      <div class="tile"><p>78</p></div>
+      <div class="tile"><p>79</p></div>
+      <div class="tile"><p>80</p></div>
+      <div class="tile"><p>81</p></div>
     </div>
   </body>
 </html>
