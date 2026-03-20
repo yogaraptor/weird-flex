@@ -47,8 +47,6 @@
         color: white;
         border: 1px solid rgba(255, 255, 255, 0.1);
         transition: all 0.3s ease;
-        position: relative;
-        z-index: 1;
       }
 
       .tile.grass {
@@ -57,7 +55,7 @@
 
       .tile.lava {
         p {
-          position: absolute;
+          position: relative;
           width: 100%;
           height: 100%;
           background: #e74c3c;
@@ -72,11 +70,12 @@
 
       @container scroll-state(snapped: x) or scroll-state(snapped: y) {
         /* Fire effect around player when on lava */
-        .tile.lava::after {
+        .tile.lava::before {
           content: "";
           position: absolute;
           top: 50%;
           left: 50%;
+          z-index: 1;
           transform: translate(-50%, -50%);
           width: 100px;
           height: 100px;
@@ -86,9 +85,27 @@
           align-items: center;
           font-size: 48px;
           color: white;
-          animation: playerHurt 5s ease-in-out;
+          animation: playerHurt 1s ease-in-out infinite;
+        }
+        .tile.lava::after {
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          z-index: 10;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          opacity: 0;
+          content: "GAME OVER";
+          animation: gameOver 5s;
           animation-iteration-count: 1;
           animation-fill-mode: forwards;
+          pointer-events: none;
+        }
+        .tile.lava p {
+          border: 2px solid green;
         }
       }
 
@@ -110,38 +127,27 @@
         color: white;
       }
 
+      @keyframes gameOver {
+        0%,
+        90% {
+          opacity: 0;
+        }
+        91% {
+          pointer-events: auto;
+          background: red;
+        }
+        100% {
+          opacity: 1;
+          content: "GAME OVER!";
+          background: red;
+        }
+      }
       @keyframes playerHurt {
         0% {
           box-shadow: none;
         }
-        10% {
-          box-shadow: 0 0 50px white;
-        }
-        20% {
-          box-shadow: none;
-        }
-        30% {
-          box-shadow: 0 0 50px white;
-        }
-        30% {
-          box-shadow: none;
-        }
-        40% {
-          box-shadow: 0 0 50px white;
-        }
         50% {
-          box-shadow: none;
-        }
-        60%,
-        100% {
-          /* Game over overlay appears once animation has run for a while - use a decent duration to make this practical */
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: red;
-          content: "GAME OVER!";
+          box-shadow: 0 0 50px yellow;
         }
       }
     </style>
