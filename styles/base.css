@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Nunito, system-ui, sans-serif;
+}
+
+img {
+  max-inline-size: 100%;
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+h2 {
+  font-size: 1.25rem;
+}
+
+.app {
+  padding: 1rem;
+}

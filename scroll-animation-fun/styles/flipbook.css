@@ -1,0 +1,51 @@
+body {
+  scroll-snap-stop: always;
+}
+
+.flipbook {
+  position: relative;
+  overflow: hidden;
+  inline-size: var(--flipbook-size);
+  block-size: var(--flipbook-size);
+}
+
+.flipbook__inner {
+  inline-size: var(--flipbook-size);
+  block-size: var(--flipbook-size);
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+
+  display: grid;
+  grid-auto-flow: column;
+}
+
+.flipbook__frame {
+  inline-size: var(--flipbook-size);
+  block-size: var(--flipbook-size);
+  container-type: scroll-state;
+  scroll-snap-align: center;
+}
+
+.flipbook__frame-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@supports (container-type: scroll-state) {
+  @media (prefers-reduced-motion: no-preference) {
+    @container scroll-state(snapped: x) {
+      .flipbook__frame-inner {
+        opacity: 1;
+      }
+    }
+  }
+}

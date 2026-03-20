@@ -1,0 +1,50 @@
+.flipbook--coin {
+  --flipbook-size: 8rem;
+
+  .flipbook__inner {
+    inline-size: var(--flipbook-size);
+  }
+
+  .flipbook__frame-inner {
+    display: grid;
+    place-content: center;
+    perspective: 50mm;
+    transform-style: preserve-3d;
+  }
+
+  .flipbook__frame-content {
+    inline-size: 5rem;
+    block-size: 5rem;
+    backface-visibility: visible;
+    transform-origin: center center;
+    display: grid;
+    place-content: center;
+
+    img {
+      inline-size: 5rem;
+      image-rendering: pixelated;
+    }
+  }
+
+  .flipbook__frame:nth-child(1) .flipbook__frame-content {
+    transform: rotateY(0deg);
+  }
+  .flipbook__frame:nth-child(2) .flipbook__frame-content {
+    transform: rotateY(30deg);
+  }
+  .flipbook__frame:nth-child(3) .flipbook__frame-content {
+    transform: rotateY(60deg);
+  }
+  .flipbook__frame:nth-child(4) .flipbook__frame-content {
+    transform: rotateY(85deg);
+  }
+  .flipbook__frame:nth-child(5) .flipbook__frame-content {
+    transform: rotateY(120deg);
+  }
+  .flipbook__frame:nth-child(6) .flipbook__frame-content {
+    transform: rotateY(150deg);
+  }
+  .flipbook__frame:nth-child(7) .flipbook__frame-content {
+    transform: rotateY(180deg);
+  }
+}

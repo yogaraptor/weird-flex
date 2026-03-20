@@ -1,0 +1,36 @@
+.carousel {
+  inline-size: 20rem;
+
+  display: grid;
+  grid-auto-flow: column;
+  gap: 1rem;
+
+  scroll-snap-type: x mandatory;
+  overflow-x: auto;
+
+  > div {
+    scroll-snap-align: center;
+    container-type: scroll-state;
+
+    p {
+      display: grid;
+      place-content: center;
+      margin: 0;
+
+      background-color: #ececec;
+      border-radius: 1rem;
+      font-size: 1.5rem;
+
+      inline-size: 7rem;
+      block-size: 7rem;
+
+      transition: background-color 0.3s ease-in-out, font-size 0.3s ease-in-out;
+    }
+    @container scroll-state(snapped: x) {
+      p {
+        font-size: 4rem;
+        background-color: #ccc;
+      }
+    }
+  }
+}

@@ -1,0 +1,189 @@
+.flipbook--sprites {
+  --flipbook-size: 10rem;
+  --sprite-size: calc(var(--sprite-count, 7) * var(--flipbook-size));
+
+  .flipbook__frame-inner {
+    background-image: var(--sprite-image-url);
+    background-size: var(--sprite-size);
+    background-repeat: no-repeat;
+  }
+
+  .flipbook__frame:nth-child(2) .flipbook__frame-inner {
+    background-position-x: calc(-1 * var(--flipbook-size));
+  }
+
+  .flipbook__frame:nth-child(3) .flipbook__frame-inner {
+    background-position-x: calc(-2 * var(--flipbook-size));
+  }
+
+  .flipbook__frame:nth-child(4) .flipbook__frame-inner {
+    background-position-x: calc(-3 * var(--flipbook-size));
+  }
+
+  .flipbook__frame:nth-child(5) .flipbook__frame-inner {
+    background-position-x: calc(-4 * var(--flipbook-size));
+  }
+
+  .flipbook__frame:nth-child(6) .flipbook__frame-inner {
+    background-position-x: calc(-5 * var(--flipbook-size));
+  }
+
+  .flipbook__frame:nth-child(7) .flipbook__frame-inner {
+    background-position-x: calc(-6 * var(--flipbook-size));
+  }
+
+  .flipbook__frame:nth-child(8) .flipbook__frame-inner {
+    background-position-x: calc(-7 * var(--flipbook-size));
+  }
+
+  .flipbook__frame:nth-child(9) .flipbook__frame-inner {
+    background-position-x: calc(-8 * var(--flipbook-size));
+  }
+
+  .flipbook__frame:nth-child(10) .flipbook__frame-inner {
+    background-position-x: calc(-9 * var(--flipbook-size));
+  }
+}
+
+/* Adjust sprite sheet based on controls */
+/* Plant/action (set and size sprite sheet image; hide unused frames depending on action */
+.sprite-viewer:has(input#attack:checked) {
+  &:has(input#venus-fly-trap:checked) {
+    --sprite-image-url: url("../images/sprites/Plant1_Attack_with_shadow.png");
+  }
+  &:has(input#blue-death:checked) {
+    --sprite-image-url: url("../images/sprites/Plant2_Attack_with_shadow.png");
+  }
+  &:has(input#root-beast:checked) {
+    --sprite-image-url: url("../images/sprites/Plant3_Attack_with_shadow.png");
+  }
+
+  --sprite-count: 7;
+
+  .flipbook__frame:nth-child(n + 8) {
+    display: none;
+  }
+}
+
+.sprite-viewer:has(input#idle:checked) {
+  &:has(input#venus-fly-trap:checked) {
+    --sprite-image-url: url("../images/sprites/Plant1_Idle_with_shadow.png");
+  }
+  &:has(input#blue-death:checked) {
+    --sprite-image-url: url("../images/sprites/Plant2_Idle_with_shadow.png");
+  }
+  &:has(input#root-beast:checked) {
+    --sprite-image-url: url("../images/sprites/Plant3_Idle_with_shadow.png");
+  }
+
+  --sprite-count: 4;
+
+  .flipbook__frame:nth-child(n + 5) {
+    display: none;
+  }
+}
+
+.sprite-viewer:has(input#run:checked) {
+  &:has(input#venus-fly-trap:checked) {
+    --sprite-image-url: url("../images/sprites/Plant1_Run_with_shadow.png");
+  }
+  &:has(input#blue-death:checked) {
+    --sprite-image-url: url("../images/sprites/Plant2_Run_with_shadow.png");
+  }
+  &:has(input#root-beast:checked) {
+    --sprite-image-url: url("../images/sprites/Plant3_Run_with_shadow.png");
+  }
+
+  --sprite-count: 8;
+
+  .flipbook__frame:nth-child(n + 9) {
+    display: none;
+  }
+}
+.sprite-viewer:has(input#hurt:checked) {
+  &:has(input#venus-fly-trap:checked) {
+    --sprite-image-url: url("../images/sprites/Plant1_Hurt_with_shadow.png");
+  }
+  &:has(input#blue-death:checked) {
+    --sprite-image-url: url("../images/sprites/Plant2_Hurt_with_shadow.png");
+  }
+  &:has(input#root-beast:checked) {
+    --sprite-image-url: url("../images/sprites/Plant3_Hurt_with_shadow.png");
+  }
+
+  --sprite-count: 5;
+
+  .flipbook__frame:nth-child(n + 6) {
+    display: none;
+  }
+}
+.sprite-viewer:has(input#death:checked) {
+  &:has(input#venus-fly-trap:checked) {
+    --sprite-image-url: url("../images/sprites/Plant1_Death_with_shadow.png");
+  }
+  &:has(input#blue-death:checked) {
+    --sprite-image-url: url("../images/sprites/Plant2_Death_with_shadow.png");
+  }
+  &:has(input#root-beast:checked) {
+    --sprite-image-url: url("../images/sprites/Plant3_Death_with_shadow.png");
+  }
+
+  --sprite-count: 10;
+
+  .flipbook__frame:nth-child(n + 11) {
+    display: none;
+  }
+}
+/* View */
+.sprite-viewer:has(input#back:checked) {
+  .flipbook__frame-inner {
+    background-position-y: calc(-1 * var(--flipbook-size));
+  }
+}
+.sprite-viewer:has(input#left:checked) {
+  .flipbook__frame-inner {
+    background-position-y: calc(-2 * var(--flipbook-size));
+  }
+}
+.sprite-viewer:has(input#right:checked) {
+  .flipbook__frame-inner {
+    background-position-y: calc(-3 * var(--flipbook-size));
+  }
+}
+
+/* Non-mechanical styles, just to make the demo pretty */
+.sprite-viewer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  .flipbook {
+    align-self: center;
+  }
+}
+fieldset {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+label {
+  padding: 0.5rem;
+  cursor: pointer;
+  background-color: #efefef;
+  border-radius: 1rem;
+  font-weight: bold;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #dfdfdf;
+  }
+
+  input {
+    accent-color: black;
+    cursor: pointer;
+  }
+
+  &:has(input:checked) {
+    background-color: lightcoral;
+  }
+}

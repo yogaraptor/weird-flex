@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>CSS-only flipbooks using scroll-state</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 4rem;
+
+        font-family: Nunito, system-ui, sans-serif;
+      }
+
+      .flipbook {
+        margin-bottom: 4rem;
+      }
+
+      img {
+        max-inline-size: 100%;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+      h2 {
+        font-size: 1.25rem;
+      }
+    </style>
+    <link rel="stylesheet" type="text/css" href="styles/flipbook.css" />
+    <link rel="stylesheet" type="text/css" href="styles/emoji.css" />
+    <link rel="stylesheet" type="text/css" href="styles/coin.css" />
+    <link rel="stylesheet" type="text/css" href="styles/sprite-viewer.css" />
+    <link rel="stylesheet" type="text/css" href="styles/carousel.css" />
+  </head>
+  <body>
+    <h1>CSS-driven scroll flipbooks</h1>
+    <h2>Emotional scrollercoaster</h2>
+    <div class="flipbook flipbook--emoji">
+      <div class="flipbook__inner">
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">😐️</div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">🙂</div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">😀</div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">😃</div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">😄</div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">😁</div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">😅</div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">😂</div>
+        </div>
+        <div class="flipbook__frame" id="last-frame">
+          <div class="flipbook__frame-inner">🤣</div>
+        </div>
+      </div>
+    </div>
+
+    <h2>
+      Spin the Mario coin (one image for each side, spinning using
+      <code>rotateY</code>)
+    </h2>
+    <div class="flipbook flipbook--coin">
+      <div class="flipbook__inner">
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">
+            <div class="flipbook__frame-content">
+              <img alt="Heads" src="/images/coin-mario.png" />
+            </div>
+          </div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">
+            <div class="flipbook__frame-content">
+              <img alt="Heads" src="/images/coin-mario.png" />
+            </div>
+          </div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">
+            <div class="flipbook__frame-content">
+              <img alt="Heads" src="/images/coin-mario.png" />
+            </div>
+          </div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">
+            <div class="flipbook__frame-content">
+              <img alt="Heads" src="/images/coin-mario.png" />
+            </div>
+          </div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">
+            <div class="flipbook__frame-content">
+              <img alt="Heads" src="/images/coin-mario-back.png" />
+            </div>
+          </div>
+        </div>
+        <div class="flipbook__frame">
+          <div class="flipbook__frame-inner">
+            <div class="flipbook__frame-content">
+              <img alt="Heads" src="/images/coin-mario-back.png" />
+            </div>
+          </div>
+        </div>
+        <div class="flipbook__frame" id="last-frame">
+          <div class="flipbook__frame-inner">
+            <div class="flipbook__frame-content">
+              <img alt="Heads" src="/images/coin-mario-back.png" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2>Sprite sheet viewer</h2>
+
+    <div class="sprite-viewer">
+      <fieldset>
+        <legend>Select plant</legend>
+        <label>
+          <input type="radio" name="plant" id="venus-fly-trap" checked />Venus
+          Fly Trap</label
+        >
+        <label>
+          <input type="radio" name="plant" id="blue-death" />Blue Death</label
+        >
+        <label>
+          <input type="radio" name="plant" id="root-beast" />Root Beast</label
+        >
+      </fieldset>
+      <fieldset>
+        <legend>Select action</legend>
+
+        <label
+          ><input type="radio" name="action" id="attack" checked />Attack</label
+        >
+        <label><input type="radio" name="action" id="idle" />Idle</label>
+        <label><input type="radio" name="action" id="run" />Run</label>
+        <label><input type="radio" name="action" id="hurt" />Hurt</label>
+        <label><input type="radio" name="action" id="death" />Death</label>
+      </fieldset>
+      <fieldset>
+        <legend>Select view</legend>
+        <label><input type="radio" name="side" id="left" checked />Left</label>
+        <label><input type="radio" name="side" id="right" />Right</label>
+        <label><input type="radio" name="side" id="front" />Front</label>
+        <label><input type="radio" name="side" id="back" />Back</label>
+      </fieldset>
+      <div class="flipbook flipbook--sprites">
+        <div class="flipbook__inner">
+          <div class="flipbook__frame">
+            <div class="flipbook__frame-inner"></div>
+          </div>
+          <div class="flipbook__frame">
+            <div class="flipbook__frame-inner"></div>
+          </div>
+          <div class="flipbook__frame">
+            <div class="flipbook__frame-inner"></div>
+          </div>
+          <div class="flipbook__frame">
+            <div class="flipbook__frame-inner"></div>
+          </div>
+          <div class="flipbook__frame">
+            <div class="flipbook__frame-inner"></div>
+          </div>
+          <div class="flipbook__frame">
+            <div class="flipbook__frame-inner"></div>
+          </div>
+          <div class="flipbook__frame">
+            <div class="flipbook__frame-inner"></div>
+          </div>
+          <div class="flipbook__frame">
+            <div class="flipbook__frame-inner"></div>
+          </div>
+          <div class="flipbook__frame">
+            <div class="flipbook__frame-inner"></div>
+          </div>
+          <div class="flipbook__frame">
+            <div class="flipbook__frame-inner"></div>
+          </div>
+          <div class="flipbook__frame">
+            <div class="flipbook__frame-inner"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel">
+      <div><p>1</p></div>
+      <div><p>2</p></div>
+      <div><p>3</p></div>
+      <div><p>4</p></div>
+      <div><p>5</p></div>
+      <div><p>6</p></div>
+    </div>
+  </body>
+</html>
