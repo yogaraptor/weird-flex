@@ -22,6 +22,11 @@ $tileTypes = [
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pure CSS 3x3 Grid Game</title>
   <style>
+    :root {
+      --tile-width: 200px;
+      --tile-height: 200px;
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -47,11 +52,11 @@ $tileTypes = [
 
     .viewport {
       display: none;
-      grid-template-columns: repeat(9, 200px);
-      grid-template-rows: repeat(9, 200px);
+      grid-template-columns: repeat(9, var(--tile-width));
+      grid-template-rows: repeat(9, var(--tile-height));
       gap: 0;
-      width: 600px;
-      height: 600px;
+      width: calc(var(--tile-width) * 3);
+      height: calc(var(--tile-height) * 3);
       overflow: auto;
       scroll-snap-type: both mandatory;
       border: 4px solid #34495e;
@@ -59,13 +64,13 @@ $tileTypes = [
       container-name: viewport;
 
       /* Ensure keyboard scrolling goes tile-by-tile */
-      font-size: 220px;
-      line-height: 220px;
+      font-size: calc(var(--tile-width) * 1.1);
+      line-height: calc(var(--tile-height) * 1.1);
     }
 
     .tile {
-      width: 200px;
-      height: 200px;
+      width: var(--tile-width);
+      height: var(--tile-height);
       scroll-snap-align: center center;
       container-type: scroll-state;
       display: flex;
