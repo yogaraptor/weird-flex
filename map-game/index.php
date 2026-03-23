@@ -37,8 +37,16 @@ $tileTypes = [
       font-family: Arial, sans-serif;
     }
 
+    .splash-screen {
+      color: white;
+
+      a {
+        color: inherit;
+      }
+    }
+
     .viewport {
-      display: grid;
+      display: none;
       grid-template-columns: repeat(9, 200px);
       grid-template-rows: repeat(9, 200px);
       gap: 0;
@@ -177,30 +185,49 @@ $tileTypes = [
         box-shadow: 0 0 50px yellow;
       }
     }
+
+    /* Show splash screen and hide map until start button pressed */
+    .app:has(#start:target) {
+      .splash-screen {
+        display: none;
+      }
+
+      .viewport {
+        display: grid;
+      }
+    }
   </style>
 </head>
 
 <body>
-  <div class="viewport">
-    <?php
-    $index = 1;
-    foreach ($mapRows as $row):
-      foreach (str_split($row) as $tile):
-    ?>
-        <div
-          class="tile <?php echo $tileTypes[$tile]; ?>"
-          <?php if ($index === $playerStartIndex) {
-            echo ' id="start"';
-          }; ?>>
-          <p><?php echo $index; ?></p>
-        </div>
-    <?php
-        $index++;
-      endforeach;
-    endforeach; ?>
+  <div class="app">
+    <div class="splash-screen">
+      <h1>CSS RPG</h1>
+      <a class="trigger-start" href="#start">Start game</a>
+    </div>
 
-    <!-- Player element -->
-    <div class="player">x</div>
+
+    <div class="viewport">
+      <?php
+      $index = 1;
+      foreach ($mapRows as $row):
+        foreach (str_split($row) as $tile):
+      ?>
+          <div
+            class="tile <?php echo $tileTypes[$tile]; ?>"
+            <?php if ($index === $playerStartIndex) {
+              echo ' id="start"';
+            }; ?>>
+            <p><?php echo $index; ?></p>
+          </div>
+      <?php
+          $index++;
+        endforeach;
+      endforeach; ?>
+
+      <!-- Player element -->
+      <div class="player">x</div>
+    </div>
   </div>
 </body>
 
