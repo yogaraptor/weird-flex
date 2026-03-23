@@ -195,6 +195,22 @@ $tileTypes = [
       .viewport {
         display: grid;
       }
+
+      .viewport:not(:focus)::after {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #000000f0;
+        color: white;
+        font-size: 1rem;
+        content: 'Ready? Click or press <tab> to play'
+      }
     }
   </style>
 </head>
@@ -207,7 +223,7 @@ $tileTypes = [
     </div>
 
 
-    <div class="viewport">
+    <div class="viewport" tabindex="0" autofocus>
       <?php
       $index = 1;
       foreach ($mapRows as $row):
