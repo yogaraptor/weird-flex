@@ -1,6 +1,13 @@
 <?php
 $mapData = file_get_contents('./map.txt');
-$rows = explode("\n", trim($mapData));
+$lines = explode("\n", trim($mapData));
+$mapStartIndex = array_search("BEGIN MAP", $lines) + 1;
+$mapEndIndex = array_search("END MAP", $lines);
+$mapRows = array_slice($lines, $mapStartIndex, $mapEndIndex - $mapStartIndex);
+
+$playerStartRow = $lines[array_keys(preg_grep('/^PLAYER START (\d+)/', $lines))[0]];
+$playerStartRowParts = explode(' ', $playerStartRow);
+$playerStartIndex = intval(array_pop($playerStartRowParts));
 
 $tileTypes = [
   'G' => 'grass',
@@ -176,15 +183,19 @@ $tileTypes = [
 <body>
   <div class="viewport">
     <?php
-    $idx = 1;
-    foreach ($rows as $row):
+    $index = 1;
+    foreach ($mapRows as $row):
       foreach (str_split($row) as $tile):
     ?>
-        <div class="tile <?php echo $tileTypes[$tile]; ?>">
-          <p><?php echo $idx; ?></p>
+        <div
+          class="tile <?php echo $tileTypes[$tile]; ?>"
+          <?php if ($index === $playerStartIndex) {
+            echo ' id="start"';
+          }; ?>>
+          <p><?php echo $index; ?></p>
         </div>
     <?php
-        $idx++;
+        $index++;
       endforeach;
     endforeach; ?>
 
