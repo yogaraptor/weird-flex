@@ -4,6 +4,8 @@ $lines = explode("\n", trim($mapData));
 $mapStartIndex = array_search("BEGIN MAP", $lines) + 1;
 $mapEndIndex = array_search("END MAP", $lines);
 $mapRows = array_slice($lines, $mapStartIndex, $mapEndIndex - $mapStartIndex);
+$mapNumColumns = strlen($mapRows[0]);
+$mapNumRows = count($mapRows);
 
 $playerStartRow = $lines[array_keys(preg_grep('/^PLAYER START (\d+)/', $lines))[0]];
 $playerStartRowParts = explode(' ', $playerStartRow);
@@ -20,11 +22,15 @@ $tileTypes = [
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pure CSS 3x3 Grid Game</title>
+  <title>CSS RPG</title>
   <style>
     :root {
-      --tile-width: 200px;
-      --tile-height: 200px;
+      --tile-width: 50px;
+      --tile-height: 50px;
+      --map-width: <?php echo $mapNumColumns; ?>;
+      --map-height: <?php echo $mapNumRows; ?>;
+      --viewport-width: 450px;
+      --viewport-height: 450px;
     }
 
     * {
@@ -52,20 +58,30 @@ $tileTypes = [
 
     .viewport {
       display: none;
-      grid-template-columns: repeat(9, var(--tile-width));
-      grid-template-rows: repeat(9, var(--tile-height));
+      grid-template-columns: repeat(var(--map-width), var(--tile-width));
+      grid-template-rows: repeat(var(--map-height), var(--tile-height));
       gap: 0;
-      width: calc(var(--tile-width) * 3);
-      height: calc(var(--tile-height) * 3);
+      width: var(--viewport-width);
+      height: var(--viewport-height);
       overflow: auto;
       scroll-snap-type: both mandatory;
-      border: 4px solid #34495e;
       box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
       container-name: viewport;
 
-      /* Ensure keyboard scrolling goes tile-by-tile */
-      font-size: calc(var(--tile-width) * 1.1);
-      line-height: calc(var(--tile-height) * 1.1);
+      /* Hide scrollbars */
+      scrollbar-width: none;
+      overflow: scroll;
+
+      &::-webkit-scrollbar {
+        display: none;
+        width: 0;
+        height: 0;
+      }
+    }
+
+    /* Ensure start tile is always centered (initial scroll via #anchor links doesn't necessarily use scroll-snap-align by default) */
+    #start {
+      scroll-margin: calc((var(--viewport-height) / 2) - (var(--tile-height) / 2)) calc((var(--viewport-width) / 2) - (var(--tile-width) / 2));
     }
 
     .tile {
@@ -76,7 +92,7 @@ $tileTypes = [
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 24px;
+      font-size: 1rem;
       font-weight: bold;
       color: white;
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -110,8 +126,8 @@ $tileTypes = [
         left: 50%;
         z-index: 1;
         transform: translate(-50%, -50%);
-        width: 100px;
-        height: 100px;
+        width: calc(var(--tile-width) / 2);
+        height: calc(var(--tile-height) / 2);
         border-radius: 50%;
         display: flex;
         justify-content: center;
@@ -150,15 +166,14 @@ $tileTypes = [
       left: 50%;
       transform: translate3d(-50%, -50%, 0);
       background: blue;
-      width: 100px;
-      height: 100px;
+      width: calc(var(--tile-width) / 2);
+      height: calc(var(--tile-height) / 2);
       border-radius: 50%;
       pointer-events: none;
       z-index: 5;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 48px;
       color: white;
     }
 
@@ -187,7 +202,7 @@ $tileTypes = [
       }
 
       50% {
-        box-shadow: 0 0 50px yellow;
+        box-shadow: 0 0 50px 10px yellow;
       }
     }
 
@@ -247,7 +262,7 @@ $tileTypes = [
       endforeach; ?>
 
       <!-- Player element -->
-      <div class="player">x</div>
+      <div class="player"></div>
     </div>
   </div>
 </body>
