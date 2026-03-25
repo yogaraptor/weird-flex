@@ -11,10 +11,18 @@ $playerStartRow = $lines[array_keys(preg_grep('/^PLAYER START (\d+)/', $lines))[
 $playerStartRowParts = explode(' ', $playerStartRow);
 $playerStartIndex = intval(array_pop($playerStartRowParts));
 
-$tileTypes = [
-  'G' => 'grass',
-  'L' => 'lava',
-];
+// Parse legend: each entry is "<char> <name> [<metadata...>]"
+$legendStartIndex = array_search("BEGIN LEGEND", $lines) + 1;
+$legendEndIndex = array_search("END LEGEND", $lines);
+$legendLines = array_slice($lines, $legendStartIndex, $legendEndIndex - $legendStartIndex);
+$tileTypes = [];
+foreach ($legendLines as $legendLine) {
+  $parts = explode(' ', trim($legendLine), 3);
+  $char = $parts[0];
+  $name = $parts[1] ?? $char;
+  $metadata = isset($parts[2]) ? $parts[2] : null;
+  $tileTypes[$char] = ['name' => $name, 'metadata' => $metadata];
+}
 ?>
 <!doctype html>
 <html lang="en">
@@ -250,7 +258,7 @@ $tileTypes = [
         foreach (str_split($row) as $tile):
       ?>
           <div
-            class="tile <?php echo $tileTypes[$tile]; ?>"
+            class="tile <?php echo $tileTypes[$tile]['name']; ?>"
             <?php if ($index === $playerStartIndex) {
               echo ' id="start"';
             }; ?>>
