@@ -84,8 +84,12 @@ foreach ($lines as $i => $line) {
       }
     }
 
+    .map {
+      position: static;
+    }
+
     .viewport {
-      display: none;
+      display: grid;
       grid-template-columns: repeat(var(--map-width), var(--tile-width));
       grid-template-rows: repeat(var(--map-height), var(--tile-height));
       gap: 0;
@@ -263,34 +267,6 @@ foreach ($lines as $i => $line) {
         box-shadow: 0 0 50px 10px yellow;
       }
     }
-
-    /* Hide splash and show the viewport that contains the targeted tile */
-    .app:has(.viewport :target) {
-      .splash-screen {
-        display: none;
-      }
-    }
-
-    .viewport:has(:target) {
-      display: grid;
-
-      /* Disabling tab hint for now while we figure out map switching situation */
-      /* &:not(:focus)::after {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        z-index: 200;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #000000f0;
-        color: white;
-        font-size: 1rem;
-        content: 'Ready? Click or press <tab> to play'
-      } */
-    }
   </style>
 </head>
 
@@ -298,56 +274,59 @@ foreach ($lines as $i => $line) {
   <div class="app">
     <div class="splash-screen">
       <h1>CSS RPG</h1>
-      <a class="trigger-start" href="#start">Start game</a>
+      <button command="show-modal" commandfor="map-1">Start game</button>
     </div>
 
 
     <?php foreach ($maps as $mapNum => $map): ?>
-      <div
-        class="viewport"
-        id="map-<?php echo $mapNum; ?>"
-        tabindex="0"
-        style="--map-width: <?php echo $map['numCols']; ?>; --map-height: <?php echo $map['numRows']; ?>">
-        <?php
-        $index = 1;
-        $doorIdsUsed = [];
-        foreach ($map['rows'] as $row):
-          foreach (str_split($row) as $tileChar):
-            $tileDef = $tileTypes[$tileChar];
-            $tileId = null;
+      <dialog class="map"
+        id="map-<?php echo $mapNum; ?>">
+        <div
+          class="viewport"
+          tabindex="0"
+          style="--map-width: <?php echo $map['numCols']; ?>; --map-height: <?php echo $map['numRows']; ?>"
+          autofocus>
+          <?php
+          $index = 1;
+          $doorIdsUsed = [];
+          foreach ($map['rows'] as $row):
+            foreach (str_split($row) as $tileChar):
+              $tileDef = $tileTypes[$tileChar];
+              $tileId = null;
 
-            // Player start tile on map 1 gets id="start" for splash screen link
-            if ($map['playerStart'] !== null && $index === $map['playerStart']) {
-              $tileId = $mapNum === 1 ? 'start' : "m{$mapNum}-start";
-            }
-
-            // First door tile per destination gets id="m{N}-door-m{M}"
-            if ($tileDef['gotoMap'] !== null) {
-              $doorId = "m{$mapNum}-door-m{$tileDef['gotoMap']}";
-              if (!isset($doorIdsUsed[$doorId])) {
-                if ($tileId === null) $tileId = $doorId;
-                $doorIdsUsed[$doorId] = true;
+              // Player start tile on map 1 gets id="start" for splash screen link
+              if ($map['playerStart'] !== null && $index === $map['playerStart']) {
+                $tileId = $mapNum === 1 ? 'start' : "m{$mapNum}-start";
               }
-            }
-        ?>
-            <div
-              class="tile <?php echo $tileDef['name']; ?>"
-              <?php if ($tileId) echo "id=\"{$tileId}\""; ?>>
-              <p><?php echo $index; ?></p>
-              <?php if ($tileDef['gotoMap'] !== null): ?>
-                <a class="enter-btn" href="#m<?php echo $tileDef['gotoMap']; ?>-door-m<?php echo $mapNum; ?>">
-                  Enter ➡️
-                </a>
-              <?php endif; ?>
-            </div>
-        <?php
-            $index++;
-          endforeach;
-        endforeach; ?>
 
-        <!-- Player element -->
-        <div class="player"></div>
-      </div>
+              // First door tile per destination gets id="m{N}-door-m{M}"
+              if ($tileDef['gotoMap'] !== null) {
+                $doorId = "m{$mapNum}-door-m{$tileDef['gotoMap']}";
+                if (!isset($doorIdsUsed[$doorId])) {
+                  if ($tileId === null) $tileId = $doorId;
+                  $doorIdsUsed[$doorId] = true;
+                }
+              }
+          ?>
+              <div
+                class="tile <?php echo $tileDef['name']; ?>"
+                <?php if ($tileId) echo "id=\"{$tileId}\""; ?>>
+                <p><?php echo $index; ?></p>
+                <?php if ($tileDef['gotoMap'] !== null): ?>
+                  <button class="enter-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">>
+                    Enter ➡️
+                  </button>
+                <?php endif; ?>
+              </div>
+          <?php
+              $index++;
+            endforeach;
+          endforeach; ?>
+
+          <!-- Player element -->
+          <div class="player"></div>
+        </div>
+      </dialog>
     <?php endforeach; ?>
   </div>
 </body>
