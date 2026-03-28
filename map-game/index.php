@@ -85,7 +85,9 @@ foreach ($lines as $i => $line) {
     }
 
     .map {
-      position: static;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .viewport {
