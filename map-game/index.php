@@ -1,15 +1,6 @@
 <?php
 $mapData = file_get_contents('./map.txt');
 $lines = explode("\n", trim($mapData));
-$mapStartIndex = array_search("BEGIN MAP", $lines) + 1;
-$mapEndIndex = array_search("END MAP", $lines);
-$mapRows = array_slice($lines, $mapStartIndex, $mapEndIndex - $mapStartIndex);
-$mapNumColumns = strlen($mapRows[0]);
-$mapNumRows = count($mapRows);
-
-$playerStartRow = $lines[array_keys(preg_grep('/^PLAYER START (\d+)/', $lines))[0]];
-$playerStartRowParts = explode(' ', $playerStartRow);
-$playerStartIndex = intval(array_pop($playerStartRowParts));
 
 // Parse legend: each entry is "<char> <name> [<metadata...>]"
 $legendStartIndex = array_search("BEGIN LEGEND", $lines) + 1;
@@ -21,7 +12,38 @@ foreach ($legendLines as $legendLine) {
   $char = $parts[0];
   $name = $parts[1] ?? $char;
   $metadata = isset($parts[2]) ? $parts[2] : null;
-  $tileTypes[$char] = ['name' => $name, 'metadata' => $metadata];
+  $gotoMap = null;
+  if ($metadata && preg_match('/^GOTO MAP (\d+)$/', $metadata, $matches)) {
+    $gotoMap = intval($matches[1]);
+  }
+  $tileTypes[$char] = ['name' => $name, 'metadata' => $metadata, 'gotoMap' => $gotoMap];
+}
+
+// Parse multiple maps
+$maps = [];
+$currentMapNum = null;
+$currentMapStartLine = null;
+foreach ($lines as $i => $line) {
+  if (preg_match('/^BEGIN MAP (\d+)$/', $line, $m)) {
+    $currentMapNum = intval($m[1]);
+    $currentMapStartLine = $i + 1;
+  } elseif (preg_match('/^END MAP (\d+)$/', $line, $m)) {
+    $num = intval($m[1]);
+    $mapRows = array_values(array_filter(
+      array_slice($lines, $currentMapStartLine, $i - $currentMapStartLine),
+      fn($r) => trim($r) !== ''
+    ));
+    $maps[$num] = [
+      'rows' => $mapRows,
+      'numCols' => strlen($mapRows[0]),
+      'numRows' => count($mapRows),
+      'playerStart' => null,
+    ];
+    $currentMapNum = null;
+    $currentMapStartLine = null;
+  } elseif (preg_match('/^MAP (\d+) PLAYER START (\d+)$/', $line, $m)) {
+    $maps[intval($m[1])]['playerStart'] = intval($m[2]);
+  }
 }
 ?>
 <!doctype html>
@@ -35,8 +57,6 @@ foreach ($legendLines as $legendLine) {
     :root {
       --tile-width: 50px;
       --tile-height: 50px;
-      --map-width: <?php echo $mapNumColumns; ?>;
-      --map-height: <?php echo $mapNumRows; ?>;
       --viewport-width: 450px;
       --viewport-height: 450px;
     }
@@ -87,8 +107,8 @@ foreach ($legendLines as $legendLine) {
       }
     }
 
-    /* Ensure start tile is always centered (initial scroll via #anchor links doesn't necessarily use scroll-snap-align by default) */
-    #start {
+    /* Ensure any targeted tile is centered in the viewport */
+    .tile:target {
       scroll-margin: calc((var(--viewport-height) / 2) - (var(--tile-height) / 2)) calc((var(--viewport-width) / 2) - (var(--tile-width) / 2));
     }
 
@@ -122,6 +142,32 @@ foreach ($legendLines as $legendLine) {
             #e74c3c 50%,
             #c0392b 100%);
       }
+    }
+
+    .tile.door {
+      position: relative;
+      background-color: black;
+
+      .enter-btn {
+        display: none;
+        position: absolute;
+        z-index: 10;
+        bottom: 4px;
+        left: 50%;
+        transform: translateX(-50%);
+        text-decoration: none;
+        color: white;
+        background: rgba(0, 0, 0, 0.85);
+        padding: 2px 6px;
+        border: 1px solid white;
+        border-radius: 3px;
+        font-size: 0.65rem;
+        white-space: nowrap;
+      }
+    }
+
+    .tile.floor {
+      background-color: burlywood;
     }
 
     @container scroll-state(snapped: x) or scroll-state(snapped: y) {
@@ -165,6 +211,10 @@ foreach ($legendLines as $legendLine) {
 
       .tile.lava p {
         border: 2px solid green;
+      }
+
+      .tile.door .enter-btn {
+        display: flex;
       }
     }
 
@@ -214,17 +264,18 @@ foreach ($legendLines as $legendLine) {
       }
     }
 
-    /* Show splash screen and hide map until start button pressed */
-    .app:has(#start:target) {
+    /* Hide splash and show the viewport that contains the targeted tile */
+    .app:has(.viewport :target) {
       .splash-screen {
         display: none;
       }
+    }
 
-      .viewport {
-        display: grid;
-      }
+    .viewport:has(:target) {
+      display: grid;
 
-      .viewport:not(:focus)::after {
+      /* Disabling tab hint for now while we figure out map switching situation */
+      /* &:not(:focus)::after {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -238,7 +289,7 @@ foreach ($legendLines as $legendLine) {
         color: white;
         font-size: 1rem;
         content: 'Ready? Click or press <tab> to play'
-      }
+      } */
     }
   </style>
 </head>
@@ -251,27 +302,53 @@ foreach ($legendLines as $legendLine) {
     </div>
 
 
-    <div class="viewport" tabindex="0" autofocus>
-      <?php
-      $index = 1;
-      foreach ($mapRows as $row):
-        foreach (str_split($row) as $tile):
-      ?>
-          <div
-            class="tile <?php echo $tileTypes[$tile]['name']; ?>"
-            <?php if ($index === $playerStartIndex) {
-              echo ' id="start"';
-            }; ?>>
-            <p><?php echo $index; ?></p>
-          </div>
-      <?php
-          $index++;
-        endforeach;
-      endforeach; ?>
+    <?php foreach ($maps as $mapNum => $map): ?>
+      <div
+        class="viewport"
+        id="map-<?php echo $mapNum; ?>"
+        tabindex="0"
+        style="--map-width: <?php echo $map['numCols']; ?>; --map-height: <?php echo $map['numRows']; ?>">
+        <?php
+        $index = 1;
+        $doorIdsUsed = [];
+        foreach ($map['rows'] as $row):
+          foreach (str_split($row) as $tileChar):
+            $tileDef = $tileTypes[$tileChar];
+            $tileId = null;
 
-      <!-- Player element -->
-      <div class="player"></div>
-    </div>
+            // Player start tile on map 1 gets id="start" for splash screen link
+            if ($map['playerStart'] !== null && $index === $map['playerStart']) {
+              $tileId = $mapNum === 1 ? 'start' : "m{$mapNum}-start";
+            }
+
+            // First door tile per destination gets id="m{N}-door-m{M}"
+            if ($tileDef['gotoMap'] !== null) {
+              $doorId = "m{$mapNum}-door-m{$tileDef['gotoMap']}";
+              if (!isset($doorIdsUsed[$doorId])) {
+                if ($tileId === null) $tileId = $doorId;
+                $doorIdsUsed[$doorId] = true;
+              }
+            }
+        ?>
+            <div
+              class="tile <?php echo $tileDef['name']; ?>"
+              <?php if ($tileId) echo "id=\"{$tileId}\""; ?>>
+              <p><?php echo $index; ?></p>
+              <?php if ($tileDef['gotoMap'] !== null): ?>
+                <a class="enter-btn" href="#m<?php echo $tileDef['gotoMap']; ?>-door-m<?php echo $mapNum; ?>">
+                  Enter ➡️
+                </a>
+              <?php endif; ?>
+            </div>
+        <?php
+            $index++;
+          endforeach;
+        endforeach; ?>
+
+        <!-- Player element -->
+        <div class="player"></div>
+      </div>
+    <?php endforeach; ?>
   </div>
 </body>
 
