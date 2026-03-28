@@ -13,10 +13,14 @@ foreach ($legendLines as $legendLine) {
   $name = $parts[1] ?? $char;
   $metadata = isset($parts[2]) ? $parts[2] : null;
   $gotoMap = null;
+  $exitToMap = null;
   if ($metadata && preg_match('/^GOTO MAP (\d+)$/', $metadata, $matches)) {
     $gotoMap = intval($matches[1]);
   }
-  $tileTypes[$char] = ['name' => $name, 'metadata' => $metadata, 'gotoMap' => $gotoMap];
+  if ($metadata && preg_match('/^EXIT TO MAP (\d+)$/', $metadata, $matches)) {
+    $exitToMap = intval($matches[1]);
+  }
+  $tileTypes[$char] = ['name' => $name, 'metadata' => $metadata, 'gotoMap' => $gotoMap, 'exitToMap' => $exitToMap];
 }
 
 // Parse multiple maps
@@ -154,8 +158,10 @@ foreach ($lines as $i => $line) {
       position: relative;
       background-color: black;
 
-      .enter-btn {
-        display: none;
+      .door-btn {
+        display: flex;
+        opacity: 0;
+        pointer-events: none;
         position: absolute;
         z-index: 10;
         bottom: 4px;
@@ -219,8 +225,9 @@ foreach ($lines as $i => $line) {
         border: 2px solid green;
       }
 
-      .tile.door .enter-btn {
-        display: flex;
+      .tile.door .door-btn {
+        opacity: 1;
+        pointer-events: auto;
       }
     }
 
@@ -315,8 +322,13 @@ foreach ($lines as $i => $line) {
                 <?php if ($tileId) echo "id=\"{$tileId}\""; ?>>
                 <p><?php echo $index; ?></p>
                 <?php if ($tileDef['gotoMap'] !== null): ?>
-                  <button class="enter-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">>
+                  <button class="door-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">>
                     Enter ➡️
+                  </button>
+                <?php endif; ?>
+                <?php if ($tileDef['exitToMap'] !== null): ?>
+                  <button class="door-btn" command="close" commandfor="map-<?php echo $mapNum; ?>">>
+                    Exit ️🚪
                   </button>
                 <?php endif; ?>
               </div>

@@ -3,7 +3,7 @@ G grass
 L lava
 F floor
 1 door GOTO MAP 2
-2 door GOTO MAP 1
+2 door EXIT TO MAP 1
 END LEGEND
 
 BEGIN MAP 1
