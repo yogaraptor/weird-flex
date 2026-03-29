@@ -1,0 +1,9 @@
+/* Tavern puzzle - convo with barkeep and balancing of orbs */
+#puzzle-1 {
+  border: 10px solid red;
+  background: white;
+
+  input[type="range"] {
+    writing-mode: vertical-rl;
+  }
+}

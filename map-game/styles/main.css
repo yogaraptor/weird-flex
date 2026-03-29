@@ -100,29 +100,34 @@ body {
 .tile.door {
   position: relative;
   background-color: black;
+}
 
-  .door-btn {
-    display: flex;
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    z-index: 10;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    text-decoration: none;
-    color: white;
-    background: rgba(0, 0, 0, 0.85);
-    padding: 2px 6px;
-    border: 1px solid white;
-    border-radius: 3px;
-    font-size: 0.65rem;
-    white-space: nowrap;
-  }
+.tile.puzzle {
+  position: relative;
+  background-color: purple;
 }
 
 .tile.floor {
   background-color: burlywood;
+}
+
+.tile .tile-btn {
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-decoration: none;
+  color: white;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 2px 6px;
+  border: 1px solid white;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  white-space: nowrap;
 }
 
 @container scroll-state(snapped: x) or scroll-state(snapped: y) {
@@ -167,7 +172,7 @@ body {
     border: 2px solid green;
   }
 
-  .tile.door .door-btn {
+  .tile .tile-btn {
     opacity: 1;
     pointer-events: auto;
   }

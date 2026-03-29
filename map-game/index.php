@@ -14,13 +14,23 @@ foreach ($legendLines as $legendLine) {
   $metadata = isset($parts[2]) ? $parts[2] : null;
   $gotoMap = null;
   $exitToMap = null;
+  $showPuzzle = null;
   if ($metadata && preg_match('/^GOTO MAP (\d+)$/', $metadata, $matches)) {
     $gotoMap = intval($matches[1]);
   }
   if ($metadata && preg_match('/^EXIT TO MAP (\d+)$/', $metadata, $matches)) {
     $exitToMap = intval($matches[1]);
   }
-  $tileTypes[$char] = ['name' => $name, 'metadata' => $metadata, 'gotoMap' => $gotoMap, 'exitToMap' => $exitToMap];
+  if ($metadata && preg_match('/^SHOW PUZZLE (\d+)$/', $metadata, $matches)) {
+    $showPuzzle = intval($matches[1]);
+  }
+  $tileTypes[$char] = [
+    'name' => $name,
+    'metadata' => $metadata,
+    'gotoMap' => $gotoMap,
+    'exitToMap' => $exitToMap,
+    'showPuzzle' => $showPuzzle
+  ];
 }
 
 // Parse multiple maps
@@ -58,6 +68,7 @@ foreach ($lines as $i => $line) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CSS RPG</title>
   <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  <link rel="stylesheet" type="text/css" href="styles/puzzles.css" />
 </head>
 
 <body>
@@ -103,14 +114,28 @@ foreach ($lines as $i => $line) {
                 <?php if ($tileId) echo "id=\"{$tileId}\""; ?>>
                 <p><?php echo $index; ?></p>
                 <?php if ($tileDef['gotoMap'] !== null): ?>
-                  <button class="door-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">>
+                  <button class="tile-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">>
                     Enter ➡️
                   </button>
                 <?php endif; ?>
+
                 <?php if ($tileDef['exitToMap'] !== null): ?>
-                  <button class="door-btn" command="close" commandfor="map-<?php echo $mapNum; ?>">>
+                  <button class="tile-btn" command="close" commandfor="map-<?php echo $mapNum; ?>">>
                     Exit ️🚪
                   </button>
+                <?php endif; ?>
+
+                <?php if ($tileDef['showPuzzle'] !== null): ?>
+                  <button class="tile-btn" command="show-modal" commandfor="puzzle-<?php echo $tileDef['showPuzzle']; ?>">>
+                    Open puzzle 🧩
+                  </button>
+                  <dialog id="puzzle-<?php echo $tileDef['showPuzzle']; ?>">
+                    This is where the puzzle goes!
+                    <input name="orb1" type="range" min="1" max="5" />
+                    <input name="orb2" type="range" min="1" max="5" />
+                    <input name="orb3" type="range" min="1" max="5" />
+                    <button command="close" commandfor="puzzle-<?php echo $tileDef['showPuzzle']; ?>">Close</button>
+                  </dialog>
                 <?php endif; ?>
               </div>
           <?php
