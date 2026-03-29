@@ -1,0 +1,120 @@
+/* Ensure any targeted tile is centered in the viewport */
+.tile:target {
+  scroll-margin: calc((var(--viewport-height) / 2) - (var(--tile-height) / 2))
+    calc((var(--viewport-width) / 2) - (var(--tile-width) / 2));
+}
+
+.tile {
+  width: var(--tile-width);
+  height: var(--tile-height);
+  scroll-snap-align: center center;
+  container-type: scroll-state;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.tile.grass {
+  background: #27ae60;
+}
+
+.tile.lava {
+  p {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #e74c3c;
+    background-image: radial-gradient(
+      circle at 30% 30%,
+      #ff6b6b 0%,
+      #e74c3c 50%,
+      #c0392b 100%
+    );
+  }
+}
+
+.tile.door {
+  position: relative;
+  background-color: black;
+}
+
+.tile.puzzle {
+  position: relative;
+  background-color: purple;
+}
+
+.tile.floor {
+  background-color: burlywood;
+}
+
+.tile .tile-btn {
+  display: flex;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 10;
+  bottom: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-decoration: none;
+  color: white;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 2px 6px;
+  border: 1px solid white;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+
+@container scroll-state(snapped: x) or scroll-state(snapped: y) {
+  /* Fire effect around player when on lava */
+  .tile.lava::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    width: calc(var(--tile-width) / 2);
+    height: calc(var(--tile-height) / 2);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    color: white;
+    animation: playerHurt 1s ease-in-out infinite;
+  }
+
+  .tile.lava::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    content: "GAME OVER";
+    animation: gameOver 5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    pointer-events: none;
+  }
+
+  .tile.lava p {
+    border: 2px solid green;
+  }
+
+  .tile .tile-btn {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
