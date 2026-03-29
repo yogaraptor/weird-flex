@@ -10,3 +10,9 @@ We can either:
 
 - Bring the `:target` trick back by showing an overlay on switching maps (only shown when no `:target` within the map) that provides a title screen and link to the start tile. The problem with this is that each map could still only have one entry point tile, regardless of which map you come from, because the overlay is shown within the target map, not the source map. So for the purposes of the demo, we could let the start tile just be whatever the browser picks (and build the map around that), OR, much clunkier, we could create multiple copies of maps that need to have multiple entry points. This would mean that if we want to do fancy stuff later with state on maps (triggered by checkboxes etc) then we'd have to make sure that state replicated across all clones of a map. Probably do-able, but messy.
 - Accept that for the purposes of this demo, each map has just one entry point. We can build the very short story of the game around this - you start on a tile _next_ to the door tile of the tavern/whatever building it ends up being, so that when you come back from the tavern you are still dumped outside it. And of course inside the tavern we'd need to build the map around whatever tile the browser uses for initial placement (i.e. this tile should be, or be next to, the door tile, and the door tile must be scrollable to).
+
+## Background audio
+
+There doesn't seem to be any automatic way to introduce new audio when a user enters a new map - not even the <dialog> trick that we use for autofocussing works.
+
+We can have a single global background ambience. Can't rely on autoplay, so would have to try and size/clip the audio element such that only the play button is visible, set opacity to 0 and then put a fake button with an "unmute" icon on underneath it. Probaly not worth it if we can't change/add audio when switching maps.
