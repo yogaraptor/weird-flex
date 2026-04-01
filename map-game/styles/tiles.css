@@ -4,6 +4,7 @@
     calc((var(--viewport-width) / 2) - (var(--tile-width) / 2));
 }
 
+/* Common tile styles */
 .tile {
   width: var(--tile-width);
   height: var(--tile-height);
@@ -19,6 +20,7 @@
   transition: all 0.3s ease;
 }
 
+/* Basic tile graphics */
 .tile.grass {
   background: #27ae60;
 }
@@ -52,6 +54,17 @@
   background-color: burlywood;
 }
 
+.tile.stone {
+  background-color: grey;
+}
+.tile.wall {
+  background-color: #444;
+}
+.tile.darkness {
+  background-color: #000;
+}
+
+/* Tiles with interactive buttons (e.g. doors, puzzles, signposts) */
 .tile .tile-btn {
   display: flex;
   opacity: 0;
@@ -71,6 +84,43 @@
   white-space: nowrap;
 }
 
+/* Item tiles */
+.tile.item {
+  position: relative;
+
+  /* Hide control until on tile */
+  label,
+  .item-checkbox {
+    display: none;
+  }
+
+  .item-checkbox {
+    opacity: 0;
+  }
+
+  label {
+    position: absolute;
+    top: calc(-0.5 * var(--tile-height));
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: black;
+    border: 1px solid black;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  &:has(:checked) {
+    label,
+    .item-checkbox {
+      display: none;
+    }
+  }
+}
+
+/* Special tile states when player is "on" that tile */
 @container scroll-state(snapped: x) or scroll-state(snapped: y) {
   /* Fire effect around player when on lava */
   .tile.lava::before {
@@ -116,5 +166,12 @@
   .tile .tile-btn {
     opacity: 1;
     pointer-events: auto;
+  }
+
+  .tile.item {
+    label,
+    .item-checkbox {
+      display: block;
+    }
   }
 }

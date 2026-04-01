@@ -7,7 +7,8 @@ Area for thoughts on progress, next direction, compromises needed etc.
 - [x] Moving between tiles - complete
 - [x] Navigating between maps - complete
 - [x] Playing background audio - not feasible
-- [ ] Interacting with game puzzles/controls etc (main concern: does this introduce focus problems?)
+- [x] Interacting with game puzzles/controls etc (main concern: does this introduce focus problems?)
+- [ ] Picking up items/displaying inventory
 
 ## Navigating between maps
 

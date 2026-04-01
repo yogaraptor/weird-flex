@@ -15,6 +15,7 @@ foreach ($legendLines as $legendLine) {
   $gotoMap = null;
   $exitToMap = null;
   $showPuzzle = null;
+  $item = null;
   if ($metadata && preg_match('/^GOTO MAP (\d+)$/', $metadata, $matches)) {
     $gotoMap = intval($matches[1]);
   }
@@ -24,12 +25,16 @@ foreach ($legendLines as $legendLine) {
   if ($metadata && preg_match('/^SHOW PUZZLE (\d+)$/', $metadata, $matches)) {
     $showPuzzle = intval($matches[1]);
   }
+  if ($metadata && preg_match('/^ITEM ([A-Z]+)$/', $metadata, $matches)) {
+    $item = $matches[1];
+  }
   $tileTypes[$char] = [
     'name' => $name,
     'metadata' => $metadata,
     'gotoMap' => $gotoMap,
     'exitToMap' => $exitToMap,
-    'showPuzzle' => $showPuzzle
+    'showPuzzle' => $showPuzzle,
+    'item' => $item
   ];
 }
 
@@ -112,7 +117,7 @@ foreach ($lines as $i => $line) {
               }
           ?>
               <div
-                class="tile <?php echo $tileDef['name']; ?>"
+                class="tile <?php echo $tileDef['name']; ?><?php if ($tileDef['item'] !== null): ?> item<?php endif; ?>"
                 <?php if ($tileId) echo "id=\"{$tileId}\""; ?>>
                 <p><?php echo $index; ?></p>
                 <?php if ($tileDef['gotoMap'] !== null): ?>
@@ -138,6 +143,11 @@ foreach ($lines as $i => $line) {
                     <input name="orb3" type="range" min="1" max="5" />
                     <button command="close" commandfor="puzzle-<?php echo $tileDef['showPuzzle']; ?>">Close</button>
                   </dialog>
+                <?php endif; ?>
+
+                <?php if ($tileDef['item'] !== null): ?>
+                  <label for="item-<?php echo $tileDef['item']; ?>">Pick up <?php echo $tileDef['item']; ?></label>
+                  <input class="item-checkbox" type="checkbox" id="item-<?php echo $tileDef['item']; ?>" />
                 <?php endif; ?>
               </div>
           <?php
