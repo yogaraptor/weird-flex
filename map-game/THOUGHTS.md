@@ -12,7 +12,7 @@ Area for thoughts on progress, next direction, compromises needed etc.
 
 ## Navigating between maps
 
-The command/commandfor trick to switch between the maps is AWESOME but does mean that we've lost the ability to target a starting tile (previouslt we used an #anchor link and `:target` styling to switch maps, which let us jump the player into a map at any given tile).
+The command/commandfor trick to switch between the maps is AWESOME but does mean that we've lost the ability to target a starting tile (previously we used an #anchor link and `:target` styling to switch maps, which let us jump the player into a map at any given tile).
 
 We can either:
 
