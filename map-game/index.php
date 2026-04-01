@@ -135,13 +135,18 @@ foreach ($lines as $i => $line) {
               }
 
               $tileClasses = ['tile', $tileDef['name']];
-              if ($tileDef['item'] !== null) array_push($tileClasses, 'item');
+              if ($tileDef['item'] !== null) {
+                array_push($tileClasses, 'item');
+                array_push($tileClasses, "item-" . strtolower($tileDef['item']));
+              }
               if ($tileDef['speech'] !== null) array_push($tileClasses, 'speech');
           ?>
               <div
                 class="<?php echo join(' ', $tileClasses); ?>"
+
                 <?php if ($tileId) echo "id=\"{$tileId}\""; ?>>
-                <p><?php echo $index; ?></p>
+
+                <?php if ($tileDef['item'] === null): ?><p><?php echo $index; ?></p><?php endif; ?>
                 <?php if ($tileDef['gotoMap'] !== null): ?>
                   <button class="tile-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">>
                     Enter ➡️
@@ -170,6 +175,7 @@ foreach ($lines as $i => $line) {
                 <?php if ($tileDef['item'] !== null): ?>
                   <label class="speech-bubble" for="item-<?php echo $tileDef['item']; ?>">Pick up <?php echo $tileDef['item']; ?></label>
                   <input class="item-checkbox" type="checkbox" id="item-<?php echo $tileDef['item']; ?>" />
+                  <div class="item-icon"><?php echo $tileDef['item']; ?></div>
                 <?php endif; ?>
 
                 <?php if ($tileDef['speech'] !== null): ?>

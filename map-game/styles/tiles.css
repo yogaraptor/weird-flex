@@ -63,6 +63,15 @@
 .tile.darkness {
   background-color: #000;
 }
+.tile.tree {
+  background-color: darkolivegreen;
+}
+.tile.long-grass {
+  background-color: darkgreen;
+}
+.tile.mountain {
+  background-color: darkslategrey;
+}
 
 /* Tiles with interactive buttons (e.g. doors, puzzles, signposts) */
 .tile .tile-btn {
@@ -107,6 +116,10 @@
     .item-checkbox {
       display: none;
     }
+  }
+
+  .item-icon {
+    color: white;
   }
 }
 

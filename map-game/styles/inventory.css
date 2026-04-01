@@ -2,17 +2,19 @@
   position: absolute;
   left: 50%;
   top: 50%;
+  z-index: 1000; /* Place above maps in stacking order so items can animate from map */
   transform: translate(
     -50%,
-    calc(-50% - (var(--viewport-height) / 2) - var(--tile-height))
+    calc(-50% - (var(--viewport-height) / 2) - (var(--tile-height)))
   );
   width: var(--viewport-width);
-  height: var(--tile-height);
-  display: flex;
+  height: var(--tile-height) * 2;
   background: brown;
 
   h2 {
     font-size: 0.75rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
   }
 
   ul {
@@ -20,19 +22,68 @@
     padding: 0;
     list-style: none;
     display: flex;
-    gap: 0.25rem;
 
     > li {
+      position: relative;
       border: 1px solid black;
       width: var(--tile-width);
       height: var(--tile-height);
+      margin: 0;
+      padding: 0;
+
+      /* Actual item icon */
+      &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        color: white;
+      }
     }
   }
 }
 
-/* Show items in pre-determined slots once picked up */
-.app:has(#item-KEY:checked) .inventory li:nth-child(2) {
-  &::before {
-    content: "KEY!";
+/*
+  Animate items from map to inventory slot once picked up
+  How this works:
+  - Each item has a predefined slot (e.g. key in slot 2)
+  - Inventory slots are aligned to map tiles
+  - Items can only be picked up when the player is on their tile, i.e. when the tile is
+  scrolled to the center of the viewport
+  - Therefore for each item we can work out how far we need to animate it to get it to the
+  inventory slot
+  - In practice the item can't display outside map bounds, because of overflow, so we make
+  a copy of the item appear in the slot once the item has reached the map boundary. Causes
+  a bit of a "blip" but with a fast enough animation this isn't really noticeable.
+  - An alternative would have been to do the reverse - have the item in the slot starting positioned  over the center tile, and then
+  animating back to its slot, but this doesn't work because the maps are <dialog>s and therefore
+  in the #top-layer (see https://developer.chrome.com/blog/what-is-the-top-layer)
+*/
+.inventory li:nth-child(2)::before {
+  opacity: 0;
+  transition: opacity 0s linear 0.3s;
+  content: "";
+}
+.item-icon {
+  transition: transform 0.3s linear;
+}
+.app:has(#item-KEY:checked) {
+  .inventory li:nth-child(2) {
+    &::before {
+      opacity: 1;
+      content: "KEY";
+    }
+  }
+
+  #item-KEY + .item-icon {
+    transform: translate(
+      calc(-3 * var(--tile-width)),
+      calc(-6 * var(--tile-height))
+    );
   }
 }
