@@ -76,6 +76,7 @@ foreach ($lines as $i => $line) {
   <link rel="stylesheet" type="text/css" href="styles/tiles.css" />
   <link rel="stylesheet" type="text/css" href="styles/player.css" />
   <link rel="stylesheet" type="text/css" href="styles/puzzles.css" />
+  <link rel="stylesheet" type="text/css" href="styles/inventory.css" />
 </head>
 
 <body>
@@ -85,6 +86,17 @@ foreach ($lines as $i => $line) {
       <button command="show-modal" commandfor="map-1">Start game</button>
     </div>
 
+    <div class="inventory">
+      <h2>Inventory</h2>
+      <ul>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+    </div>
 
     <?php foreach ($maps as $mapNum => $map): ?>
       <dialog class="map"

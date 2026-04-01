@@ -1,0 +1,38 @@
+.inventory {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(
+    -50%,
+    calc(-50% - (var(--viewport-height) / 2) - var(--tile-height))
+  );
+  width: var(--viewport-width);
+  height: var(--tile-height);
+  display: flex;
+  background: brown;
+
+  h2 {
+    font-size: 0.75rem;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    gap: 0.25rem;
+
+    > li {
+      border: 1px solid black;
+      width: var(--tile-width);
+      height: var(--tile-height);
+    }
+  }
+}
+
+/* Show items in pre-determined slots once picked up */
+.app:has(#item-KEY:checked) .inventory li:nth-child(2) {
+  &::before {
+    content: "KEY!";
+  }
+}
