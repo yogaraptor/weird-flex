@@ -8,7 +8,8 @@ Area for thoughts on progress, next direction, compromises needed etc.
 - [x] Navigating between maps - complete
 - [x] Playing background audio - not feasible
 - [x] Interacting with game puzzles/controls etc (main concern: does this introduce focus problems?)
-- [ ] Picking up items/displaying inventory
+- [x] Picking up items/displaying inventory
+- [x] NPC interactions
 
 ## Navigating between maps
 

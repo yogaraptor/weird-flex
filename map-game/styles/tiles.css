@@ -99,16 +99,6 @@
   }
 
   label {
-    position: absolute;
-    top: calc(-0.5 * var(--tile-height));
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    color: black;
-    border: 1px solid black;
-    padding: 0.5rem 1rem;
-    font-size: 0.75rem;
-    white-space: nowrap;
     cursor: pointer;
   }
 
@@ -117,6 +107,20 @@
     .item-checkbox {
       display: none;
     }
+  }
+}
+
+/* Speech bubbles for tiles adjacent to NPCs, to simulate conversation */
+.tile.speech {
+  position: relative;
+
+  .speech-bubble {
+    display: none;
+    /*
+      Shift speech bubble to be over NPC's head (speech tile is always to left of
+      NPC so the conversation starts when you get next to them, not on top of them!)
+    */
+    margin-left: var(--tile-width);
   }
 }
 
@@ -171,6 +175,12 @@
   .tile.item {
     label,
     .item-checkbox {
+      display: block;
+    }
+  }
+
+  .tile.speech {
+    .speech-bubble {
       display: block;
     }
   }

@@ -16,6 +16,7 @@ foreach ($legendLines as $legendLine) {
   $exitToMap = null;
   $showPuzzle = null;
   $item = null;
+  $speech = null;
   if ($metadata && preg_match('/^GOTO MAP (\d+)$/', $metadata, $matches)) {
     $gotoMap = intval($matches[1]);
   }
@@ -28,13 +29,17 @@ foreach ($legendLines as $legendLine) {
   if ($metadata && preg_match('/^ITEM ([A-Z]+)$/', $metadata, $matches)) {
     $item = $matches[1];
   }
+  if ($metadata && preg_match('/^SPEECH (.+)$/', $metadata, $matches)) {
+    $speech = $matches[1];
+  }
   $tileTypes[$char] = [
     'name' => $name,
     'metadata' => $metadata,
     'gotoMap' => $gotoMap,
     'exitToMap' => $exitToMap,
     'showPuzzle' => $showPuzzle,
-    'item' => $item
+    'item' => $item,
+    'speech' => $speech
   ];
 }
 
@@ -77,6 +82,7 @@ foreach ($lines as $i => $line) {
   <link rel="stylesheet" type="text/css" href="styles/player.css" />
   <link rel="stylesheet" type="text/css" href="styles/puzzles.css" />
   <link rel="stylesheet" type="text/css" href="styles/inventory.css" />
+  <link rel="stylesheet" type="text/css" href="styles/widgets.css" />
 </head>
 
 <body>
@@ -127,9 +133,13 @@ foreach ($lines as $i => $line) {
                   $doorIdsUsed[$doorId] = true;
                 }
               }
+
+              $tileClasses = ['tile', $tileDef['name']];
+              if ($tileDef['item'] !== null) array_push($tileClasses, 'item');
+              if ($tileDef['speech'] !== null) array_push($tileClasses, 'speech');
           ?>
               <div
-                class="tile <?php echo $tileDef['name']; ?><?php if ($tileDef['item'] !== null): ?> item<?php endif; ?>"
+                class="<?php echo join(' ', $tileClasses); ?>"
                 <?php if ($tileId) echo "id=\"{$tileId}\""; ?>>
                 <p><?php echo $index; ?></p>
                 <?php if ($tileDef['gotoMap'] !== null): ?>
@@ -158,8 +168,12 @@ foreach ($lines as $i => $line) {
                 <?php endif; ?>
 
                 <?php if ($tileDef['item'] !== null): ?>
-                  <label for="item-<?php echo $tileDef['item']; ?>">Pick up <?php echo $tileDef['item']; ?></label>
+                  <label class="speech-bubble" for="item-<?php echo $tileDef['item']; ?>">Pick up <?php echo $tileDef['item']; ?></label>
                   <input class="item-checkbox" type="checkbox" id="item-<?php echo $tileDef['item']; ?>" />
+                <?php endif; ?>
+
+                <?php if ($tileDef['speech'] !== null): ?>
+                  <div class="speech-bubble"><?php echo $tileDef['speech']; ?></div>
                 <?php endif; ?>
               </div>
           <?php
