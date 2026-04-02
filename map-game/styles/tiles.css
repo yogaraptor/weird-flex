@@ -101,11 +101,8 @@
   /* Hide control until on tile */
   label,
   .item-checkbox {
-    display: none;
-  }
-
-  .item-checkbox {
     opacity: 0;
+    pointer-events: none;
   }
 
   label {
@@ -115,7 +112,7 @@
   &:has(:checked) {
     label,
     .item-checkbox {
-      display: none;
+      opacity: 0;
     }
   }
 
@@ -208,9 +205,9 @@
   }
 
   .tile.item {
-    label,
-    .item-checkbox {
-      display: block;
+    label {
+      opacity: 1;
+      pointer-events: auto;
     }
   }
 
