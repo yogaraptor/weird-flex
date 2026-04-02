@@ -1,0 +1,25 @@
+.encounter-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  width: var(--viewport-width);
+  height: var(--viewport-height);
+
+  .encounter-give-result {
+    display: none;
+  }
+
+  &:has(#encounter-give:checked) {
+    .encounter-give-result {
+      display: block;
+    }
+  }
+}
+
+.tile.encounter:has(#encounter-give:checked) {
+  .encounter-transition {
+    display: none;
+  }
+}

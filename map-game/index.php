@@ -17,6 +17,7 @@ foreach ($legendLines as $legendLine) {
   $showPuzzle = null;
   $item = null;
   $speech = null;
+  $encounter = null;
   if ($metadata && preg_match('/^GOTO MAP (\d+)$/', $metadata, $matches)) {
     $gotoMap = intval($matches[1]);
   }
@@ -32,6 +33,9 @@ foreach ($legendLines as $legendLine) {
   if ($metadata && preg_match('/^SPEECH (.+)$/', $metadata, $matches)) {
     $speech = $matches[1];
   }
+  if ($metadata && preg_match('/^ENCOUNTER$/', $metadata, $matches)) {
+    $encounter = true;
+  }
   $tileTypes[$char] = [
     'name' => $name,
     'metadata' => $metadata,
@@ -39,7 +43,8 @@ foreach ($legendLines as $legendLine) {
     'exitToMap' => $exitToMap,
     'showPuzzle' => $showPuzzle,
     'item' => $item,
-    'speech' => $speech
+    'speech' => $speech,
+    'encounter' => $encounter
   ];
 }
 
@@ -83,6 +88,7 @@ foreach ($lines as $i => $line) {
   <link rel="stylesheet" type="text/css" href="styles/puzzles.css" />
   <link rel="stylesheet" type="text/css" href="styles/inventory.css" />
   <link rel="stylesheet" type="text/css" href="styles/widgets.css" />
+  <link rel="stylesheet" type="text/css" href="styles/encounter.css" />
 </head>
 
 <body>
@@ -139,6 +145,9 @@ foreach ($lines as $i => $line) {
                 array_push($tileClasses, 'item');
                 array_push($tileClasses, "item-" . strtolower($tileDef['item']));
               }
+              if ($tileDef['encounter'] !== null) {
+                array_push($tileClasses, 'encounter');
+              }
               if ($tileDef['speech'] !== null) array_push($tileClasses, 'speech');
           ?>
               <div
@@ -180,6 +189,21 @@ foreach ($lines as $i => $line) {
 
                 <?php if ($tileDef['speech'] !== null): ?>
                   <div class="speech-bubble"><?php echo $tileDef['speech']; ?></div>
+                <?php endif; ?>
+
+                <?php if ($tileDef['encounter'] !== null): ?>
+                  <button class="tile-btn" command="show-modal" commandfor="encounter">Ready!</button>
+                  <div class="encounter-transition">A wild T-REX appeared!</div>
+
+                  <dialog class="encounter-container" id="encounter">
+                    Here's the encounter.
+                    <label for="encounter-give">Give her your sandwich</label><input type="checkbox" id="encounter-give" />
+                    <div class="encounter-give-result">
+                      <p>Looks like she's enjoying it! Oh, and look, she's giving you something in return&hellip;</p>
+                      <p><em>Yogaraptor received <b>POWER SPHERE</b></em></p>
+                      <button class="encounter-give-close" command="close" commandfor="encounter">Scuttle away before she changes her mind!</button>
+                    </div>
+                  </dialog>
                 <?php endif; ?>
               </div>
           <?php
