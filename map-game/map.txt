@@ -1,103 +1,100 @@
 BEGIN LEGEND
-G grass
-H long-grass
-T tree
-M mountain
-L lava
-F floor
-C stone
-W wall
-D darkness
-K grass ITEM KEY
-E long-grass ENCOUNTER
-1 door GOTO MAP 2
-2 door EXIT TO MAP 1
-3 door GOTO MAP 3
-4 door EXIT TO MAP 1
-P puzzle SHOW PUZZLE 1
-Z grass SPEECH Hi there!
-N npc1
+🌱 grass
+🌿 long-grass
+🌳 tree
+⛰️ mountain
+🔥 lava
+🟫 floor
+⬜️ stone
+🧱 wall
+⬛️ void
+🔑 grass ITEM KEY
+🦖 long-grass ENCOUNTER
+🚪 door GOTO MAP 2
+⏺️ door EXIT
+🔴 door GOTO MAP 3
+🧩 puzzle SHOW PUZZLE 1
+💬 grass SPEECH Hi there!
+🧙 npc🚪
 END LEGEND
 
 BEGIN MAP 1
-TTTTTTTTTTTTTTTTTTTTTTTTTTM
-TTTTTTTTTTTTTTTTTTTTTTTTTMM
-TTTTTTTTTTTTTTTTTTTTTTTTMMM
-TTTTTTTTTTTTTTTTTTTTTTTMMMM
-TTTTGGGGGGGGGGHHHHGGGGGMMMM
-TTTTGGKGPGGGGHHHHHHGGGGMMMM
-TTTTGGGGGGZNGGHHHHGGGGGMMMM
-TTTTGGEGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGG1GGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGG3MMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTGGGGGGGGGGGGGGGGGGGMMMM
-TTTTTTTTTTTTTTTTTTTTTTTMMMM
-TTTTTTTTTTTTTTTTTTTTTTTMMMM
-TTTTTTTTTTTTTTTTTTTTTTMMMMM
-TTTTTTTTTTTTTTTTTTTTTMMMMMM
+🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳⛰️
+🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳⛰️⛰️
+🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳⛰️⛰️⛰️
+🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌿🌿🌿🌿🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🔑🌱🧩🌱🌱🌱🌱🌿🌿🌿🌿🌿🌿🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱💬🧙🌱🌱🌿🌿🌿🌿🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🦖🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🚪🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🔴⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳⛰️⛰️⛰️⛰️⛰️
+🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳⛰️⛰️⛰️⛰️⛰️⛰️
 END MAP 1
 
-MAP 1 PLAYER START 365
-
 BEGIN MAP 2
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFPFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFF2FFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
-FFFFFFFFFFFFFFFFFFFFFFFFFFF
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🧩🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫⏺️🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
 END MAP 2
 
 BEGIN MAP 3
-DDDDDDDDDDDDDDDDDDDDDDDDDDD
-DDDDDDDDDDDDDDDDDDDDDDDDDDD
-DDDDDDDDDDDDDDDDDDDDDDDDDDD
-DDDWWWWWWWWWWWWWWWWWWWWWDDD
-DDDW4CCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCKCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCKCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWCCCCCCCCCCCCCCCCCCCWDDD
-DDDWWWWWWWWWWWWWWWWWWWWWDDD
-DDDDDDDDDDDDDDDDDDDDDDDDDDD
-DDDDDDDDDDDDDDDDDDDDDDDDDDD
-DDDDDDDDDDDDDDDDDDDDDDDDDDD
+⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+⬛️⬛️⬛️🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⏺️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️🔑⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🔑⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🧱⬛️⬛️⬛️
+⬛️⬛️⬛️🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱🧱⬛️⬛️⬛️
+⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
 END MAP 3

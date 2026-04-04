@@ -13,7 +13,7 @@ foreach ($legendLines as $legendLine) {
   $name = $parts[1] ?? $char;
   $metadata = isset($parts[2]) ? $parts[2] : null;
   $gotoMap = null;
-  $exitToMap = null;
+  $exit = null;
   $showPuzzle = null;
   $item = null;
   $speech = null;
@@ -21,8 +21,8 @@ foreach ($legendLines as $legendLine) {
   if ($metadata && preg_match('/^GOTO MAP (\d+)$/', $metadata, $matches)) {
     $gotoMap = intval($matches[1]);
   }
-  if ($metadata && preg_match('/^EXIT TO MAP (\d+)$/', $metadata, $matches)) {
-    $exitToMap = intval($matches[1]);
+  if ($metadata && preg_match('/^EXIT$/', $metadata, $matches)) {
+    $exit = true;
   }
   if ($metadata && preg_match('/^SHOW PUZZLE (\d+)$/', $metadata, $matches)) {
     $showPuzzle = intval($matches[1]);
@@ -40,7 +40,7 @@ foreach ($legendLines as $legendLine) {
     'name' => $name,
     'metadata' => $metadata,
     'gotoMap' => $gotoMap,
-    'exitToMap' => $exitToMap,
+    'exit' => $exit,
     'showPuzzle' => $showPuzzle,
     'item' => $item,
     'speech' => $speech,
@@ -58,13 +58,19 @@ foreach ($lines as $i => $line) {
     $currentMapStartLine = $i + 1;
   } elseif (preg_match('/^END MAP (\d+)$/', $line, $m)) {
     $num = intval($m[1]);
-    $mapRows = array_values(array_filter(
+    $rawRows = array_values(array_filter(
       array_slice($lines, $currentMapStartLine, $i - $currentMapStartLine),
       fn($r) => trim($r) !== ''
     ));
+    // Split each row into individual tiles using grapheme cluster matching
+    // (handles emoji with variation selectors, ZWJ sequences, etc.)
+    $mapRows = array_map(function ($r) {
+      preg_match_all('/\X/u', trim($r), $matches);
+      return $matches[0];
+    }, $rawRows);
     $maps[$num] = [
       'rows' => $mapRows,
-      'numCols' => strlen($mapRows[0]),
+      'numCols' => count($mapRows[0]),
       'numRows' => count($mapRows),
       'playerStart' => null,
     ];
@@ -122,7 +128,7 @@ foreach ($lines as $i => $line) {
           $index = 1;
           $doorIdsUsed = [];
           foreach ($map['rows'] as $row):
-            foreach (str_split($row) as $tileChar):
+            foreach ($row as $tileChar):
               $tileDef = $tileTypes[$tileChar];
               $tileId = null;
 
@@ -162,7 +168,7 @@ foreach ($lines as $i => $line) {
                   </button>
                 <?php endif; ?>
 
-                <?php if ($tileDef['exitToMap'] !== null): ?>
+                <?php if ($tileDef['exit'] !== null): ?>
                   <button class="tile-btn" command="close" commandfor="map-<?php echo $mapNum; ?>">>
                     Exit ️🚪
                   </button>

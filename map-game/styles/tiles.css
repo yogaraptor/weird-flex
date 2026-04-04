@@ -60,7 +60,7 @@
 .tile.wall {
   background-color: #444;
 }
-.tile.darkness {
+.tile.void {
   background-color: #000;
 }
 .tile.tree {
