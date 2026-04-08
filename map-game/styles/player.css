@@ -46,18 +46,28 @@
     --map-timeline-y y;
 
   /* Animate scroll position into custom properties */
-  animation: set-scroll-x linear both, set-scroll-y linear both;
+  animation:
+    set-scroll-x linear both,
+    set-scroll-y linear both;
   animation-timeline: --map-timeline-x, --map-timeline-y;
 }
 
 @keyframes set-scroll-x {
-  from { --scroll-x: 0; }
-  to   { --scroll-x: 1; }
+  from {
+    --scroll-x: 0;
+  }
+  to {
+    --scroll-x: 1;
+  }
 }
 
 @keyframes set-scroll-y {
-  from { --scroll-y: 0; }
-  to   { --scroll-y: 1; }
+  from {
+    --scroll-y: 0;
+  }
+  to {
+    --scroll-y: 1;
+  }
 }
 
 .player {
@@ -77,39 +87,117 @@
   color: white;
 
   /* Lag the scroll position to compute direction delta */
-  transition: --scroll-x-delayed 0.15s linear, --scroll-y-delayed 0.15s linear;
+  transition:
+    --scroll-x-delayed 0.15s linear,
+    --scroll-y-delayed 0.15s linear;
   --scroll-x-delayed: var(--scroll-x);
   --scroll-y-delayed: var(--scroll-y);
 
   /* Compute 0/1 boolean per direction via clamp+sign */
-  --going-right: clamp(0, sign(calc(var(--scroll-x) - var(--scroll-x-delayed))), 1);
-  --going-left:  clamp(0, sign(calc(var(--scroll-x-delayed) - var(--scroll-x))), 1);
-  --going-down:  clamp(0, sign(calc(var(--scroll-y) - var(--scroll-y-delayed))), 1);
-  --going-up:    clamp(0, sign(calc(var(--scroll-y-delayed) - var(--scroll-y))), 1);
+  --going-right: clamp(
+    0,
+    sign(calc(var(--scroll-x) - var(--scroll-x-delayed))),
+    1
+  );
+  --going-left: clamp(
+    0,
+    sign(calc(var(--scroll-x-delayed) - var(--scroll-x))),
+    1
+  );
+  --going-down: clamp(
+    0,
+    sign(calc(var(--scroll-y) - var(--scroll-y-delayed))),
+    1
+  );
+  --going-up: clamp(
+    0,
+    sign(calc(var(--scroll-y-delayed) - var(--scroll-y))),
+    1
+  );
 
   /* Style container so children can query direction */
   container-type: style;
 }
 
-/* Debug: colour the player based on direction */
+/* Player sprite */
 .player::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-color: grey; /* idle / default */
+  background-image: url("../assets/player-idle.png");
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  /* animation: walkIdle 0.6s steps(4) infinite; */
 }
 
 @container style(--going-right: 1) {
-  .player::before { background-color: blue; }   /* moving right */
+  .player::before {
+    animation: walkRight 0.6s steps(4) infinite;
+  }
 }
 @container style(--going-left: 1) {
-  .player::before { background-color: red; }    /* moving left */
+  .player::before {
+    animation: walkLeft 0.6s steps(4) infinite;
+  }
 }
 @container style(--going-down: 1) {
-  .player::before { background-color: green; }  /* moving down */
+  .player::before {
+    animation: walkDown 0.6s steps(4) infinite;
+  }
 }
 @container style(--going-up: 1) {
-  .player::before { background-color: yellow; } /* moving up */
+  .player::before {
+    animation: walkUp 0.6s steps(4) infinite;
+  }
+}
+
+@keyframes walkIdle {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: calc(-4 * var(--tile-width));
+  }
+}
+@keyframes walkRight {
+  from {
+    background-position-x: 0;
+    background-image: url("../assets/player-walk-x.png");
+  }
+  to {
+    background-position-x: calc(-4 * var(--tile-width));
+    background-image: url("../assets/player-walk-x.png");
+  }
+}
+@keyframes walkLeft {
+  from {
+    background-position-x: 0;
+    background-image: url("../assets/player-walk-x.png");
+  }
+  to {
+    background-position-x: calc(-4 * var(--tile-width));
+    background-image: url("../assets/player-walk-x.png");
+  }
+}
+@keyframes walkDown {
+  from {
+    background-position-x: 0;
+    background-image: url("../assets/player-walk-x.png");
+  }
+  to {
+    background-position-x: calc(-4 * var(--tile-width));
+    background-image: url("../assets/player-walk-x.png");
+  }
+}
+@keyframes walkUp {
+  from {
+    background-position-x: 0;
+    background-image: url("../assets/player-walk-x.png");
+  }
+  to {
+    background-position-x: calc(-4 * var(--tile-width));
+    background-image: url("../assets/player-walk-x.png");
+  }
 }
 
 @keyframes playerHurt {
