@@ -1,3 +1,55 @@
+/* Scroll direction detection — Bramus technique */
+@property --scroll-x {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --scroll-x-delayed {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --scroll-y {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --scroll-y-delayed {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --dir-x {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --dir-y {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.map .viewport {
+  scroll-timeline:
+    --map-timeline-x x,
+    --map-timeline-y y;
+
+  /* Animate scroll position into custom properties */
+  animation: set-scroll-x linear both, set-scroll-y linear both;
+  animation-timeline: --map-timeline-x, --map-timeline-y;
+}
+
+@keyframes set-scroll-x {
+  from { --scroll-x: 0; }
+  to   { --scroll-x: 1; }
+}
+
+@keyframes set-scroll-y {
+  from { --scroll-y: 0; }
+  to   { --scroll-y: 1; }
+}
+
 .player {
   position: absolute;
   top: 50%;
@@ -14,34 +66,38 @@
   align-items: center;
   color: white;
 
-  /* Walk animation */
-  animation: walkAnimationX 1ms steps(4);
-  animation-timeline: --map-timeline-x;
-  animation-iteration-count: 15;
+  /* Lag the scroll position to compute direction delta */
+  transition: --scroll-x-delayed 0.15s linear, --scroll-y-delayed 0.15s linear;
+  --scroll-x-delayed: var(--scroll-x);
+  --scroll-y-delayed: var(--scroll-y);
+
+  /* Compute direction: -1, 0, or 1 per axis */
+  --dir-x: sign(calc(var(--scroll-x) - var(--scroll-x-delayed)));
+  --dir-y: sign(calc(var(--scroll-y) - var(--scroll-y-delayed)));
+
+  /* Style container so children can query direction */
+  container-type: style;
 }
 
-@keyframes walkAnimationX {
-  0% {
-    background-position-x: 0;
-  }
-  100% {
-    background-position-x: calc(-4 * var(--tile-width));
-  }
+/* Debug: colour the player based on direction */
+.player::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: grey; /* idle / default */
 }
 
-@keyframes walkAnimationY {
-  0% {
-    background-position-x: 0;
-  }
-  100% {
-    background-position-x: calc(-4 * var(--tile-width));
-  }
+@container style(--dir-x: 1) {
+  .player::before { background-color: blue; }   /* moving right */
 }
-
-.map .viewport {
-  scroll-timeline:
-    --map-timeline-x x,
-    --map-timeline-y y;
+@container style(--dir-x: -1) {
+  .player::before { background-color: red; }    /* moving left */
+}
+@container style(--dir-y: 1) {
+  .player::before { background-color: green; }  /* moving down */
+}
+@container style(--dir-y: -1) {
+  .player::before { background-color: yellow; } /* moving up */
 }
 
 @keyframes playerHurt {
