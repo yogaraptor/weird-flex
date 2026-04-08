@@ -3,10 +3,10 @@
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
-  background: blue;
+  background-image: url("../assets/player-walk-x.png");
+  background-size: auto 100%;
   width: calc(var(--tile-width) / 2);
   height: calc(var(--tile-height) / 2);
-  border-radius: 50%;
   pointer-events: none;
   z-index: 5;
   display: flex;
@@ -15,26 +15,33 @@
   color: white;
 
   /* Walk animation */
-  animation: walkAnimation 1ms linear;
-  animation-timeline: --map-timeline;
+  animation: walkAnimationX 1ms steps(4);
+  animation-timeline: --map-timeline-x;
+  animation-iteration-count: 15;
 }
 
-@keyframes walkAnimation {
+@keyframes walkAnimationX {
   0% {
-    background-color: blue;
+    background-position-x: 0;
   }
-
-  50% {
-    background-color: red;
-  }
-
   100% {
-    background-color: green;
+    background-position-x: calc(-4 * var(--tile-width));
   }
 }
 
-.map {
-  scroll-timeline: --map-timeline y;
+@keyframes walkAnimationY {
+  0% {
+    background-position-x: 0;
+  }
+  100% {
+    background-position-x: calc(-4 * var(--tile-width));
+  }
+}
+
+.map .viewport {
+  scroll-timeline:
+    --map-timeline-x x,
+    --map-timeline-y y;
 }
 
 @keyframes playerHurt {
