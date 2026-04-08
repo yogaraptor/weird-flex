@@ -13,6 +13,28 @@
   justify-content: center;
   align-items: center;
   color: white;
+
+  /* Walk animation */
+  animation: walkAnimation 1ms linear;
+  animation-timeline: --map-timeline;
+}
+
+@keyframes walkAnimation {
+  0% {
+    background-color: blue;
+  }
+
+  50% {
+    background-color: red;
+  }
+
+  100% {
+    background-color: green;
+  }
+}
+
+.map {
+  scroll-timeline: --map-timeline y;
 }
 
 @keyframes playerHurt {

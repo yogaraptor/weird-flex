@@ -155,13 +155,14 @@ foreach ($lines as $i => $line) {
                 array_push($tileClasses, 'encounter');
               }
               if ($tileDef['speech'] !== null) array_push($tileClasses, 'speech');
+              if ($tileDef['gotoMap'] !== null) array_push($tileClasses, 'door');
           ?>
               <div
                 class="<?php echo join(' ', $tileClasses); ?>"
 
                 <?php if ($tileId) echo "id=\"{$tileId}\""; ?>>
 
-                <?php if ($tileDef['item'] === null): ?><p><?php echo $index; ?></p><?php endif; ?>
+                <?php if ($tileDef['item'] === null): ?><p></p><?php endif; ?>
                 <?php if ($tileDef['gotoMap'] !== null): ?>
                   <button class="tile-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">>
                     Enter ➡️

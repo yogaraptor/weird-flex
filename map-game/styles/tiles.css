@@ -16,13 +16,50 @@
   font-size: 1rem;
   font-weight: bold;
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-size: cover;
   transition: all 0.3s ease;
 }
 
 /* Basic tile graphics */
+.tile.grass,
+.tile[class~="mound"] {
+  background-color: #27ae60;
+}
 .tile.grass {
-  background: #27ae60;
+  background-color: #27ae60;
+  background-image: url("../assets/grass.png");
+}
+
+.tile.mound-nw {
+  background-image: url("../assets/mound-nw.png");
+}
+.tile.mound-n {
+  background-image: url("../assets/mound-n.png");
+}
+.tile.mound-ne {
+  background-image: url("../assets/mound-ne.png");
+}
+.tile.mound-e {
+  background-image: url("../assets/mound-e.png");
+}
+.tile.mound-ramp-e {
+  background-image: url("../assets/mound-ramp-e.png");
+}
+.tile.mound-se {
+  background-image: url("../assets/mound-se.png");
+}
+.tile.mound-s {
+  background-image: url("../assets/mound-s.png");
+}
+.tile.mound-sw {
+  background-image: url("../assets/mound-sw.png");
+}
+.tile.mound-w {
+  background-image: url("../assets/mound-w.png");
+}
+
+.tile.lab {
+  background-image: url("../assets/lab.png");
 }
 
 .tile.lava {
@@ -63,14 +100,108 @@
 .tile.void {
   background-color: #000;
 }
-.tile.tree {
+.tile.tree1 {
   background-color: darkolivegreen;
+  background-image: url("../assets/tree1.png");
 }
 .tile.long-grass {
   background-color: darkgreen;
 }
-.tile.mountain {
+.tile[class~="cliff"] {
   background-color: darkslategrey;
+}
+.tile.cliff-w {
+  background-image: url("../assets/cliff-w.png");
+}
+.tile.cliff-corner-nw {
+  background-image: url("../assets/cliff-corner-nw.png");
+}
+.tile.cliff-corner-sw {
+  background-image: url("../assets/cliff-corner-sw.png");
+}
+.tile.cliff-corner-nw2 {
+  background-image: url("../assets/cliff-corner-nw2.png");
+}
+.tile.cliff-corner-sw2 {
+  background-image: url("../assets/cliff-corner-sw2.png");
+}
+.tile.cliff-cave-w {
+  background-image: url("../assets/cliff-cave-w.png");
+}
+.tile.cliff-cave-w2 {
+  background-image: url("../assets/cliff-cave-w2.png");
+}
+.tile.mountain1 {
+  background-image: url("../assets/mountain1.png");
+}
+
+.tile.sign1 {
+  background-image: url("../assets/sign1.png");
+}
+.tile.sign2 {
+  background-image: url("../assets/sign2.png");
+}
+.tile.house1 {
+  background-image: url("../assets/house1.png");
+}
+.tile.house2 {
+  background-image: url("../assets/house2.png");
+}
+.tile.house3 {
+  background-image: url("../assets/house3.png");
+}
+.tile.shop1 {
+  background-image: url("../assets/shop1.png");
+}
+
+/* Road tiles */
+.tile[class*="road-"] {
+  background-color: #555;
+}
+.tile.road-h-cap-w {
+  background-image: url("../assets/road-w.png");
+}
+.tile.road-h-middle {
+  background-image: url("../assets/road-h-middle.png");
+}
+.tile.road-h-cap-e {
+  background-image: url("../assets/road-h-cap-e.png");
+}
+.tile.road-v-cap-n {
+  background-image: url("../assets/road-v-cap-n.png");
+}
+.tile.road-v-middle {
+  background-image: url("../assets/road-v-middle.png");
+}
+.tile.road-v-cap-s {
+  background-image: url("../assets/road-v-cap-s.png");
+}
+.tile.road-bend-nw {
+  background-image: url("../assets/road-bend-nw.png");
+}
+.tile.road-bend-ne {
+  background-image: url("../assets/road-bend-ne.png");
+}
+.tile.road-bend-se {
+  background-image: url("../assets/road-bend-se.png");
+}
+.tile.road-bend-sw {
+  background-image: url("../assets/road-bend-sw.png");
+}
+.tile.road-tjunc-n {
+  background-image: url("../assets/road-tjunc-n.png");
+}
+.tile.road-tjunc-e {
+  background-image: url("../assets/road-tjunc-e.png");
+}
+.tile.road-tjunc-s {
+  background-image: url("../assets/road-tjunc-s.png");
+}
+.tile.road-tjunc-w {
+  background-image: url("../assets/road-tjunc-w.png");
+}
+.tile.road-cross {
+  background-image: url("../assets/road-cross.png");
 }
 
 /* Tiles with interactive buttons (e.g. doors, puzzles, signposts) */
@@ -127,11 +258,6 @@
 
   .speech-bubble {
     display: none;
-    /*
-      Shift speech bubble to be over NPC's head (speech tile is always to left of
-      NPC so the conversation starts when you get next to them, not on top of them!)
-    */
-    margin-left: var(--tile-width);
   }
 }
 
