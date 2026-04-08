@@ -19,12 +19,22 @@
   inherits: true;
   initial-value: 0;
 }
-@property --dir-x {
+@property --going-right {
   syntax: "<integer>";
   inherits: true;
   initial-value: 0;
 }
-@property --dir-y {
+@property --going-left {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --going-down {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --going-up {
   syntax: "<integer>";
   inherits: true;
   initial-value: 0;
@@ -71,9 +81,11 @@
   --scroll-x-delayed: var(--scroll-x);
   --scroll-y-delayed: var(--scroll-y);
 
-  /* Compute direction: -1, 0, or 1 per axis */
-  --dir-x: sign(calc(var(--scroll-x) - var(--scroll-x-delayed)));
-  --dir-y: sign(calc(var(--scroll-y) - var(--scroll-y-delayed)));
+  /* Compute 0/1 boolean per direction via clamp+sign */
+  --going-right: clamp(0, sign(calc(var(--scroll-x) - var(--scroll-x-delayed))), 1);
+  --going-left:  clamp(0, sign(calc(var(--scroll-x-delayed) - var(--scroll-x))), 1);
+  --going-down:  clamp(0, sign(calc(var(--scroll-y) - var(--scroll-y-delayed))), 1);
+  --going-up:    clamp(0, sign(calc(var(--scroll-y-delayed) - var(--scroll-y))), 1);
 
   /* Style container so children can query direction */
   container-type: style;
@@ -87,16 +99,16 @@
   background-color: grey; /* idle / default */
 }
 
-@container style(--dir-x: 1) {
+@container style(--going-right: 1) {
   .player::before { background-color: blue; }   /* moving right */
 }
-@container style(--dir-x: -1) {
+@container style(--going-left: 1) {
   .player::before { background-color: red; }    /* moving left */
 }
-@container style(--dir-y: 1) {
+@container style(--going-down: 1) {
   .player::before { background-color: green; }  /* moving down */
 }
-@container style(--dir-y: -1) {
+@container style(--going-up: 1) {
   .player::before { background-color: yellow; } /* moving up */
 }
 
