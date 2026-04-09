@@ -27,9 +27,11 @@
 .tile[class~="mound"] {
   background-color: #27ae60;
 }
-.tile.grass {
-  background-color: #27ae60;
-  background-image: url("../assets/grass.png");
+.tile.grass1 {
+  background-image: url("../assets/grass1.png");
+}
+.tile.grass2 {
+  background-image: url("../assets/grass2.png");
 }
 
 .tile.mound-nw {
@@ -105,6 +107,22 @@
 .tile.tree1 {
   background-color: darkolivegreen;
   background-image: url("../assets/tree1.png");
+}
+.tile.bush1 {
+  background-color: darkolivegreen;
+  background-image: url("../assets/bush1.png");
+}
+.tile.bush2 {
+  background-color: darkolivegreen;
+  background-image: url("../assets/bush2.png");
+}
+.tile.rock1 {
+  background-color: gray;
+  background-image: url("../assets/rock1.png");
+}
+.tile.rock2 {
+  background-color: gray;
+  background-image: url("../assets/rock2.png");
 }
 .tile.long-grass {
   background-color: darkgreen;

@@ -1,14 +1,18 @@
 BEGIN LEGEND
-🌱 grass
-🌿 long-grass
+🌱 grass1
+🌿 grass2
 🌳 tree1
+🪴 bush1
+🌵 bush2
+🪨 rock1
+⚪️ rock2
 🔥 lava
 🟫 floor
 ⬜️ stone
 🧱 wall
 ⬛️ void
 🔑 stone ITEM KEY
-🦖 long-grass ENCOUNTER
+🦖 grass2 ENCOUNTER
 🚪 lab GOTO MAP 2
 ⏺️ door EXIT
 🔴 door GOTO MAP 3
@@ -51,10 +55,10 @@ BEGIN LEGEND
 🕜 road-tjunc-s
 🕝 road-tjunc-w
 🕞 road-cross
-🧙 grass NPC triceratops
-💬 grass SPEECH <p>Did you hear they're building a rocket at the lab?</p><p>I hope they finish it soon. I hear a meteor is coming!</p>
-🗨️ grass SPEECH <p>I'm not going in that cave!</p><p>Someone from the lab told me it was haunted!</p>
-🔒️ grass SPEECH Locked...
+🧙 grass1 NPC triceratops
+💬 grass1 SPEECH <p>Did you hear they're building a rocket at the lab?</p><p>I hope they finish it soon. I hear a meteor is coming!</p>
+🗨️ grass1 SPEECH <p>I'm not going in that cave!</p><p>Someone from the lab told me it was haunted!</p>
+🔒️ grass1 SPEECH Locked...
 📅 road-bend-se SPEECH "CLOSED. Please come back tomorrow!"
 ↔️ road-h-middle SPEECH "NORTH: the village.<br><br> EAST: the secret caves. <br><br>SOUTH: DinoMart!<br><br> WEST: The Lab
 END LEGEND
@@ -64,25 +68,25 @@ BEGIN MAP 1
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗‍♀️🚵‍♂️
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗‍♀️🚵‍♂️⛰️
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗‍♀️🚵‍♂️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🌱🌱🧩🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🌱🌱🧩🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🧩🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🦖🌱🌱🌱🌱🌱🌱🌱🌱🌱🛖🏚️🏠️🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🕖🕑🕑🕑🕒🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌿🌿🌿🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌿🦖🌿🌱🪴🌱🌱🌱🌱🌱🪴🛖🏚️🏠️🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🪨⚪️🌱🌱🌱🌱🌱🌱🌱🕖🕑🕑🕑🕒🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🕖🕘🌱💬🧙🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱1️⃣2️⃣2️⃣3️⃣🌱🌱🌱🌱🧭🕔🌱🌱🌱🌱🌱🌱🌱🧗‍♀️🚵‍♂️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱1️⃣2️⃣2️⃣3️⃣🌱🌱🌱🌱🧭🕔🌱🌱🌱🪴🌱🌱🌱🧗‍♀️🚵‍♂️⛰️⛰️⛰️
 🌳🌳🌳🌳🌱8️⃣🚪🌱4️⃣🌱🕖🕑🕑↔️🕞🕑🕑🕑🕑🕑🕑🕒🕳️🚵⛰️⛰️⛰️
 🌳🌳🌳🌳🌱8️⃣🌱🌱9️⃣🕐🕘🌱🌱🌱🕔🌱🌱🌱🌱🗨️🧙🌱🧗‍♂️🚵‍♀️⛰️⛰️⛰️
-🌳🌳🌳🌳🌱8️⃣🌱🌱4️⃣🌱🌱🌱🌱🌱🕔🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱8️⃣🌱🪨4️⃣🌱🌱🌱🌱🌱🕔🌱🌱🌱🌱🪴🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱7️⃣6️⃣6️⃣5️⃣🌱🌱🌱🌱🌱🕔🏪🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🕙📅🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🕙📅🪴🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱⚪️🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🪴🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧩🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱⚪️🪨🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🪨🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🧩🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🌱🧩🌱🌱🌱🌱🧩🌱🌱🌱🌱🌱🌱🧩🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧙🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗‍♂️🚵‍♀️⛰️⛰️
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗‍♂️🚵‍♀️⛰️
