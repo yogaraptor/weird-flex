@@ -70,7 +70,9 @@
   content: "";
 }
 .item-icon {
-  transition: transform 0.3s linear;
+  transition:
+    transform 0.3s linear,
+    opacity 0s linear 0.3s;
 }
 .app:has(#item-KEY:checked) {
   .inventory li:nth-child(2) {
@@ -85,5 +87,6 @@
       calc(-3 * var(--tile-width)),
       calc(-6 * var(--tile-height))
     );
+    opacity: 0;
   }
 }
