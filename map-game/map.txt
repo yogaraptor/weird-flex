@@ -23,7 +23,7 @@ BEGIN LEGEND
 🏚️ house2
 🏠️ house3
 🏪 shop1
-🧙 npc1
+🧙 grass NPC triceratops
 1️⃣ mound-nw
 2️⃣ mound-n
 3️⃣ mound-ne

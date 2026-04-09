@@ -36,6 +36,10 @@ foreach ($legendLines as $legendLine) {
   if ($metadata && preg_match('/^ENCOUNTER$/', $metadata, $matches)) {
     $encounter = true;
   }
+  $npc = null;
+  if ($metadata && preg_match('/^NPC (\S+)$/', $metadata, $matches)) {
+    $npc = $matches[1];
+  }
   $tileTypes[$char] = [
     'name' => $name,
     'metadata' => $metadata,
@@ -44,7 +48,8 @@ foreach ($legendLines as $legendLine) {
     'showPuzzle' => $showPuzzle,
     'item' => $item,
     'speech' => $speech,
-    'encounter' => $encounter
+    'encounter' => $encounter,
+    'npc' => $npc
   ];
 }
 
@@ -153,6 +158,10 @@ foreach ($lines as $i => $line) {
               if ($tileDef['encounter'] !== null) {
                 array_push($tileClasses, 'encounter');
               }
+              if ($tileDef['npc'] !== null) {
+                array_push($tileClasses, 'npc');
+                array_push($tileClasses, 'npc-' . $tileDef['npc']);
+              }
               if ($tileDef['speech'] !== null) array_push($tileClasses, 'speech');
               if ($tileDef['gotoMap'] !== null) array_push($tileClasses, 'door');
           ?>
@@ -195,6 +204,10 @@ foreach ($lines as $i => $line) {
 
                 <?php if ($tileDef['speech'] !== null): ?>
                   <div class="speech-bubble"><?php echo $tileDef['speech']; ?></div>
+                <?php endif; ?>
+
+                <?php if ($tileDef['npc'] !== null): ?>
+                  <div class="npc-sprite"></div>
                 <?php endif; ?>
 
                 <?php if ($tileDef['encounter'] !== null): ?>

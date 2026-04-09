@@ -206,6 +206,33 @@
   background-image: url("../assets/road-cross.png");
 }
 
+/* NPCs */
+.tile.npc {
+  .npc-sprite {
+    width: 50%;
+    height: 50%;
+    background-size: cover;
+  }
+}
+
+.npc-triceratops {
+  justify-content: start; /* Triceratops is facing left, align to left of tile */
+
+  .npc-sprite {
+    background-image: url("../assets/triceratops.png");
+    animation: spritesheet 1s steps(8) infinite;
+  }
+}
+
+@keyframes spritesheet {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+
 /* Tiles with interactive buttons (e.g. doors, puzzles, signposts) */
 .tile .tile-btn {
   display: flex;
