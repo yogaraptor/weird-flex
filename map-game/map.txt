@@ -13,17 +13,12 @@ BEGIN LEGEND
 ⏺️ door EXIT
 🔴 door GOTO MAP 3
 🧩 puzzle SHOW PUZZLE 1
-💬 grass SPEECH Hi there!
-🔒️ grass SPEECH Locked...
-📅 road-bend-se SPEECH "CLOSED. Please come back tomorrow!"
-↔️ road-h-middle SPEECH "NORTH: the village.<br><br> EAST: the secret caves. <br><br>SOUTH: DinoMart!<br><br> WEST: The Lab
 🪧 sign1
 🧭 sign2
 🛖 house1
 🏚️ house2
 🏠️ house3
 🏪 shop1
-🧙 grass NPC triceratops
 1️⃣ mound-nw
 2️⃣ mound-n
 3️⃣ mound-ne
@@ -56,6 +51,12 @@ BEGIN LEGEND
 🕜 road-tjunc-s
 🕝 road-tjunc-w
 🕞 road-cross
+🧙 grass NPC triceratops
+💬 grass SPEECH <p>Did you hear they're building a rocket at the lab?</p><p>I hope they finish it soon. I hear a meteor is coming!</p>
+🗨️ grass SPEECH <p>I'm not going in that cave!</p><p>Someone from the lab told me it was haunted!</p>
+🔒️ grass SPEECH Locked...
+📅 road-bend-se SPEECH "CLOSED. Please come back tomorrow!"
+↔️ road-h-middle SPEECH "NORTH: the village.<br><br> EAST: the secret caves. <br><br>SOUTH: DinoMart!<br><br> WEST: The Lab
 END LEGEND
 
 BEGIN MAP 1
@@ -65,13 +66,13 @@ BEGIN MAP 1
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗‍♀️🚵‍♂️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🌱🌱🧩🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🌱🌱🧩🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🧩🌱🌱🌱🌱🌱💬🧙🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🧩🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🦖🌱🌱🌱🌱🌱🌱🌱🌱🌱🛖🏚️🏠️🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🕖🕑🕑🕑🕒🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🕖🕘🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🕖🕘🌱💬🧙🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱1️⃣2️⃣2️⃣3️⃣🌱🌱🌱🌱🧭🕔🌱🌱🌱🌱🌱🌱🌱🧗‍♀️🚵‍♂️⛰️⛰️⛰️
 🌳🌳🌳🌳🌱8️⃣🚪🌱4️⃣🌱🕖🕑🕑↔️🕞🕑🕑🕑🕑🕑🕑🕒🕳️🚵⛰️⛰️⛰️
-🌳🌳🌳🌳🌱8️⃣🌱🌱9️⃣🕐🕘🌱🌱🌱🕔🌱🌱🌱🌱🌱🌱🌱🧗‍♂️🚵‍♀️⛰️⛰️⛰️
+🌳🌳🌳🌳🌱8️⃣🌱🌱9️⃣🕐🕘🌱🌱🌱🕔🌱🌱🌱🌱🗨️🧙🌱🧗‍♂️🚵‍♀️⛰️⛰️⛰️
 🌳🌳🌳🌳🌱8️⃣🌱🌱4️⃣🌱🌱🌱🌱🌱🕔🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱7️⃣6️⃣6️⃣5️⃣🌱🌱🌱🌱🌱🕔🏪🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🕙📅🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
