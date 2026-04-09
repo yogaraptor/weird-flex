@@ -122,8 +122,7 @@ foreach ($lines as $i => $line) {
         <div
           class="viewport"
           tabindex="0"
-          style="--map-width: <?php echo $map['numCols']; ?>; --map-height: <?php echo $map['numRows']; ?>"
-          autofocus>
+          style="--map-width: <?php echo $map['numCols']; ?>; --map-height: <?php echo $map['numRows']; ?>">
           <?php
           $index = 1;
           $doorIdsUsed = [];
@@ -159,8 +158,8 @@ foreach ($lines as $i => $line) {
           ?>
               <div
                 class="<?php echo join(' ', $tileClasses); ?>"
-
-                <?php if ($tileId) echo "id=\"{$tileId}\""; ?>>
+                <?php if ($tileId) echo "id=\"{$tileId}\""; ?>
+                <?php if ($map['playerStart'] !== null && $index === $map['playerStart']): ?>tabindex="0" autofocus<?php endif; ?>>
 
                 <?php if ($tileDef['item'] === null): ?><p></p><?php endif; ?>
                 <?php if ($tileDef['gotoMap'] !== null): ?>

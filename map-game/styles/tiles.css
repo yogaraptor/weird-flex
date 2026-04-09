@@ -1,7 +1,9 @@
 /* Ensure any targeted tile is centered in the viewport */
-.tile:target {
+.tile:target,
+.tile[autofocus] {
   scroll-margin: calc((var(--viewport-height) / 2) - (var(--tile-height) / 2))
     calc((var(--viewport-width) / 2) - (var(--tile-width) / 2));
+  outline: none;
 }
 
 /* Common tile styles */
