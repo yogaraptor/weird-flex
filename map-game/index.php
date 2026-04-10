@@ -106,7 +106,7 @@ foreach ($lines as $i => $line) {
   <div class="app">
     <div class="splash-screen">
       <h1>CSS RPG</h1>
-      <button command="show-modal" commandfor="map-1">Start game</button>
+      <button command="show-modal" commandfor="map-10">Start game</button>
     </div>
 
     <div class="inventory">
