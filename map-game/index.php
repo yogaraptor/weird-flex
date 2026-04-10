@@ -199,7 +199,7 @@ foreach ($lines as $i => $line) {
                 <?php if ($tileDef['item'] !== null): ?>
                   <label class="speech-bubble" for="item-<?php echo $tileDef['item']; ?>">Pick up <?php echo $tileDef['item']; ?></label>
                   <input class="item-checkbox" type="checkbox" id="item-<?php echo $tileDef['item']; ?>" />
-                  <div class="item-icon"><?php echo $tileDef['item']; ?></div>
+                  <div class="item-icon"></div>
                 <?php endif; ?>
 
                 <?php if ($tileDef['speech'] !== null): ?>

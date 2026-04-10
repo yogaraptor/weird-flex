@@ -64,21 +64,42 @@
   animating back to its slot, but this doesn't work because the maps are <dialog>s and therefore
   in the #top-layer (see https://developer.chrome.com/blog/what-is-the-top-layer)
 */
-.inventory li:nth-child(2)::before {
+.inventory li::before {
   opacity: 0;
   transition: opacity 0s linear 0.3s;
   content: "";
+  background-size: cover;
 }
 .item-icon {
+  position: absolute;
+  inset: 0;
   transition:
     transform 0.3s linear,
     opacity 0s linear 0.3s;
+  background-size: cover;
 }
+.app:has(#item-CROISSANT:checked) {
+  .inventory li:nth-child(1) {
+    &::before {
+      opacity: 1;
+      content: "";
+    }
+  }
+
+  #item-CROISSANT + .item-icon {
+    transform: translate(
+      calc(-4 * var(--tile-width)),
+      calc(-6 * var(--tile-height))
+    );
+    opacity: 0;
+  }
+}
+
 .app:has(#item-KEY:checked) {
   .inventory li:nth-child(2) {
     &::before {
       opacity: 1;
-      content: "KEY";
+      content: "";
     }
   }
 
@@ -89,4 +110,14 @@
     );
     opacity: 0;
   }
+}
+
+/* Item icons */
+.inventory li:nth-child(1)::before,
+.item-croissant .item-icon {
+  background-image: url("../assets/croissant.png");
+}
+.inventory li:nth-child(2)::before,
+.item-key .item-icon {
+  background-image: url("../assets/keycard.png");
 }
