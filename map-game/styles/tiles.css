@@ -382,21 +382,9 @@
 /* Tiles with interactive buttons (e.g. doors, puzzles, signposts) */
 .tile .tile-btn {
   display: flex;
-  opacity: 0;
   pointer-events: none;
-  position: absolute;
   z-index: 20;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
   text-decoration: none;
-  color: white;
-  background: rgba(0, 0, 0, 0.85);
-  padding: 2px 6px;
-  border: 1px solid white;
-  border-radius: 3px;
-  font-size: 0.65rem;
-  white-space: nowrap;
   cursor: pointer;
 }
 
@@ -427,11 +415,13 @@
   }
 }
 
+.tile.door,
 .tile.item,
 .tile.speech {
   position: relative;
 
-  .speech-bubble {
+  .frame,
+  .tile-btn {
     translate: 0 5rem;
     opacity: 0;
     transition:
@@ -516,9 +506,11 @@
     }
   }
 
+  .tile.door,
   .tile.item,
   .tile.speech {
-    .speech-bubble {
+    .frame,
+    .tile-btn {
       translate: none;
       opacity: 1;
     }

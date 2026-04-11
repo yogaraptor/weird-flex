@@ -173,27 +173,29 @@ foreach ($lines as $i => $line) {
 
                   <?php if ($tileDef['item'] === null): ?><p></p><?php endif; ?>
                   <?php if ($tileDef['gotoMap'] !== null): ?>
-                    <button class="tile-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">>
-                      Enter ➡️
+                    <button class="tile-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">
+                      <span class="frame-inner">Enter ➡️</span>
                     </button>
                   <?php endif; ?>
 
                   <?php if ($tileDef['exit'] !== null): ?>
                     <button class="tile-btn" command="close" commandfor="map-<?php echo $mapNum; ?>">>
-                      Exit ️🚪
+                      <span class="frame-inner">Exit ️🚪</span>
                     </button>
                   <?php endif; ?>
 
                   <?php if ($tileDef['showPuzzle'] !== null): ?>
                     <button class="tile-btn" command="show-modal" commandfor="puzzle-<?php echo $tileDef['showPuzzle']; ?>">>
-                      Open puzzle 🧩
+                      <span class="frame-inner">Open puzzle 🧩</span>
                     </button>
                     <dialog id="puzzle-<?php echo $tileDef['showPuzzle']; ?>">
                       This is where the puzzle goes!
                       <input name="orb1" type="range" min="1" max="5" />
                       <input name="orb2" type="range" min="1" max="5" />
                       <input name="orb3" type="range" min="1" max="5" />
-                      <button command="close" commandfor="puzzle-<?php echo $tileDef['showPuzzle']; ?>">Close</button>
+                      <button command="close" commandfor="puzzle-<?php echo $tileDef['showPuzzle']; ?>">
+                        <span class="frame-inner">Close</span>
+                      </button>
                     </dialog>
                   <?php endif; ?>
 
