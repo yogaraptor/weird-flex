@@ -17,7 +17,8 @@ body {
   align-items: center;
   min-height: 100vh;
   background: black;
-  font-family: Arial, sans-serif;
+  font-family: "Pixelify Sans", sans-serif;
+  font-optical-sizing: auto;
 }
 
 .splash-screen {
