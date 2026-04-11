@@ -35,7 +35,6 @@ body {
   transform: translate(-50%, -50%);
   overflow: hidden; /* Prevent any offscreen UI adding scrollbars */
   background-color: black;
-  border: 1px solid #888;
 }
 
 .viewport {
@@ -47,7 +46,6 @@ body {
   height: var(--viewport-height);
   overflow: auto;
   scroll-snap-type: both mandatory;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   container-name: viewport;
 
   /* Hide scrollbars */
