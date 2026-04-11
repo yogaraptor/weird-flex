@@ -33,6 +33,7 @@
       url("../assets/ui/frame-s.png") bottom repeat-x,
       url("../assets/ui/frame-n.png") top repeat-x;
     content: "";
+    pointer-events: none;
   }
   &::after {
     position: absolute;
@@ -44,6 +45,7 @@
       url("../assets/ui/frame-e.png") right repeat-y,
       url("../assets/ui/frame-w.png") left repeat-y;
     content: "";
+    pointer-events: none;
   }
 
   .frame-inner {

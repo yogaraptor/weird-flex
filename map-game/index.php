@@ -18,11 +18,14 @@ foreach ($legendLines as $legendLine) {
   $item = null;
   $speech = null;
   $encounter = null;
-  if ($metadata && preg_match('/^GOTO MAP (\d+)$/', $metadata, $matches)) {
+  $doorText = null;
+  if ($metadata && preg_match('/^GOTO MAP (\d+)(?:\s+DOOR TEXT (.+))?$/', $metadata, $matches)) {
     $gotoMap = intval($matches[1]);
+    $doorText = isset($matches[2]) && $matches[2] !== '' ? $matches[2] : null;
   }
-  if ($metadata && preg_match('/^EXIT$/', $metadata, $matches)) {
+  if ($metadata && preg_match('/^EXIT(?:\s+DOOR TEXT (.+))?$/', $metadata, $matches)) {
     $exit = true;
+    $doorText = isset($matches[1]) && $matches[1] !== '' ? $matches[1] : null;
   }
   if ($metadata && preg_match('/^SHOW PUZZLE (\d+)$/', $metadata, $matches)) {
     $showPuzzle = intval($matches[1]);
@@ -49,7 +52,8 @@ foreach ($legendLines as $legendLine) {
     'item' => $item,
     'speech' => $speech,
     'encounter' => $encounter,
-    'npc' => $npc
+    'npc' => $npc,
+    'doorText' => $doorText
   ];
 }
 
@@ -164,7 +168,7 @@ foreach ($lines as $i => $line) {
                   array_push($tileClasses, 'npc-' . $tileDef['npc']);
                 }
                 if ($tileDef['speech'] !== null) array_push($tileClasses, 'speech');
-                if ($tileDef['gotoMap'] !== null) array_push($tileClasses, 'door');
+                if ($tileDef['gotoMap'] !== null || $tileDef['exit']) array_push($tileClasses, 'door');
             ?>
                 <div
                   class="<?php echo join(' ', $tileClasses); ?>"
@@ -174,13 +178,13 @@ foreach ($lines as $i => $line) {
                   <?php if ($tileDef['item'] === null): ?><p></p><?php endif; ?>
                   <?php if ($tileDef['gotoMap'] !== null): ?>
                     <button class="tile-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">
-                      <span class="frame-inner">Enter ➡️</span>
+                      <span class="frame-inner"><?php echo htmlspecialchars($tileDef['doorText'] ?? 'Enter'); ?></span>
                     </button>
                   <?php endif; ?>
 
                   <?php if ($tileDef['exit'] !== null): ?>
-                    <button class="tile-btn" command="close" commandfor="map-<?php echo $mapNum; ?>">>
-                      <span class="frame-inner">Exit ️🚪</span>
+                    <button class="tile-btn" command="close" commandfor="map-<?php echo $mapNum; ?>">
+                      <span class="frame-inner"><?php echo htmlspecialchars($tileDef['doorText'] ?? 'Exit'); ?></span>
                     </button>
                   <?php endif; ?>
 

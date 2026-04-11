@@ -415,9 +415,8 @@
   }
 }
 
-.tile.door,
-.tile.item,
-.tile.speech {
+.tile:has(.frame),
+.tile:has(.tile-btn) {
   position: relative;
 
   .frame,
@@ -427,6 +426,7 @@
     transition:
       translate 0.5s steps(6),
       opacity 0.5s steps(6);
+    pointer-events: none;
   }
 }
 
@@ -494,25 +494,13 @@
     border: 2px solid green;
   }
 
-  .tile .tile-btn {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .tile.item {
-    label {
-      opacity: 1;
-      pointer-events: auto;
-    }
-  }
-
-  .tile.door,
-  .tile.item,
-  .tile.speech {
+  .tile:has(.frame),
+  .tile:has(.tile-btn) {
     .frame,
     .tile-btn {
       translate: none;
       opacity: 1;
+      pointer-events: auto;
     }
   }
 

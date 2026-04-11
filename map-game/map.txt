@@ -51,13 +51,13 @@ BEGIN LEGEND
 ⬛️ void
 🔑 stone ITEM KEY
 🦖 grass2 ENCOUNTER
-🚪 doormat GOTO MAP 20
-🧪 lab GOTO MAP 30
-⏺️ door EXIT
+🚪 doormat GOTO MAP 20 DOOR TEXT Step into the big wide world
+🧪 lab GOTO MAP 30 DOOR TEXT Shouldn't this be locked or something?
+⏺️ door EXIT DOOR TEXT Head back outside...
 🧩 puzzle SHOW PUZZLE 1
 🪧 sign1
 🧭 sign2
-🛖 house1 EXIT
+🛖 house1 EXIT DOOR TEXT Home sweet home
 🏚️ house2
 🏠️ house3
 🏪 shop1
@@ -76,7 +76,7 @@ BEGIN LEGEND
 🚵‍♂️ cliff-corner-nw2
 🧗‍♂️ cliff-corner-sw
 🚵‍♀️ cliff-corner-sw2
-🕳️ cliff-cave-w GOTO MAP 40
+🕳️ cliff-cave-w GOTO MAP 40 DOOR TEXT Enter the gloomy cave...
 🚵 cliff-cave-w2
 🕐 road-h-cap-w
 🕑 road-h-middle
