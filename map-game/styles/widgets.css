@@ -1,11 +1,11 @@
 /* Speech bubbles used for conversation or signpost reading */
 .speech-bubble,
 .tile-btn {
-  position: fixed;
-  left: 1rem;
-  right: 1rem;
-  bottom: 1rem;
-  z-index: 99999;
+  position: absolute;
+  bottom: var(--tile-height);
+}
+.speech-bubble,
+.tile-btn {
   .frame-inner {
     color: white;
     padding: 0.5rem 1rem;
