@@ -16,7 +16,7 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: #2c3e50;
+  background: black;
   font-family: Arial, sans-serif;
 }
 
@@ -33,7 +33,9 @@ body {
   top: 50%;
   z-index: 1;
   transform: translate(-50%, -50%);
+  overflow: hidden; /* Prevent any offscreen UI adding scrollbars */
   background-color: black;
+  border: 1px solid #888;
 }
 
 .viewport {

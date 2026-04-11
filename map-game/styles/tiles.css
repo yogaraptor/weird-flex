@@ -427,12 +427,16 @@
   }
 }
 
-/* Speech bubbles for tiles adjacent to NPCs, to simulate conversation */
+.tile.item,
 .tile.speech {
   position: relative;
 
   .speech-bubble {
-    display: none;
+    translate: 0 5rem;
+    opacity: 0;
+    transition:
+      translate 0.5s steps(6),
+      opacity 0.5s steps(6);
   }
 }
 
@@ -512,9 +516,11 @@
     }
   }
 
+  .tile.item,
   .tile.speech {
     .speech-bubble {
-      display: block;
+      translate: none;
+      opacity: 1;
     }
   }
 

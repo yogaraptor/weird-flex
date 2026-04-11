@@ -9,27 +9,29 @@
   );
   width: var(--viewport-width);
   height: var(--tile-height) * 2;
-  background: brown;
+  padding: 2px;
 
   h2 {
-    font-size: 0.75rem;
+    position: absolute;
+    left: -9999px;
     text-align: center;
     margin-bottom: 0.5rem;
   }
 
   ul {
     margin: 0;
-    padding: 0;
+    padding: 0 2px;
     list-style: none;
     display: flex;
 
     > li {
       position: relative;
-      border: 1px solid black;
       width: var(--tile-width);
       height: var(--tile-height);
       margin: 0;
       padding: 0;
+      background-image: url("../assets/ui/slot.png");
+      background-size: cover;
 
       /* Actual item icon */
       &::before {

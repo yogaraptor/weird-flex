@@ -109,9 +109,9 @@ foreach ($lines as $i => $line) {
       <button command="show-modal" commandfor="map-10">Start game</button>
     </div>
 
-    <div class="inventory">
+    <div class="frame inventory">
       <h2>Inventory</h2>
-      <ul>
+      <ul class="frame-inner">
         <li></li>
         <li></li>
         <li></li>
@@ -197,13 +197,17 @@ foreach ($lines as $i => $line) {
                 <?php endif; ?>
 
                 <?php if ($tileDef['item'] !== null): ?>
-                  <label class="speech-bubble" for="item-<?php echo $tileDef['item']; ?>">Pick up <?php echo $tileDef['item']; ?></label>
+                  <label class="frame speech-bubble" for="item-<?php echo $tileDef['item']; ?>">
+                    <div class="frame-inner">Pick up <?php echo $tileDef['item']; ?></div>
+                  </label>
                   <input class="item-checkbox" type="checkbox" id="item-<?php echo $tileDef['item']; ?>" />
                   <div class="item-icon"></div>
                 <?php endif; ?>
 
                 <?php if ($tileDef['speech'] !== null): ?>
-                  <div class="speech-bubble"><?php echo $tileDef['speech']; ?></div>
+                  <div class="frame speech-bubble">
+                    <div class="frame-inner"><?php echo $tileDef['speech']; ?></div>
+                  </div>
                 <?php endif; ?>
 
                 <?php if ($tileDef['npc'] !== null): ?>

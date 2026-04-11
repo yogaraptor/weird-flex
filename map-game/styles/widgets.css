@@ -1,14 +1,49 @@
 /* Speech bubbles used for conversation or signpost reading */
 .speech-bubble {
   position: fixed;
-  bottom: 1rem;
   left: 1rem;
   right: 1rem;
+  bottom: 1rem;
   z-index: 99999;
-  background-color: white;
-  color: black;
-  border: 1px solid black;
-  padding: 0.5rem 1rem;
-  font-size: 0.75rem;
-  white-space: nowrap;
+  .frame-inner {
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+}
+
+/* UI frame */
+.frame {
+  background:
+    url("../assets/ui/frame-nw.png") top left no-repeat,
+    url("../assets/ui/frame-ne.png") top right no-repeat,
+    url("../assets/ui/frame-se.png") bottom right no-repeat,
+    url("../assets/ui/frame-sw.png") bottom left no-repeat;
+
+  &::before {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    top: 0;
+    bottom: 0;
+    background:
+      url("../assets/ui/frame-s.png") bottom repeat-x,
+      url("../assets/ui/frame-n.png") top repeat-x;
+    content: "";
+  }
+  &::after {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 2px;
+    bottom: 2px;
+    background:
+      url("../assets/ui/frame-e.png") right repeat-y,
+      url("../assets/ui/frame-w.png") left repeat-y;
+    content: "";
+  }
+
+  .frame-inner {
+    background-color: #8f563b;
+  }
 }
