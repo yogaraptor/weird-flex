@@ -126,3 +126,8 @@
     visibility: hidden;
   }
 }
+
+/* while devving */
+.cut-scene {
+  display: none;
+}

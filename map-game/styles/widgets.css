@@ -1,16 +1,32 @@
 /* Speech bubbles used for conversation or signpost reading */
 .speech-bubble,
 .tile-btn {
-  position: absolute;
-  bottom: var(--tile-height);
-}
-.speech-bubble,
-.tile-btn {
+  position: relative;
+
   .frame-inner {
+    display: block;
     color: white;
     padding: 0.5rem 1rem;
     font-size: 0.75rem;
     white-space: nowrap;
+  }
+}
+.tile-btn {
+  cursor: pointer;
+
+  .frame-inner {
+    transition: background-color 0.3s steps(3);
+  }
+  &:is(:hover, :focus) .frame-inner {
+    background-color: #9f664b;
+  }
+}
+
+.tile {
+  .speech-bubble,
+  .tile-btn {
+    position: absolute;
+    bottom: var(--tile-height);
   }
 }
 
@@ -47,12 +63,10 @@
     content: "";
     pointer-events: none;
   }
-
-  .frame-inner {
-    display: flex;
-    width: 100%;
-    background-color: #8f563b;
-  }
+}
+.frame-inner {
+  width: 100%;
+  background-color: #8f563b;
 }
 
 .tile-btn {

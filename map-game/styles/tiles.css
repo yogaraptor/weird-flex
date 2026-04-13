@@ -352,6 +352,70 @@
   background-image: url("../assets/road-cross.png");
 }
 
+/* Cave interior */
+.tile.cave-wall-n1 {
+  background-image: url("../assets/cave-wall-n1.png");
+}
+.tile.cave-wall-n2 {
+  background-image: url("../assets/cave-wall-n2.png");
+}
+.tile.cave-wall-ne1 {
+  background-image: url("../assets/cave-wall-ne1.png");
+}
+.tile.cave-wall-ne2 {
+  background-image: url("../assets/cave-wall-ne2.png");
+}
+.tile.cave-wall-e1 {
+  background-image: url("../assets/cave-wall-e1.png");
+}
+.tile.cave-wall-se1 {
+  background-image: url("../assets/cave-wall-se1.png");
+}
+.tile.cave-wall-se2 {
+  background-image: url("../assets/cave-wall-se2.png");
+}
+.tile.cave-wall-s1 {
+  background-image: url("../assets/cave-wall-s1.png");
+}
+.tile.cave-wall-s2 {
+  background-image: url("../assets/cave-wall-s2.png");
+}
+.tile.cave-wall-sw1 {
+  background-image: url("../assets/cave-wall-sw1.png");
+}
+.tile.cave-wall-sw2 {
+  background-image: url("../assets/cave-wall-sw2.png");
+}
+.tile.cave-wall-w1 {
+  background-image: url("../assets/cave-wall-w1.png");
+}
+.tile.cave-wall-nw1 {
+  background-image: url("../assets/cave-wall-nw1.png");
+}
+.tile.cave-wall-nw2 {
+  background-image: url("../assets/cave-wall-nw2.png");
+}
+.tile.cave-floor1 {
+  background-image: url("../assets/cave-floor1.png");
+}
+.tile.cave-floor2 {
+  background-image: url("../assets/cave-floor2.png");
+}
+.tile.cave-floor-entrance1 {
+  background-image: url("../assets/cave-floor-entrance1.png");
+}
+.tile.cave-floor-entrance2 {
+  background-image: url("../assets/cave-floor-entrance2.png");
+}
+.tile.cave-wall-entrance-n1 {
+  background-image: url("../assets/cave-wall-entrance-n1.png");
+}
+.tile.cave-wall-entrance-n2 {
+  background-image: url("../assets/cave-wall-entrance-n2.png");
+}
+.tile.cave-wall-entrance-s1 {
+  background-image: url("../assets/cave-wall-entrance-s1.png");
+}
 /* NPCs */
 .tile.npc {
   .npc-sprite {
