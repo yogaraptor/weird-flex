@@ -101,6 +101,7 @@ foreach ($lines as $i => $line) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  <link rel="stylesheet" type="text/css" href="styles/intro.css" />
   <link rel="stylesheet" type="text/css" href="styles/tiles.css" />
   <link rel="stylesheet" type="text/css" href="styles/player.css" />
   <link rel="stylesheet" type="text/css" href="styles/puzzles.css" />
@@ -128,9 +129,34 @@ foreach ($lines as $i => $line) {
       </ul>
     </div>
 
+    <?php $isFirstMap = true; ?>
     <?php foreach ($maps as $mapNum => $map): ?>
       <dialog class="map frame"
         id="map-<?php echo $mapNum; ?>">
+        <?php if ($isFirstMap):
+          $isFirstMap = false;
+        ?>
+          <div class="cut-scene">
+            <div class="speech-bubble frame cut-scene-part1">
+              <div class="frame-inner">beep. Beep. BEEP!</div>
+            </div>
+            <div class="speech-bubble frame cut-scene-part2">
+              <div class="frame-inner">What? No! It's too soon!</div>
+            </div>
+            <div class="speech-bubble frame cut-scene-part3">
+              <div class="frame-inner">The rocket's not ready!</div>
+            </div>
+            <div class="speech-bubble frame cut-scene-part4">
+              <div class="frame-inner">Where's the stabiliser rod?!</div>
+            </div>
+            <div class="speech-bubble frame cut-scene-part5">
+              <div class="frame-inner">Look! Out the window!</div>
+            </div>
+            <div class="speech-bubble frame cut-scene-part6">
+              <div class="frame-inner">Ugh... dreaming again.</div>
+            </div>
+          </div>
+        <?php endif; ?>
         <div class="frame-inner">
           <div
             class="viewport"

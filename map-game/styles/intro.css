@@ -1,0 +1,128 @@
+.cut-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  animation:
+    earthquake 0.5s,
+    whiteout 4s forwards,
+    cut-scene-out 4s forwards;
+  animation-delay: 8s, 9s, 15s;
+  animation-iteration-count: 4, 1, 1;
+}
+
+.cut-scene {
+  .speech-bubble {
+    position: absolute;
+    bottom: unset;
+    opacity: 0;
+    animation:
+      cut-scene-bubble-inout 0.5s steps(6) forwards,
+      cut-scene-bubble-inout 0.5s steps(6) reverse forwards;
+  }
+
+  .cut-scene-part1 {
+    top: 3rem;
+    left: 3rem;
+    animation-delay: 1s, 9s;
+  }
+  .cut-scene-part2 {
+    top: 12rem;
+    left: 6rem;
+    animation-delay: 4s, 9s;
+  }
+  .cut-scene-part3 {
+    top: 9rem;
+    left: 5rem;
+    animation-delay: 6s, 9s;
+  }
+  .cut-scene-part4 {
+    top: 10rem;
+    left: 8rem;
+    animation-delay: 7s, 9s;
+  }
+  .cut-scene-part5 {
+    top: 13rem;
+    left: 7rem;
+    animation-delay: 8s, 9s;
+  }
+  .cut-scene-part6 {
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    animation-delay: 12s, 15s;
+  }
+}
+
+@keyframes cut-scene-bubble-inout {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes earthquake {
+  0% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(4px);
+  }
+  20% {
+    transform: translateX(-8px);
+  }
+  30% {
+    transform: translateX(8px);
+  }
+  40% {
+    transform: translateX(-6px);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  70% {
+    transform: translateX(4px);
+  }
+  80% {
+    transform: translateX(0);
+  }
+  90% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes whiteout {
+  0% {
+    background-color: black;
+  }
+  100% {
+    background-color: white;
+  }
+}
+
+@keyframes cut-scene-out {
+  0% {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
