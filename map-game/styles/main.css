@@ -36,6 +36,10 @@ body {
   transform: translate(-50%, -50%);
   overflow: hidden; /* Prevent any offscreen UI adding scrollbars */
   background-color: black;
+
+  > .frame-inner {
+    background-color: black;
+  }
 }
 
 .viewport {

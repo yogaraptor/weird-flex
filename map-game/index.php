@@ -101,6 +101,7 @@ foreach ($lines as $i => $line) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="styles/main.css" />
+  <link rel="stylesheet" type="text/css" href="styles/splash.css" />
   <link rel="stylesheet" type="text/css" href="styles/intro.css" />
   <link rel="stylesheet" type="text/css" href="styles/tiles.css" />
   <link rel="stylesheet" type="text/css" href="styles/player.css" />
@@ -113,8 +114,8 @@ foreach ($lines as $i => $line) {
 <body>
   <div class="app">
     <div class="splash-screen">
-      <h1>CSS RPG</h1>
-      <button command="show-modal" commandfor="map-10">Start game</button>
+      <h1>Yogaraptor presents:<span>The Dinosaurs DID have a space agency!</span></h1>
+      <button class="frame tile-btn" command="show-modal" commandfor="map-10"><span class="frame-inner">Start game</span></button>
     </div>
 
     <div class="frame inventory">

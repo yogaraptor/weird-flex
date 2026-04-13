@@ -1,0 +1,24 @@
+.splash-screen {
+  width: var(--viewport-width);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+
+  h1 {
+    font-size: 2rem;
+    color: #9cbb29;
+
+    span {
+      display: block;
+      color: white;
+      font-size: 2.5rem;
+      line-height: 1;
+    }
+  }
+}
+
+:has(.map[open]) .splash-screen {
+  display: none;
+}

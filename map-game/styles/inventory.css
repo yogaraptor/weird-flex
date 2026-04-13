@@ -1,4 +1,5 @@
 .inventory {
+  display: none;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -112,6 +113,10 @@
     );
     opacity: 0;
   }
+}
+
+:has(.map[open]) .inventory {
+  display: block;
 }
 
 /* Item icons */
