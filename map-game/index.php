@@ -219,18 +219,24 @@ foreach ($lines as $i => $line) {
                   <?php endif; ?>
 
                   <?php if ($tileDef['showPuzzle'] !== null): ?>
-                    <button class="tile-btn" command="show-modal" commandfor="puzzle-<?php echo $tileDef['showPuzzle']; ?>">>
-                      <span class="frame-inner">Open puzzle 🧩</span>
-                    </button>
-                    <dialog id="puzzle-<?php echo $tileDef['showPuzzle']; ?>">
-                      This is where the puzzle goes!
-                      <input name="orb1" type="range" min="1" max="5" />
-                      <input name="orb2" type="range" min="1" max="5" />
-                      <input name="orb3" type="range" min="1" max="5" />
-                      <button command="close" commandfor="puzzle-<?php echo $tileDef['showPuzzle']; ?>">
-                        <span class="frame-inner">Close</span>
-                      </button>
-                    </dialog>
+                    <details class="puzzle frame" id="puzzle-<?php echo $tileDef['showPuzzle']; ?>">
+                      <summary class="tile-btn">
+                        <span class="frame-inner summary-open">Open puzzle 🧩</span>
+                        <span class="frame-inner summary-close">Close puzzle</span>
+                      </summary>
+                      <div class="puzzle-content frame-inner">
+                        <p>Align the celestial bodies to reveal the eclipse&hellip;</p>
+                        <label>Sun <input name="sun" type="range" min="1" max="5" /></label>
+                        <label>Moon <input name="moon" type="range" min="1" max="5" /></label>
+                        <label>Earth <input name="earth" type="range" min="1" max="5" /></label>
+                        <div class="puzzle-solved-reveal">
+                          <label class="frame tile-btn" for="puzzle-<?php echo $tileDef['showPuzzle']; ?>-solved">
+                            <span class="frame-inner">Take the orb!</span>
+                          </label>
+                        </div>
+                      </div>
+                    </details>
+                    <input class="puzzle-solved-checkbox" type="checkbox" id="puzzle-<?php echo $tileDef['showPuzzle']; ?>-solved" />
                   <?php endif; ?>
 
                   <?php if ($tileDef['item'] !== null): ?>

@@ -1,9 +1,142 @@
-/* Tavern puzzle - convo with barkeep and balancing of orbs */
-#puzzle-1 {
-  border: 10px solid red;
-  background: white;
+/* Normalized (0–1) intermediates for scroll-driven slider trick */
+@property --_sun {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --_moon {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --_earth {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 
-  input[type="range"] {
-    writing-mode: vertical-rl;
+@keyframes --_sun {
+  0% {
+    --_sun: 1;
   }
+}
+@keyframes --_moon {
+  0% {
+    --_moon: 1;
+  }
+}
+@keyframes --_earth {
+  0% {
+    --_earth: 1;
+  }
+}
+
+:root {
+  timeline-scope: --_sun, --_moon, --_earth;
+  animation: linear both;
+  animation-name: --_sun, --_moon, --_earth;
+  animation-timeline: --_sun, --_moon, --_earth;
+  animation-range: entry 100% exit 0%;
+
+  --sun-position: calc(1 + 4 * var(--_sun));
+  --moon-position: calc(1 + 4 * var(--_moon));
+  --earth-position: calc(1 + 4 * var(--_earth));
+}
+
+/* Each thumb creates its named timeline */
+input[name="sun"],
+input[name="moon"],
+input[name="earth"] {
+  overflow: hidden;
+}
+
+input[name="sun"]::-webkit-slider-thumb {
+  view-timeline: --_sun inline;
+}
+input[name="moon"]::-webkit-slider-thumb {
+  view-timeline: --_moon inline;
+}
+input[name="earth"]::-webkit-slider-thumb {
+  view-timeline: --_earth inline;
+}
+
+/* Puzzle details overlay */
+details.puzzle {
+  position: absolute;
+  top: calc(-0.5 * var(--viewport-height) + 0.5 * var(--tile-height));
+  left: calc(-0.5 * var(--viewport-width) + 0.5 * var(--tile-width));
+  width: var(--viewport-width);
+  height: var(--viewport-height);
+  z-index: 50;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+details.puzzle:not([open]) > :not(summary) {
+  display: none;
+}
+
+details.puzzle > summary {
+  list-style: none;
+}
+details.puzzle > summary::-webkit-details-marker {
+  display: none;
+}
+
+details.puzzle .summary-close {
+  display: none;
+}
+details.puzzle[open] .summary-open {
+  display: none;
+}
+details.puzzle[open] .summary-close {
+  display: flex;
+}
+
+.puzzle-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+}
+
+.puzzle-content label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+}
+
+/* Solved state: reveal the orb button only when sliders are correct */
+.puzzle-solved-reveal {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+/* TODO: set the correct solved positions here */
+/* Example: sun=3, moon=3, earth=3 triggers solved */
+.puzzle-solved-reveal {
+  opacity: calc(
+    clamp(0, 1 - abs(var(--sun-position) - 3), 1) *
+      clamp(0, 1 - abs(var(--moon-position) - 3), 1) *
+      clamp(0, 1 - abs(var(--earth-position) - 3), 1)
+  );
+  pointer-events: auto;
+}
+
+/* Hidden checkbox that persists solved state across dialogs */
+.puzzle-solved-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Hide the orb button once taken */
+.tile:has(.puzzle-solved-checkbox:checked) .puzzle-solved-reveal {
+  display: none;
 }
