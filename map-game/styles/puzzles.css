@@ -15,6 +15,12 @@
   initial-value: 0;
 }
 
+@property --puzzle-1-solved {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+
 @keyframes --_sun {
   0% {
     --_sun: 1;
@@ -41,34 +47,45 @@
   --sun-position: calc(1 + 4 * var(--_sun));
   --moon-position: calc(1 + 4 * var(--_moon));
   --earth-position: calc(1 + 4 * var(--_earth));
+  --puzzle-1-solved: clamp(
+    0,
+    clamp(0, 1 - abs(var(--sun-position) - 3), 1) *
+      clamp(0, 1 - abs(var(--moon-position) - 3), 1) *
+      clamp(0, 1 - abs(var(--earth-position) - 3), 1),
+    1
+  );
 }
 
 /* Puzzle details overlay */
-details.puzzle {
+details.puzzle-wrapper {
 }
 
-details.puzzle:not([open]) > :not(summary) {
+details.puzzle-wrapper:not([open]) > :not(summary) {
   display: none;
 }
 
-details.puzzle > summary {
+details.puzzle-wrapper > summary {
   list-style: none;
+
+  .tile-btn {
+    z-index: 1000;
+  }
 }
-details.puzzle > summary::-webkit-details-marker {
+details.puzzle-wrapper > summary::-webkit-details-marker {
   display: none;
 }
 
-details.puzzle .summary-close {
+details.puzzle-wrapper .summary-close {
   display: none;
 }
-details.puzzle[open] .summary-open {
+details.puzzle-wrapper[open] .summary-open {
   display: none;
 }
-details.puzzle[open] .summary-close {
+details.puzzle-wrapper[open] .summary-close {
   display: flex;
 }
 
-.puzzle .puzzle-content {
+.puzzle-wrapper .puzzle-content {
   position: absolute;
   width: var(--viewport-width);
   height: var(--viewport-height);
@@ -83,13 +100,13 @@ details.puzzle[open] .summary-close {
   background-image: url("../assets/stone-puzzle/stone-bg.png");
   color: white;
 }
-:has(.puzzle[open]) .tile.puzzle {
+:has(.puzzle-wrapper[open]) .tile.puzzle {
   position: static;
 }
 
 /* Labels are absolutely positioned over each groove */
 /* font-size: 0 hides the text node while keeping the input visible */
-.puzzle-content label {
+.puzzle-wrapper .puzzle-content label {
   position: absolute;
   width: 100%;
   height: 5rem;
@@ -97,8 +114,9 @@ details.puzzle[open] .summary-close {
   align-items: center;
   padding-inline: 2rem;
   font-size: 0;
-
   background: url("../assets/stone-puzzle/groove.png") center center no-repeat;
+  opacity: 1;
+  pointer-events: auto;
 
   &:nth-child(1) {
     top: 18%;
@@ -111,13 +129,15 @@ details.puzzle[open] .summary-close {
   }
 }
 
-.puzzle input[type="range"] {
+.puzzle-wrapper input[type="range"] {
   overflow: hidden;
   -webkit-appearance: none;
   width: 100%;
   height: 100%;
   appearance: none;
   background-color: transparent;
+  opacity: 1;
+  pointer-events: auto;
 
   &::-webkit-slider-thumb {
     translate: 0 -1.75rem;
@@ -187,7 +207,40 @@ input[name="earth"]::-webkit-slider-thumb {
   pointer-events: none;
 }
 
-/* Hide the orb button once taken */
-.tile:has(.puzzle-solved-checkbox:checked) .puzzle-solved-reveal {
+/* Hide puzzle prize until puzzle solved */
+.tile.puzzle .item-wrapper {
   display: none;
+}
+
+/* Default: hide item and solved reveal */
+.puzzle-solved-reveal,
+.tile.puzzle .item-wrapper {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s;
+}
+
+/* Hide open-puzzle button by default — shown below when unsolved */
+.tile.puzzle .puzzle-wrapper {
+  .summary-open,
+  .summary-close {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* Use style query to react to solved state */
+@container style(--puzzle-1-solved: 1) {
+  .tile.puzzle .item-wrapper {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Hide the open puzzle button once solved */
+  .tile.puzzle .puzzle-wrapper {
+    .summary-open {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
 }

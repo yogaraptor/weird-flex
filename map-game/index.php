@@ -190,6 +190,9 @@ foreach ($lines as $i => $line) {
                   array_push($tileClasses, 'item');
                   array_push($tileClasses, "item-" . strtolower($tileDef['item']));
                 }
+                if ($tileDef['showPuzzle'] !== null) {
+                  array_push($tileClasses, 'item');
+                }
                 if ($tileDef['encounter'] !== null) {
                   array_push($tileClasses, 'encounter');
                 }
@@ -219,23 +222,25 @@ foreach ($lines as $i => $line) {
                   <?php endif; ?>
 
                   <?php if ($tileDef['showPuzzle'] !== null): ?>
-                    <details class="puzzle frame" id="puzzle-<?php echo $tileDef['showPuzzle']; ?>">
-                      <summary class="tile-btn">
-                        <span class="frame-inner summary-open">Open puzzle 🧩</span>
-                        <span class="frame-inner summary-close">Close puzzle</span>
-                      </summary>
+                    <details class="puzzle-wrapper frame" id="puzzle-<?php echo $tileDef['showPuzzle']; ?>">
                       <div class="puzzle-content frame-inner">
                         <label>Sun <input name="sun" type="range" min="1" max="5" value="1" /></label>
                         <label>Moon <input name="moon" type="range" min="1" max="5" value="4" /></label>
                         <label>Earth <input name="earth" type="range" min="1" max="5" value="2" /></label>
-                        <div class="puzzle-solved-reveal">
-                          <label class="frame tile-btn" for="puzzle-<?php echo $tileDef['showPuzzle']; ?>-solved">
-                            <span class="frame-inner">Take the orb!</span>
-                          </label>
-                        </div>
                       </div>
+
+                      <summary>
+                        <span class="tile-btn summary-open"><span class="frame-inner">Open puzzle 🧩</span></span>
+                        <span class="tile-btn summary-close"><span class="frame-inner">Close puzzle</span></span>
+                      </summary>
                     </details>
-                    <input class="puzzle-solved-checkbox" type="checkbox" id="puzzle-<?php echo $tileDef['showPuzzle']; ?>-solved" />
+                    <div class="item-wrapper">
+                      <label class="frame speech-bubble" for="item-<?php echo $tileDef['item']; ?>">
+                        <div class="frame-inner">Pick up <?php echo $tileDef['item']; ?></div>
+                      </label>
+                      <input class="item-checkbox" type="checkbox" id="item-<?php echo $tileDef['item']; ?>" />
+                      <div class="item-icon"></div>
+                    </div>
                   <?php endif; ?>
 
                   <?php if ($tileDef['item'] !== null): ?>

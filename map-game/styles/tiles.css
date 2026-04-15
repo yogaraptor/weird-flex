@@ -82,13 +82,7 @@
 }
 
 .tile.door {
-  position: relative;
   background-color: black;
-}
-
-.tile.puzzle {
-  position: relative;
-  background-color: purple;
 }
 
 .tile.floor {
