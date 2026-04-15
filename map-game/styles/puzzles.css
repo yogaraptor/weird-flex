@@ -56,8 +56,34 @@
   );
 }
 
-/* Puzzle details overlay */
-details.puzzle-wrapper {
+/* Style container so prize tiles can query solved state */
+body {
+  container-name: game;
+  container-type: style;
+}
+
+/* Prize tiles: hide item until puzzle is solved */
+.tile.prize .speech-bubble,
+.tile.prize .item-checkbox,
+.tile.prize .item-icon {
+  opacity: 0;
+  pointer-events: none;
+}
+
+@container game style(--puzzle-1-solved: 1) {
+  .tile.prize-puzzle-1 .speech-bubble,
+  .tile.prize-puzzle-1 .item-icon {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .tile.prize-puzzle-1 .item-checkbox {
+    pointer-events: auto;
+  }
+
+  /* Hide open-puzzle button once solved */
+  .tile.puzzle .summary-open {
+    display: none;
+  }
 }
 
 details.puzzle-wrapper:not([open]) > :not(summary) {
@@ -229,9 +255,14 @@ input[name="earth"]::-webkit-slider-thumb {
   }
 }
 
+.tile.orb {
+  background-image: url("../assets/floor1.png");
+}
+
 /* Use style query to react to solved state */
 @container style(--puzzle-1-solved: 1) {
   .tile.puzzle .item-wrapper {
+    display: block;
     opacity: 1;
     pointer-events: auto;
   }

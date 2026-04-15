@@ -16,6 +16,7 @@ foreach ($legendLines as $legendLine) {
   $exit = null;
   $showPuzzle = null;
   $item = null;
+  $prize = null;
   $speech = null;
   $encounter = null;
   $doorText = null;
@@ -32,6 +33,10 @@ foreach ($legendLines as $legendLine) {
   }
   if ($metadata && preg_match('/^ITEM ([A-Z]+)$/', $metadata, $matches)) {
     $item = $matches[1];
+  }
+  if ($metadata && preg_match('/^PRIZE PUZZLE (\d+)$/', $metadata, $matches)) {
+    $prize = intval($matches[1]);
+    $item = $name;
   }
   if ($metadata && preg_match('/^SPEECH (.+)$/', $metadata, $matches)) {
     $speech = $matches[1];
@@ -53,7 +58,8 @@ foreach ($legendLines as $legendLine) {
     'speech' => $speech,
     'encounter' => $encounter,
     'npc' => $npc,
-    'doorText' => $doorText
+    'doorText' => $doorText,
+    'prize' => $prize
   ];
 }
 
@@ -190,8 +196,12 @@ foreach ($lines as $i => $line) {
                   array_push($tileClasses, 'item');
                   array_push($tileClasses, "item-" . strtolower($tileDef['item']));
                 }
+                if ($tileDef['prize'] !== null) {
+                  array_push($tileClasses, 'prize');
+                  array_push($tileClasses, "prize-puzzle-" . $tileDef['prize']);
+                }
                 if ($tileDef['showPuzzle'] !== null) {
-                  array_push($tileClasses, 'item');
+                  array_push($tileClasses, 'puzzle');
                 }
                 if ($tileDef['encounter'] !== null) {
                   array_push($tileClasses, 'encounter');
@@ -234,13 +244,6 @@ foreach ($lines as $i => $line) {
                         <span class="tile-btn summary-close"><span class="frame-inner">Close puzzle</span></span>
                       </summary>
                     </details>
-                    <div class="item-wrapper">
-                      <label class="frame speech-bubble" for="item-<?php echo $tileDef['item']; ?>">
-                        <div class="frame-inner">Pick up <?php echo $tileDef['item']; ?></div>
-                      </label>
-                      <input class="item-checkbox" type="checkbox" id="item-<?php echo $tileDef['item']; ?>" />
-                      <div class="item-icon"></div>
-                    </div>
                   <?php endif; ?>
 
                   <?php if ($tileDef['item'] !== null): ?>

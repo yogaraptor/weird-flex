@@ -115,6 +115,23 @@
   }
 }
 
+.app:has(#item-orb:checked) {
+  .inventory li:nth-child(3) {
+    &::before {
+      opacity: 1;
+      content: "";
+    }
+  }
+
+  #item-orb + .item-icon {
+    transform: translate(
+      calc(-2 * var(--tile-width)),
+      calc(-6 * var(--tile-height))
+    );
+    opacity: 0;
+  }
+}
+
 :has(.map[open]) .inventory {
   display: block;
 }
@@ -127,4 +144,8 @@
 .inventory li:nth-child(2)::before,
 .item-key .item-icon {
   background-image: url("../assets/keycard.png");
+}
+.inventory li:nth-child(3)::before,
+.item-orb .item-icon {
+  background-image: url("../assets/items/orb.png");
 }
