@@ -240,17 +240,19 @@ foreach ($lines as $i => $line) {
                       </div>
 
                       <summary>
-                        <span class="tile-btn summary-open"><span class="frame-inner">Investigate stone discs</span></span>
+                        <span class="tile-btn summary-open"><span class="frame-inner">Investigate stone mechanism</span></span>
                       </summary>
                     </details>
                   <?php endif; ?>
 
                   <?php if ($tileDef['item'] !== null): ?>
-                    <label class="frame speech-bubble" for="item-<?php echo $tileDef['item']; ?>">
-                      <div class="frame-inner">Pick up <?php echo $tileDef['item']; ?></div>
-                    </label>
-                    <input class="item-checkbox" type="checkbox" id="item-<?php echo $tileDef['item']; ?>" />
-                    <div class="item-icon"></div>
+                    <div class="item-wrapper">
+                      <label class="frame speech-bubble" for="item-<?php echo $tileDef['item']; ?>">
+                        <div class="frame-inner">Pick up <?php echo $tileDef['item']; ?></div>
+                      </label>
+                      <input class="item-checkbox" type="checkbox" id="item-<?php echo $tileDef['item']; ?>" />
+                      <div class="item-icon"></div>
+                    </div>
                   <?php endif; ?>
 
                   <?php if ($tileDef['speech'] !== null): ?>

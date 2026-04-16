@@ -1,4 +1,4 @@
-/* Normalized (0–1) intermediates for scroll-driven slider trick */
+/* Scroll-driven slider @property registrations - see https://css-tip.com/css-variables-range-slider/ for details */
 @property --_sun {
   syntax: "<number>";
   inherits: true;
@@ -47,6 +47,8 @@
   --sun-position: calc(1 + 4 * var(--_sun));
   --moon-position: calc(1 + 4 * var(--_moon));
   --earth-position: calc(1 + 4 * var(--_earth));
+
+  /* 1 when all three sliders hit their target positions, else 0 */
   --puzzle-1-solved: clamp(
     0,
     clamp(0, 1 - abs(var(--sun-position) - 3), 1) *
@@ -56,49 +58,56 @@
   );
 }
 
-/* Style container so prize tiles can query solved state */
+/*
+  Define style container at top-level so prize/puzzle solved state is available globally
+  @todo move this to main.css and standardise for re-use
+*/
+
 body {
   container-name: game;
   container-type: style;
 }
 
-/* Prize tiles: hide item until puzzle is solved */
-.tile.prize .speech-bubble,
-.tile.prize .item-checkbox,
-.tile.prize .item-icon {
+/* Prize tile item hidden until linked puzzle is solved */
+.tile.prize .item-wrapper {
   opacity: 0;
   pointer-events: none;
 }
 
+/* Set background for puzzle and prize tiles */
+.tile.puzzle {
+  background-image: url("../assets/stone-puzzle/tile.png");
+}
+.tile.orb {
+  background-image: url("../assets/cave-floor1.png");
+}
+
+/* Puzzle solved: reveal prize, swap thumbs, animate, close puzzle */
 @container game style(--puzzle-1-solved: 1) {
-  .tile.prize-puzzle-1 .speech-bubble,
-  .tile.prize-puzzle-1 .item-icon {
+  /* Show item prize and allow picking up */
+  .tile.prize-puzzle-1 .item-wrapper {
     opacity: 1;
     pointer-events: auto;
   }
-  .tile.prize-puzzle-1 .item-checkbox {
-    pointer-events: auto;
-  }
 
-  /* Hide open-puzzle button once solved */
+  /* Hide open puzzle button */
   .tile.puzzle .summary-open {
     display: none;
   }
 
-  /* Shake the inputs for DRAMA */
+  /* Shake all three inputs for DRAMA */
   input[name="sun"],
   input[name="moon"],
   input[name="earth"] {
-    animation: puzzle-thumb-glow 0.5s ease-in-out 3;
+    animation: puzzle-thumb-shake 0.5s ease-in-out 3;
   }
-
-  /* After two shake cycles, flash to white then fade out the whole puzzle */
+  /* After 2 shake cycles, flash white then fade puzzle out */
   details.puzzle-wrapper {
     animation: puzzle-solved-outro 1.5s 1s forwards;
   }
 }
 
-@keyframes puzzle-thumb-glow {
+@keyframes puzzle-thumb-shake {
   0%,
   100% {
     transform: translateX(0);
@@ -149,15 +158,15 @@ body {
   }
 }
 
-/* Pre-create stacking context so filter animation doesn't cause re-stacking */
+/*
+  Pre-create stacking context so filter animation doesn't cause re-stacking
+  This prevents other tiles from appearing over the puzzle when the filter-based
+  "solved" animation begins
+*/
 details.puzzle-wrapper {
   position: relative;
   z-index: 200;
   will-change: filter, opacity;
-}
-
-details.puzzle-wrapper:not([open]) > :not(summary) {
-  display: none;
 }
 
 details.puzzle-wrapper > summary {
@@ -171,9 +180,12 @@ details.puzzle-wrapper > summary::-webkit-details-marker {
   display: none;
 }
 
+/* Hide the open button while puzzle is open */
 details.puzzle-wrapper[open] .summary-open {
   display: none;
 }
+
+/* ─── Puzzle content layout ──────────────────────────────────────────────── */
 
 .puzzle-wrapper .puzzle-content {
   position: sticky;
@@ -190,12 +202,12 @@ details.puzzle-wrapper[open] .summary-open {
   background-image: url("../assets/stone-puzzle/stone-bg.png");
   color: white;
 }
+
 :has(.puzzle-wrapper[open]) .tile.puzzle {
   position: static;
 }
 
-/* Labels are absolutely positioned over each groove */
-/* font-size: 0 hides the text node while keeping the input visible */
+/* Labels positioned over each groove; font-size:0 hides text nodes */
 .puzzle-wrapper .puzzle-content label {
   position: absolute;
   width: 100%;
@@ -205,8 +217,6 @@ details.puzzle-wrapper[open] .summary-open {
   padding-inline: 2rem;
   font-size: 0;
   background: url("../assets/stone-puzzle/groove.png") center center no-repeat;
-  opacity: 1;
-  pointer-events: auto;
 
   &:nth-child(1) {
     top: 18%;
@@ -219,15 +229,15 @@ details.puzzle-wrapper[open] .summary-open {
   }
 }
 
+/* ─── Slider styles ──────────────────────────────────────────────────────── */
+
 .puzzle-wrapper input[type="range"] {
   overflow: hidden;
   -webkit-appearance: none;
+  appearance: none;
   width: 100%;
   height: 100%;
-  appearance: none;
   background-color: transparent;
-  opacity: 1;
-  pointer-events: auto;
 
   &::-webkit-slider-thumb {
     translate: 0 -1.75rem;
@@ -243,7 +253,7 @@ details.puzzle-wrapper[open] .summary-open {
   }
 }
 
-/* Each thumb creates its named timeline */
+/* Thumb images + named view-timelines */
 input[name="sun"]::-webkit-slider-thumb {
   view-timeline: --_sun inline;
   background-image: url("../assets/stone-puzzle/sun.png");
@@ -257,84 +267,8 @@ input[name="earth"]::-webkit-slider-thumb {
   background-image: url("../assets/stone-puzzle/earth.png");
 }
 
-/* Transparent track — the tablet groove is the visual */
+/* Transparent track — the groove image is the visual */
 .puzzle-content input[type="range"]::-webkit-slider-runnable-track {
   background: transparent;
   height: 4px;
-}
-
-.puzzle-solved-reveal {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* Solved state: reveal the orb button only when sliders are correct */
-.puzzle-solved-reveal {
-  width: 100px;
-  height: 20px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s;
-}
-
-/* TODO: set the correct solved positions here */
-/* Example: sun=3, moon=3, earth=3 triggers solved */
-.puzzle-solved-reveal {
-  opacity: calc(
-    clamp(0, 1 - abs(var(--sun-position) - 3), 1) *
-      clamp(0, 1 - abs(var(--moon-position) - 3), 1) *
-      clamp(0, 1 - abs(var(--earth-position) - 3), 1)
-  );
-  pointer-events: auto;
-}
-
-/* Hidden checkbox that persists solved state across dialogs */
-.puzzle-solved-checkbox {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Hide puzzle prize until puzzle solved */
-.tile.puzzle .item-wrapper {
-  display: none;
-}
-
-/* Default: hide item and solved reveal */
-.puzzle-solved-reveal,
-.tile.puzzle .item-wrapper {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s;
-}
-
-/* Hide open-puzzle button by default — shown below when unsolved */
-.tile.puzzle .puzzle-wrapper {
-  .summary-open {
-    opacity: 1;
-    pointer-events: auto;
-  }
-}
-
-.tile.orb {
-  background-image: url("../assets/floor1.png");
-}
-
-/* Use style query to react to solved state */
-@container style(--puzzle-1-solved: 1) {
-  .tile.puzzle .item-wrapper {
-    display: block;
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* Hide the open puzzle button once solved */
-  .tile.puzzle .puzzle-wrapper {
-    .summary-open {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
 }
