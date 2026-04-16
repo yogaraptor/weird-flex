@@ -27,6 +27,8 @@
   .tile-btn {
     position: absolute;
     bottom: var(--tile-height);
+    left: 50%;
+    transform: translateX(-50%);
   }
 }
 
