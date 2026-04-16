@@ -84,6 +84,76 @@ body {
   .tile.puzzle .summary-open {
     display: none;
   }
+
+  /* Shake the inputs for DRAMA */
+  input[name="sun"],
+  input[name="moon"],
+  input[name="earth"] {
+    animation: puzzle-thumb-glow 0.5s ease-in-out 3;
+  }
+
+  /* After two shake cycles, flash to white then fade out the whole puzzle */
+  details.puzzle-wrapper {
+    animation: puzzle-solved-outro 1.5s 1s forwards;
+  }
+}
+
+@keyframes puzzle-thumb-glow {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10% {
+    transform: translateX(-8px);
+  }
+  20% {
+    transform: translateX(8px);
+  }
+  30% {
+    transform: translateX(-7px);
+  }
+  40% {
+    transform: translateX(7px);
+  }
+  50% {
+    transform: translateX(-5px);
+  }
+  60% {
+    transform: translateX(5px);
+  }
+  70% {
+    transform: translateX(-3px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+  90% {
+    transform: translateX(-1px);
+  }
+}
+
+@keyframes puzzle-solved-outro {
+  0% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  40% {
+    opacity: 1;
+    filter: brightness(8);
+  }
+  100% {
+    opacity: 0;
+    filter: brightness(1);
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/* Pre-create stacking context so filter animation doesn't cause re-stacking */
+details.puzzle-wrapper {
+  position: relative;
+  z-index: 200;
+  will-change: filter, opacity;
 }
 
 details.puzzle-wrapper:not([open]) > :not(summary) {
@@ -101,18 +171,12 @@ details.puzzle-wrapper > summary::-webkit-details-marker {
   display: none;
 }
 
-details.puzzle-wrapper .summary-close {
-  display: none;
-}
 details.puzzle-wrapper[open] .summary-open {
   display: none;
 }
-details.puzzle-wrapper[open] .summary-close {
-  display: flex;
-}
 
 .puzzle-wrapper .puzzle-content {
-  position: absolute;
+  position: sticky;
   width: var(--viewport-width);
   height: var(--viewport-height);
   top: 0;
@@ -248,8 +312,7 @@ input[name="earth"]::-webkit-slider-thumb {
 
 /* Hide open-puzzle button by default — shown below when unsolved */
 .tile.puzzle .puzzle-wrapper {
-  .summary-open,
-  .summary-close {
+  .summary-open {
     opacity: 1;
     pointer-events: auto;
   }

@@ -240,8 +240,7 @@ foreach ($lines as $i => $line) {
                       </div>
 
                       <summary>
-                        <span class="tile-btn summary-open"><span class="frame-inner">Open puzzle 🧩</span></span>
-                        <span class="tile-btn summary-close"><span class="frame-inner">Close puzzle</span></span>
+                        <span class="tile-btn summary-open"><span class="frame-inner">Investigate stone discs</span></span>
                       </summary>
                     </details>
                   <?php endif; ?>
