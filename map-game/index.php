@@ -129,15 +129,18 @@ foreach ($lines as $i => $line) {
     </div>
 
     <div class="frame inventory">
-      <h2>Inventory</h2>
-      <ul class="frame-inner">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul>
+      <div class="frame-inner">
+        <h2>Inventory</h2>
+        <ul>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+        <span class="xp-display"></span>
+      </div>
     </div>
 
     <?php $isFirstMap = true; ?>

@@ -1,3 +1,21 @@
+/* XP sources: CROISSANT = 25, KEY = 25, crystal = 50, total possible: 100 */
+body {
+  counter-reset: xp;
+}
+body:has(#item-CROISSANT:checked) {
+  counter-increment: xp 10;
+}
+body:has(#item-KEY:checked) {
+  counter-increment: xp 10;
+}
+body:has(#item-crystal:checked) {
+  counter-increment: xp 20;
+}
+
+.xp-display::before {
+  content: "XP: " counter(xp);
+}
+
 .inventory {
   display: none;
   position: absolute;
@@ -17,6 +35,13 @@
     left: -9999px;
     text-align: center;
     margin-bottom: 0.5rem;
+  }
+
+  .frame-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 1rem;
   }
 
   ul {
