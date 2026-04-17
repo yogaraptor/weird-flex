@@ -67,10 +67,12 @@ foreach ($legendLines as $legendLine) {
 $maps = [];
 $currentMapNum = null;
 $currentMapStartLine = null;
+$currentMapName = null;
 foreach ($lines as $i => $line) {
-  if (preg_match('/^BEGIN MAP (\d+)$/', $line, $m)) {
+  if (preg_match('/^BEGIN MAP (\d+)(?:\s+(\S+))?$/', $line, $m)) {
     $currentMapNum = intval($m[1]);
     $currentMapStartLine = $i + 1;
+    $currentMapName = isset($m[2]) && $m[2] !== '' ? $m[2] : null;
   } elseif (preg_match('/^END MAP (\d+)$/', $line, $m)) {
     $num = intval($m[1]);
     $rawRows = array_values(array_filter(
@@ -88,9 +90,11 @@ foreach ($lines as $i => $line) {
       'numCols' => count($mapRows[0]),
       'numRows' => count($mapRows),
       'playerStart' => null,
+      'name' => $currentMapName,
     ];
     $currentMapNum = null;
     $currentMapStartLine = null;
+    $currentMapName = null;
   } elseif (preg_match('/^MAP (\d+) PLAYER START (\d+)$/', $line, $m)) {
     $maps[intval($m[1])]['playerStart'] = intval($m[2]);
   }
@@ -138,7 +142,7 @@ foreach ($lines as $i => $line) {
 
     <?php $isFirstMap = true; ?>
     <?php foreach ($maps as $mapNum => $map): ?>
-      <dialog class="map frame"
+      <dialog class="map frame<?php if ($map['name']) echo ' map-' . htmlspecialchars($map['name']); ?>"
         id="map-<?php echo $mapNum; ?>">
         <?php if ($isFirstMap):
           $isFirstMap = false;

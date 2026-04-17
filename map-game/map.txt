@@ -47,14 +47,26 @@ BEGIN LEGEND
 🥐 floor ITEM CROISSANT
 📗 bookcase-n
 📘 bookcase-s
+🚧 barrier
+📈 barrier-cap-w
+📉 barrier-cap-e
 ⬛️ void
 🔑 stone ITEM KEY
 🦖 grass2 ENCOUNTER
 🚪 doormat GOTO MAP 20 DOOR TEXT Step into the big wide world
 🧪 lab GOTO MAP 30 DOOR TEXT Shouldn't this be locked or something?
-⏺️ door EXIT DOOR TEXT Head back outside...
+⏺️ floor EXIT DOOR TEXT Head back outside...
 🧩 puzzle SHOW PUZZLE 1
 🎁 orb PRIZE PUZZLE 1
+🔙 rocket-mainstage-cap-w
+🔛 rocket-mainstage-middle
+🔜 rocket-mainstage-cap-e
+🔼 rocket-nosecone
+⏫ rocket-exhaust
+⤴️ rocket-misc1
+⤵️ rocket-misc2
+🔃 rocket-misc3
+🔄 rocket-misc4
 🪧 sign1
 🧭 sign2
 🛖 house1 EXIT DOOR TEXT Home sweet home
@@ -115,21 +127,25 @@ BEGIN LEGEND
 🕝 road-tjunc-w
 🕞 road-cross
 🧙 grass1 NPC triceratops
+🧑‍🔬 floor NPC pterodactyl
 💬 grass1 SPEECH <p>Did you hear they're building a rocket at the lab?</p><p>I hope they finish it soon. I hear a meteor is coming!</p>
 🗨️ grass1 SPEECH <p>I'm not going in that cave!</p><p>Someone from the lab told me it was haunted!</p>
 🔒️ grass1 SPEECH Locked...
 📅 road-bend-se SPEECH "CLOSED. Please come back tomorrow!"
-↔️ road-h-middle SPEECH "NORTH: the village.<br><br> EAST: the secret caves. <br><br>SOUTH: DinoMart!<br><br> WEST: The Lab
+↔️ road-h-middle SPEECH "NORTH: the village.<br><br> EAST: the secret caves. <br><br>SOUTH: DinoMart!<br><br> WEST: The Lab 
+🥽 floor SPEECH <p>We're missing the stabiliser rod.</p><p>The rocket can't take off without it!</p>
+🦺 floor SPEECH <p>I saw a wild T-Rex sniffing around the storage area last night.</p><p>What could it possibly want?</p>
+🥼 floor SPEECH <p>The stabiliser rod? Oh, yeah...</p><p>it kinda looks like a giant bone, I guess?</p>
 END LEGEND
 
-BEGIN MAP 10
+BEGIN MAP 10 home
 ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
 ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇽💡🇦🇩🇦🇩🇧🇻🇦🇩📗💡🇦🇫⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇼🇦🇨🇦🇨🇦🇨🇧🇹🇦🇨📘🇦🇨🇦🇪⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🛌🟨🎱⚽🏀🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🛌🧪🎱⚽🏀🟨🟨🇦🇬⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇹🛏️🥐🏉🥏🏈🟨🟨🇦🇬⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇹🟨🟨🏐🎾⚾🟨🟨🇦🇬⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
@@ -142,7 +158,7 @@ END MAP 10
 
 MAP 10 PLAYER START 94
 
-BEGIN MAP 20
+BEGIN MAP 20 overworld
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗‍♀️
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗‍♀️🚵‍♂️
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗‍♀️🚵‍♂️⛰️
@@ -174,39 +190,34 @@ END MAP 20
 
 MAP 20 PLAYER START 233
 
-BEGIN MAP 30
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫⏺️🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
-🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫🟫
+
+
+
+BEGIN MAP 30 lab
+⬛️⬛️⬛️🇦🇽📗📗📗📗📗📗📗📗📗📗📗📗📗📗🇦🇫⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇼📘📘📘📘📘📘📘📘📘📘📘📘📘📘🇦🇪⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🔼🔙🔛🔛🔛🔛🔜⏫🔃⤴️⤵️🧑‍🔬🔄🔃🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️📈🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧📉⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🦺🧑‍🔬🟨🟨🟨🟨🟨🥼🧑‍🔬🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🥽🧑‍🔬🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨⏺️🟨🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇷🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇧🇷🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇱⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇸🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇧🇸🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇲⬛️⬛️⬛️
+⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
 END MAP 30
 
-MAP 30 PLAYER START 204
+MAP 30 PLAYER START 164
 
-BEGIN MAP 40
-
-
-
+BEGIN MAP 40 cave
 ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
 ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
 ⬛️⬛️⬛️🇧🇾🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇧🇪⬛️⬛️⬛️
 ⬛️⬛️⬛️🇧🇼🇧🇦🇧🇦🇧🇦🇧🇦🇧🇦🇧🇦🇧🇦🇧🇦🇧🇦🇧🇦🇧🇦🇧🇩⬛️⬛️⬛️
 ⬛️⬛️⬛️🇧🇴⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
 ⬛️⬛️⬛️🇨🇦⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
-⬛️⬛️⬛️🇧🇿⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🎁⬜️🇧🇫⬛️⬛️⬛️
+⬛️⬛️⬛️🇧🇿⬜️⬜️⬜️⬜️🎁⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
 ⬛️⬛️⬛️👈️⬜️⬜️⬜️⬜️🧩⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
 ⬛️⬛️⬛️🇨🇨⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
 ⬛️⬛️⬛️🇧🇴⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️

@@ -114,7 +114,7 @@
 .tile.wall {
   background-color: #444;
 }
-/* Wall tiles */
+/* Default wall tiles */
 .tile.wall-n1 {
   background-image: url("../assets/wall-n1.png");
 }
@@ -219,6 +219,130 @@
 .tile.rug-c {
   background-image: url("../assets/rug-c.png"), url("../assets/floor1.png");
 }
+
+/* Lab tiles */
+.map-lab {
+  .tile.floor {
+    background-image: url("../assets/lab/lab-floor1.png");
+  }
+  .tile.doormat {
+    background-image: url("../assets/lab/lab-floor1.png");
+  }
+  .tile.barrier {
+    background-image: url("../assets/lab/lab-barrier.png");
+  }
+  .tile.barrier-cap-w {
+    background-image: url("../assets/lab/lab-barrier-cap-w.png");
+  }
+  .tile.barrier-cap-e {
+    background-image: url("../assets/lab/lab-barrier-cap-e.png");
+  }
+  .tile.bookcase-n {
+    background-image: url("../assets/lab/lab-mainframe-n.png");
+  }
+  .tile.bookcase-s {
+    background-image: url("../assets/lab/lab-mainframe-s.png");
+  }
+  .tile.wall-n1 {
+    background-image: url("../assets/lab/lab-wall-n1.png");
+  }
+  .tile.wall-n2 {
+    background-image: url("../assets/lab/lab-wall-n2.png");
+  }
+  .tile.wall-lamp-n2 {
+    background-image: url("../assets/wall-lamp-n2.png");
+  }
+  .tile.wall-picture-n1 {
+    background-image: url("../assets/wall-picture-n1.png");
+  }
+  .tile.wall-picture-n2 {
+    background-image: url("../assets/wall-picture-n2.png");
+  }
+  .tile.wall-ne1 {
+    background-image: url("../assets/lab/lab-wall-ne1.png");
+  }
+  .tile.wall-ne2 {
+    background-image: url("../assets/lab/lab-wall-ne2.png");
+  }
+  .tile.wall-e1 {
+    background-image: url("../assets/lab/lab-wall-e1.png");
+  }
+  .tile.wall-se1 {
+    background-image: url("../assets/lab/lab-wall-se1.png");
+  }
+  .tile.wall-se2 {
+    background-image: url("../assets/lab/lab-wall-se2.png");
+  }
+  .tile.wall-s1 {
+    background-image: url("../assets/lab/lab-wall-s1.png");
+  }
+  .tile.wall-s2 {
+    background-image: url("../assets/lab/lab-wall-s2.png");
+  }
+  .tile.wall-sw1 {
+    background-image: url("../assets/lab/lab-wall-sw1.png");
+  }
+  .tile.wall-sw2 {
+    background-image: url("../assets/lab/lab-wall-sw2.png");
+  }
+  .tile.wall-w1 {
+    background-image: url("../assets/lab/lab-wall-w1.png");
+  }
+  .tile.wall-nw1 {
+    background-image: url("../assets/lab/lab-wall-nw1.png");
+  }
+  .tile.wall-nw2 {
+    background-image: url("../assets/lab/lab-wall-nw2.png");
+  }
+  .tile.door-s1 {
+    background-image: url("../assets/lab/lab-door-s1.png");
+  }
+  .tile.door-s2 {
+    background-image: url("../assets/lab/lab-door-s2.png");
+  }
+}
+
+.rocket-mainstage-cap-w {
+  background-image:
+    url("../assets/lab/rocket/mainstage-cap-w.png"),
+    url("../assets/lab/lab-floor1.png");
+}
+.rocket-mainstage-middle {
+  background-image:
+    url("../assets/lab/rocket/mainstage-middle.png"),
+    url("../assets/lab/lab-floor1.png");
+}
+.rocket-mainstage-cap-e {
+  background-image:
+    url("../assets/lab/rocket/mainstage-cap-e.png"),
+    url("../assets/lab/lab-floor1.png");
+}
+.rocket-nosecone {
+  background-image:
+    url("../assets/lab/rocket/nosecone.png"),
+    url("../assets/lab/lab-floor1.png");
+}
+.rocket-exhaust {
+  background-image:
+    url("../assets/lab/rocket/exhaust.png"), url("../assets/lab/lab-floor1.png");
+}
+.rocket-misc1 {
+  background-image:
+    url("../assets/lab/rocket/misc1.png"), url("../assets/lab/lab-floor1.png");
+}
+.rocket-misc2 {
+  background-image:
+    url("../assets/lab/rocket/misc2.png"), url("../assets/lab/lab-floor1.png");
+}
+.rocket-misc3 {
+  background-image:
+    url("../assets/lab/rocket/misc3.png"), url("../assets/lab/lab-floor1.png");
+}
+.rocket-misc4 {
+  background-image:
+    url("../assets/lab/rocket/misc4.png"), url("../assets/lab/lab-floor1.png");
+}
+/* End lab tiles */
 
 .tile.stone {
   background-color: grey;
@@ -424,6 +548,15 @@
 
   .npc-sprite {
     background-image: url("../assets/triceratops.png");
+    animation: spritesheet 1s steps(8) infinite;
+  }
+}
+
+.npc-pterodactyl {
+  justify-content: start; /* Triceratops is facing left, align to left of tile */
+
+  .npc-sprite {
+    background-image: url("../assets/pterodactyl.png");
     animation: spritesheet 1s steps(8) infinite;
   }
 }
