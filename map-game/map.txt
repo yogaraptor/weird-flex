@@ -56,6 +56,7 @@ BEGIN LEGEND
 🚪 doormat GOTO MAP 20 DOOR TEXT Step into the big wide world
 🧪 lab GOTO MAP 30 DOOR TEXT Shouldn't this be locked or something?
 ⏺️ floor EXIT DOOR TEXT Head back outside...
+☀️ cave-floor1 EXIT DOOR TEXT Back to the sunlight...
 🧩 puzzle SHOW PUZZLE 1
 🎁 orb PRIZE PUZZLE 1
 🔙 rocket-mainstage-cap-w
@@ -218,7 +219,7 @@ BEGIN MAP 40 cave
 ⬛️⬛️⬛️🇧🇴⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
 ⬛️⬛️⬛️🇨🇦⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
 ⬛️⬛️⬛️🇧🇿⬜️⬜️⬜️⬜️🎁⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
-⬛️⬛️⬛️👈️⬜️⬜️⬜️⬜️🧩⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
+⬛️⬛️⬛️👈️🫲☀️⬜️⬜️🧩⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
 ⬛️⬛️⬛️🇨🇨⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
 ⬛️⬛️⬛️🇧🇴⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
 ⬛️⬛️⬛️🇧🇴⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️⬜️🇧🇫⬛️⬛️⬛️
@@ -228,4 +229,4 @@ BEGIN MAP 40 cave
 ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
 END MAP 40
 
-MAP 40 PLAYER START 308
+MAP 40 PLAYER START 140
