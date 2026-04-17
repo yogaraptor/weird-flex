@@ -58,7 +58,7 @@ BEGIN LEGEND
 ⏺️ floor EXIT DOOR TEXT Head back outside...
 ☀️ cave-floor1 EXIT DOOR TEXT Back to the sunlight...
 🧩 puzzle SHOW PUZZLE 1
-🎁 orb PRIZE PUZZLE 1
+🎁 crystal PRIZE PUZZLE 1
 🔙 rocket-mainstage-cap-w
 🔛 rocket-mainstage-middle
 🔜 rocket-mainstage-cap-e

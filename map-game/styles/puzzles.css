@@ -78,12 +78,16 @@ body {
 .tile.puzzle {
   background-image: url("../assets/stone-puzzle/tile.png");
 }
-.tile.orb {
+.tile.tile.prize-puzzle-1 {
   background-image: url("../assets/cave-floor1.png");
 }
 
 /* Puzzle solved: reveal prize, swap thumbs, animate, close puzzle */
 @container game style(--puzzle-1-solved: 1) {
+  /* Change dias tile to exploded stone */
+  .tile.puzzle {
+    background-image: url("../assets/stone-puzzle/tile-after.png");
+  }
   /* Show item prize and allow picking up */
   .tile.prize-puzzle-1 .item-wrapper {
     opacity: 1;

@@ -115,7 +115,7 @@
   }
 }
 
-.app:has(#item-orb:checked) {
+.app:has(#item-crystal:checked) {
   .inventory li:nth-child(3) {
     &::before {
       opacity: 1;
@@ -123,7 +123,7 @@
     }
   }
 
-  #item-orb + .item-icon {
+  #item-crystal + .item-icon {
     transform: translate(
       calc(-2 * var(--tile-width)),
       calc(-6 * var(--tile-height))
@@ -146,6 +146,6 @@
   background-image: url("../assets/keycard.png");
 }
 .inventory li:nth-child(3)::before,
-.item-orb .item-icon {
+.item-crystal .item-icon {
   background-image: url("../assets/stone-puzzle/crystal.png");
 }
