@@ -58,6 +58,15 @@ BEGIN LEGEND
 ⏺️ door EXIT DOOR TEXT Head back outside...
 🧩 puzzle SHOW PUZZLE 1
 🎁 orb PRIZE PUZZLE 1
+🔙 rocket-mainstage-cap-w
+🔛 rocket-mainstage-middle
+🔜 rocket-mainstage-cap-e
+🔼 rocket-nosecone
+⏫ rocket-exhaust
+⤴️ rocket-misc1
+⤵️ rocket-misc2
+🔃 rocket-misc3
+🔄 rocket-misc4
 🪧 sign1
 🧭 sign2
 🛖 house1 EXIT DOOR TEXT Home sweet home
@@ -118,6 +127,7 @@ BEGIN LEGEND
 🕝 road-tjunc-w
 🕞 road-cross
 🧙 grass1 NPC triceratops
+🧑‍🔬 floor NPC pterodactyl
 💬 grass1 SPEECH <p>Did you hear they're building a rocket at the lab?</p><p>I hope they finish it soon. I hear a meteor is coming!</p>
 🗨️ grass1 SPEECH <p>I'm not going in that cave!</p><p>Someone from the lab told me it was haunted!</p>
 🔒️ grass1 SPEECH Locked...
@@ -177,22 +187,22 @@ END MAP 20
 
 MAP 20 PLAYER START 233
 
+
+
+
 BEGIN MAP 30 lab
-⬛️⬛️⬛️🇦🇽📗📗📗📗📗📗📗🇦🇫⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇼📘📘📘📘📘📘📘🇦🇪⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️📈🚧🚧🚧🚧🚧🚧🚧📉⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🚪🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇷🇦🇴🇦🇴🇦🇴🇧🇷🇦🇴🇦🇴🇦🇴🇦🇱⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇸🇦🇶🇦🇶🇦🇶🇧🇸🇦🇶🇦🇶🇦🇶🇦🇲⬛️⬛️⬛️
-⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
-⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇽📗📗📗📗📗📗📗📗📗📗📗📗📗📗🇦🇫⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇼📘📘📘📘📘📘📘📘📘📘📘📘📘📘🇦🇪⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🔼🔙🔛🔛🔛🔛🔜⏫🔃⤴️⤵️🧑‍🔬🔄🔃🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️📈🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧📉⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🟨🧑‍🔬🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🧑‍🔬🟨🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🧑‍🔬🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🚪🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇷🇦🇴🇦🇴🇦🇴🇧🇷🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇱⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇸🇦🇶🇦🇶🇦🇶🇧🇸🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇲⬛️⬛️⬛️
+⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
+⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
 END MAP 30
 
 MAP 30 PLAYER START 205

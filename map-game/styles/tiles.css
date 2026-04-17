@@ -302,6 +302,48 @@
   }
 }
 
+.rocket-mainstage-cap-w {
+  background-image:
+    url("../assets/lab/rocket/mainstage-cap-w.png"),
+    url("../assets/lab/lab-floor1.png");
+}
+.rocket-mainstage-middle {
+  background-image:
+    url("../assets/lab/rocket/mainstage-middle.png"),
+    url("../assets/lab/lab-floor1.png");
+}
+.rocket-mainstage-cap-e {
+  background-image:
+    url("../assets/lab/rocket/mainstage-cap-e.png"),
+    url("../assets/lab/lab-floor1.png");
+}
+.rocket-nosecone {
+  background-image:
+    url("../assets/lab/rocket/nosecone.png"),
+    url("../assets/lab/lab-floor1.png");
+}
+.rocket-exhaust {
+  background-image:
+    url("../assets/lab/rocket/exhaust.png"), url("../assets/lab/lab-floor1.png");
+}
+.rocket-misc1 {
+  background-image:
+    url("../assets/lab/rocket/misc1.png"), url("../assets/lab/lab-floor1.png");
+}
+.rocket-misc2 {
+  background-image:
+    url("../assets/lab/rocket/misc2.png"), url("../assets/lab/lab-floor1.png");
+}
+.rocket-misc3 {
+  background-image:
+    url("../assets/lab/rocket/misc3.png"), url("../assets/lab/lab-floor1.png");
+}
+.rocket-misc4 {
+  background-image:
+    url("../assets/lab/rocket/misc4.png"), url("../assets/lab/lab-floor1.png");
+}
+/* End lab tiles */
+
 .tile.stone {
   background-color: grey;
 }
@@ -506,6 +548,15 @@
 
   .npc-sprite {
     background-image: url("../assets/triceratops.png");
+    animation: spritesheet 1s steps(8) infinite;
+  }
+}
+
+.npc-pterodactyl {
+  justify-content: start; /* Triceratops is facing left, align to left of tile */
+
+  .npc-sprite {
+    background-image: url("../assets/pterodactyl.png");
     animation: spritesheet 1s steps(8) infinite;
   }
 }
