@@ -147,5 +147,5 @@
 }
 .inventory li:nth-child(3)::before,
 .item-orb .item-icon {
-  background-image: url("../assets/items/orb.png");
+  background-image: url("../assets/stone-puzzle/crystal.png");
 }
