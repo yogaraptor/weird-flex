@@ -55,7 +55,7 @@ BEGIN LEGEND
 🦖 grass2 ENCOUNTER
 🚪 doormat GOTO MAP 20 DOOR TEXT Step into the big wide world
 🧪 lab GOTO MAP 30 DOOR TEXT Shouldn't this be locked or something?
-⏺️ door EXIT DOOR TEXT Head back outside...
+⏺️ floor EXIT DOOR TEXT Head back outside...
 🧩 puzzle SHOW PUZZLE 1
 🎁 orb PRIZE PUZZLE 1
 🔙 rocket-mainstage-cap-w
@@ -200,15 +200,15 @@ BEGIN MAP 30 lab
 ⬛️⬛️⬛️📈🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧📉⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇹🟨🟨🟨🦺🧑‍🔬🟨🟨🟨🟨🟨🥼🧑‍🔬🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🥽🧑‍🔬🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🚪🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇷🇦🇴🇦🇴🇦🇴🇧🇷🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇱⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇸🇦🇶🇦🇶🇦🇶🇧🇸🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇲⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🥽🧑‍🔬🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨⏺️🟨🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇷🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇧🇷🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇱⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇸🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇧🇸🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇲⬛️⬛️⬛️
 ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
 ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
 END MAP 30
 
-MAP 30 PLAYER START 205
+MAP 30 PLAYER START 164
 
 BEGIN MAP 40 cave
 ⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️⬛️
