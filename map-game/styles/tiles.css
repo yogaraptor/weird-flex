@@ -300,6 +300,13 @@
   .tile.door-s2 {
     background-image: url("../assets/lab/lab-door-s2.png");
   }
+
+  .tile.table-w {
+    background-image: url("../assets/lab/lab-table-w.png");
+  }
+  .tile.table-e {
+    background-image: url("../assets/lab/lab-table-e.png");
+  }
 }
 
 .rocket-mainstage-cap-w {
