@@ -119,9 +119,10 @@
   container-type: style;
 }
 
-/* Player sprite — animation always runs, background-image swaps per direction.
-   Discrete transition delay debounces the brief all-directions-zero gap
-   that occurs when pressing a key mid-scroll, preventing flash to idle. */
+/* Player sprite — background-image itself is the "memory" of last direction.
+   999999s transition-delay prevents revert to idle after walking stops.
+   Container queries override with transition-delay:0s for instant swaps.
+   animation-play-state paused by default; running while walking. */
 .player::before {
   content: "";
   position: absolute;
@@ -129,29 +130,37 @@
   background-image: url("../assets/player-idle.png");
   background-size: auto 100%;
   background-repeat: no-repeat;
-  transition: background-image 0s 0.1s allow-discrete;
-  animation: walk 0.6s steps(3) infinite;
+  animation: walk 0.6s steps(3) infinite paused;
   background-position: calc(-3 * var(--tile-width) / 2);
+  transition: background-image 0s 999999s allow-discrete;
 }
 
+@container style(--going-down: 1) {
+  .player::before {
+    background-image: url("../assets/player-walk-down.png");
+    animation-play-state: running;
+    transition-delay: 0s;
+  }
+}
+@container style(--going-up: 1) {
+  .player::before {
+    background-image: url("../assets/player-walk-up.png");
+    animation-play-state: running;
+    transition-delay: 0s;
+  }
+}
 @container style(--going-right: 1) {
   .player::before {
     background-image: url("../assets/player-walk-right.png");
+    animation-play-state: running;
+    transition-delay: 0s;
   }
 }
 @container style(--going-left: 1) {
   .player::before {
     background-image: url("../assets/player-walk-left.png");
-  }
-}
-@container style(--going-down: 1) {
-  .player::before {
-    background-image: url("../assets/player-walk-x.png");
-  }
-}
-@container style(--going-up: 1) {
-  .player::before {
-    background-image: url("../assets/player-walk-x.png");
+    animation-play-state: running;
+    transition-delay: 0s;
   }
 }
 
