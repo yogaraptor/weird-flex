@@ -75,8 +75,8 @@
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
-  background-image: url("../assets/player-walk-x.png");
-  background-size: auto 100%;
+  /* background-image: url("../assets/player-walk-x.png");
+  background-size: auto 100%; */
   width: calc(var(--tile-width) / 2);
   height: calc(var(--tile-height) / 2);
   pointer-events: none;
@@ -162,21 +162,21 @@
 @keyframes walkRight {
   from {
     background-position-x: 0;
-    background-image: url("../assets/player-walk-x.png");
+    background-image: url("../assets/player-walk-right.png");
   }
   to {
     background-position-x: calc(-4 * var(--tile-width));
-    background-image: url("../assets/player-walk-x.png");
+    background-image: url("../assets/player-walk-right.png");
   }
 }
 @keyframes walkLeft {
   from {
     background-position-x: 0;
-    background-image: url("../assets/player-walk-x.png");
+    background-image: url("../assets/player-walk-left.png");
   }
   to {
     background-position-x: calc(-4 * var(--tile-width));
-    background-image: url("../assets/player-walk-x.png");
+    background-image: url("../assets/player-walk-left.png");
   }
 }
 @keyframes walkDown {
