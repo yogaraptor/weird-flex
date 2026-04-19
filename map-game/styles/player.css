@@ -1,10 +1,82 @@
+/* Scroll direction detection — Bramus technique */
+@property --scroll-x {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --scroll-x-delayed {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --scroll-y {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --scroll-y-delayed {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --going-right {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --going-left {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --going-down {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --going-up {
+  syntax: "<integer>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.map .viewport {
+  scroll-timeline:
+    --map-timeline-x x,
+    --map-timeline-y y;
+
+  /* Animate scroll position into custom properties */
+  animation:
+    set-scroll-x linear both,
+    set-scroll-y linear both;
+  animation-timeline: --map-timeline-x, --map-timeline-y;
+}
+
+@keyframes set-scroll-x {
+  from {
+    --scroll-x: 0;
+  }
+  to {
+    --scroll-x: 1;
+  }
+}
+
+@keyframes set-scroll-y {
+  from {
+    --scroll-y: 0;
+  }
+  to {
+    --scroll-y: 1;
+  }
+}
+
 .player {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
-  background-image: url("../assets/player-walk-x.png");
-  background-size: auto 100%;
+  /* background-image: url("../assets/player-walk-x.png");
+  background-size: auto 100%; */
   width: calc(var(--tile-width) / 2);
   height: calc(var(--tile-height) / 2);
   pointer-events: none;
@@ -14,34 +86,91 @@
   align-items: center;
   color: white;
 
-  /* Walk animation */
-  animation: walkAnimationX 1ms steps(4);
-  animation-timeline: --map-timeline-x;
-  animation-iteration-count: 15;
+  /* Lag the scroll position to compute direction delta */
+  transition:
+    --scroll-x-delayed 0.15s linear,
+    --scroll-y-delayed 0.15s linear;
+  --scroll-x-delayed: var(--scroll-x);
+  --scroll-y-delayed: var(--scroll-y);
+
+  /* Compute 0/1 boolean per direction via clamp+sign */
+  --going-right: clamp(
+    0,
+    sign(calc(var(--scroll-x) - var(--scroll-x-delayed))),
+    1
+  );
+  --going-left: clamp(
+    0,
+    sign(calc(var(--scroll-x-delayed) - var(--scroll-x))),
+    1
+  );
+  --going-down: clamp(
+    0,
+    sign(calc(var(--scroll-y) - var(--scroll-y-delayed))),
+    1
+  );
+  --going-up: clamp(
+    0,
+    sign(calc(var(--scroll-y-delayed) - var(--scroll-y))),
+    1
+  );
+
+  /* Style container so children can query direction */
+  container-type: style;
 }
 
-@keyframes walkAnimationX {
-  0% {
+/* Player sprite — background-image itself is the "memory" of last direction.
+   999999s transition-delay prevents revert to idle after walking stops.
+   Container queries override with transition-delay:0s for instant swaps.
+   animation-play-state paused by default; running while walking. */
+.player::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../assets/player-idle.png");
+  background-size: auto 100%;
+  background-repeat: no-repeat;
+  animation: walk 0.6s steps(3) infinite paused;
+  background-position: calc(-3 * var(--tile-width) / 2);
+  transition: background-image 0s 999999s allow-discrete;
+}
+
+@container style(--going-down: 1) {
+  .player::before {
+    background-image: url("../assets/player-walk-down.png");
+    animation-play-state: running;
+    transition-delay: 0s;
+  }
+}
+@container style(--going-up: 1) {
+  .player::before {
+    background-image: url("../assets/player-walk-up.png");
+    animation-play-state: running;
+    transition-delay: 0s;
+  }
+}
+@container style(--going-right: 1) {
+  .player::before {
+    background-image: url("../assets/player-walk-right.png");
+    animation-play-state: running;
+    transition-delay: 0s;
+  }
+}
+@container style(--going-left: 1) {
+  .player::before {
+    background-image: url("../assets/player-walk-left.png");
+    animation-play-state: running;
+    transition-delay: 0s;
+  }
+}
+
+@keyframes walk {
+  from {
     background-position-x: 0;
   }
-  100% {
-    background-position-x: calc(-4 * var(--tile-width));
+  to {
+    background-position-x: calc(-3 * var(--tile-width) / 2);
   }
-}
-
-@keyframes walkAnimationY {
-  0% {
-    background-position-x: 0;
-  }
-  100% {
-    background-position-x: calc(-4 * var(--tile-width));
-  }
-}
-
-.map .viewport {
-  scroll-timeline:
-    --map-timeline-x x,
-    --map-timeline-y y;
 }
 
 @keyframes playerHurt {
