@@ -1,3 +1,23 @@
+.tile.encounter {
+  position: relative;
+
+  .encounter-transition {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .encounter-ready > .tile-btn {
+    bottom: -1rem;
+  }
+
+  &:has(#encounter-give:checked) {
+    > .tile-btn {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+}
+
 @property --wipe-angle {
   syntax: "<angle>";
   inherits: false;
@@ -70,21 +90,58 @@
   }
 }
 
-@keyframes encounter-croissant-fly {
+@keyframes encounter-speech-fade-out {
   0% {
-    translate: 0 0;
-    scale: 1;
     opacity: 1;
+    display: block;
   }
-  70% {
-    translate: 50cqw -30cqh;
-    scale: 0.6;
-    opacity: 1;
+  99% {
+    opacity: 0;
+    display: block;
   }
   100% {
-    translate: 50cqw -30cqh;
-    scale: 0.4;
     opacity: 0;
+    display: none;
+  }
+}
+
+@keyframes encounter-croissant-fly-x {
+  from {
+    left: 10%;
+  }
+  to {
+    left: 45%;
+  }
+}
+
+@keyframes encounter-croissant-fly-y {
+  0% {
+    bottom: 0;
+    animation-timing-function: ease-out;
+  }
+  40% {
+    bottom: 80%;
+    animation-timing-function: ease-in;
+  }
+  100% {
+    bottom: 35%;
+  }
+}
+@keyframes encounter-croissant-fly-z {
+  0%,
+  75% {
+    scale: 1;
+  }
+  100% {
+    scale: 0.5;
+  }
+}
+@keyframes encounter-croissant-spin {
+  from {
+    rotate: 0deg;
+  }
+  to {
+    rotate: 720deg;
   }
 }
 
@@ -97,7 +154,7 @@
 
   &:has(#encounter-give:checked) {
     .encounter-give-result {
-      display: block;
+      display: flex;
     }
 
     /* Don't show encounter prompt once completed */
@@ -200,9 +257,9 @@
     to bottom,
     #5898f8 0%,
     #5898f8 25%,
-    #a3a83a 25%,
-    #a3a83a 55%,
-    #b8bf3c 55%,
+    #b3b74a 25%,
+    #b3b74a 45%,
+    #b8bf3c 45%,
     #b8bf3c 100%
   );
   container-type: size;
@@ -258,9 +315,14 @@
 
 /* Dialogue tray — bottom portion */
 .encounter-dialogue {
-  flex: 0 0 auto;
   position: relative;
-  padding: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  height: 6rem;
+  padding: 1rem;
+  background: #ccc;
+  border-top: 1px solid #888;
 }
 
 /* All battle speech bubbles share the stepped reveal */
@@ -281,7 +343,6 @@
 .encounter-action {
   opacity: 0;
   cursor: pointer;
-  margin-top: 0.25rem;
   animation: encounter-speech-reveal 0.3s steps(6) 2s forwards;
 }
 
@@ -296,6 +357,9 @@
 
 .encounter-give-result {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 /* Flying croissant */
@@ -303,8 +367,8 @@
   position: absolute;
   bottom: 100%;
   left: 10%;
-  width: 2rem;
-  height: 2rem;
+  width: 6rem;
+  height: 6rem;
   background-image: url("../assets/croissant.png");
   background-size: cover;
   image-rendering: pixelated;
@@ -315,36 +379,38 @@
 /* Once checked: hide the offer, play the give sequence */
 .encounter-scene:has(#encounter-give:checked) {
   .encounter-action {
-    opacity: 0;
-    pointer-events: none;
-    animation: none;
+    display: none;
   }
 
   .encounter-speech-1 {
-    animation: none;
-    opacity: 0;
+    display: none;
   }
 
   .encounter-croissant {
     opacity: 1;
-    animation: encounter-croissant-fly 1s steps(10) forwards;
+    animation:
+      encounter-croissant-fly-x 1s linear forwards,
+      encounter-croissant-fly-y 1s linear forwards,
+      encounter-croissant-fly-z 1s linear forwards,
+      encounter-croissant-spin 1s linear forwards;
   }
 
   .encounter-speech-2 {
-    animation: encounter-speech-reveal 0.3s steps(6) 1.2s forwards;
+    animation:
+      encounter-speech-reveal 0.3s steps(6) 2s forwards,
+      encounter-speech-fade-out 0.3s steps(6) 5s forwards;
   }
 
   .encounter-speech-3 {
     margin-top: 0.25rem;
-    animation: encounter-speech-reveal 0.3s steps(6) 3s forwards;
+    animation: encounter-speech-reveal 0.3s steps(6) 5.5s forwards;
   }
 
   .encounter-give-close {
     display: block;
-    margin-top: 0.25rem;
     opacity: 0;
     cursor: pointer;
-    animation: encounter-speech-reveal 0.3s steps(6) 4.5s forwards;
+    animation: encounter-speech-reveal 0.3s steps(6) 7.5s forwards;
   }
 }
 

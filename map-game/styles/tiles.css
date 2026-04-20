@@ -630,27 +630,6 @@
   }
 }
 
-/* T-Rex encounter tile */
-.tile.encounter {
-  position: relative;
-
-  .encounter-transition {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .tile-btn {
-    bottom: -1rem;
-  }
-
-  &:has(#encounter-give:checked) {
-    .tile-btn {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
-}
-
 /* Special tile states when player is "on" that tile */
 @container scroll-state(snapped: x) or scroll-state(snapped: y) {
   /* Fire effect around player when on lava */
