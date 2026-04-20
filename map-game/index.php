@@ -41,8 +41,9 @@ foreach ($legendLines as $legendLine) {
   if ($metadata && preg_match('/^SPEECH (.+)$/', $metadata, $matches)) {
     $speech = $matches[1];
   }
-  if ($metadata && preg_match('/^ENCOUNTER$/', $metadata, $matches)) {
+  if ($metadata && preg_match('/^ENCOUNTER (.+)$/', $metadata, $matches)) {
     $encounter = true;
+    $encounterId = $matches[1];
   }
   $npc = null;
   if ($metadata && preg_match('/^NPC (\S+)$/', $metadata, $matches)) {
@@ -279,17 +280,11 @@ foreach ($lines as $i => $line) {
                       <div class="encounter-transition"></div>
                       <div class="encounter-ready">
                         <p>A wild T-REX appeared!</p>
-                        <button class="tile-btn" command="show-modal" commandfor="encounter"><span class="frame-inner">Ready!</span></button>
+                        <button class="tile-btn" command="show-modal" commandfor="encounter-<?php echo $encounterId; ?>"><span class="frame-inner">Ready!</span></button>
                       </div>
 
-                      <dialog class="encounter-container" id="encounter">
-                        Here's the encounter.
-                        <label for="encounter-give">Give her your sandwich</label><input type="checkbox" id="encounter-give" />
-                        <div class="encounter-give-result">
-                          <p>Looks like she's enjoying it! Oh, and look, she's giving you something in return&hellip;</p>
-                          <p><em>Yogaraptor received <b>POWER SPHERE</b></em></p>
-                          <button class="encounter-give-close" command="close" commandfor="encounter">Scuttle away before she changes her mind!</button>
-                        </div>
+                      <dialog class="encounter-container" id="encounter-<?php echo $encounterId; ?>">
+                        <?php require_once('./encounters/' . $encounterId . '.php'); ?>
                       </dialog>
                     </div>
                   <?php endif; ?>

@@ -52,7 +52,7 @@ BEGIN LEGEND
 📉 barrier-cap-e
 ⬛️ void
 🔑 stone ITEM KEY
-🦖 grass2 ENCOUNTER
+🦖 grass2 ENCOUNTER trex
 🚪 doormat GOTO MAP 20 DOOR TEXT Step into the big wide world
 🧪 lab GOTO MAP 30 DOOR TEXT Enter the lab
 ⏺️ floor EXIT DOOR TEXT Head back outside...
