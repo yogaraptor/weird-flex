@@ -578,7 +578,7 @@
 }
 
 /* Tiles with interactive buttons (e.g. doors, puzzles, signposts) */
-.tile .tile-btn {
+.tile:is(.item, .speech, .door, .puzzle) .tile-btn {
   display: flex;
   pointer-events: none;
   z-index: 20;
@@ -613,13 +613,15 @@
   }
 }
 
-.tile:has(.frame),
-.tile:has(.tile-btn) {
+.tile:is(.item, .speech, .door, .puzzle) {
   position: relative;
 
   .frame,
   .tile-btn {
-    translate: 0 5rem;
+    position: absolute;
+    left: 50%;
+    bottom: var(--tile-height);
+    translate: -50% 5rem;
     opacity: 0;
     transition:
       translate 0.5s steps(6),
@@ -692,11 +694,10 @@
     border: 2px solid green;
   }
 
-  .tile:has(.frame),
-  .tile:has(.tile-btn) {
+  .tile:is(.item, .speech, .door, .puzzle) {
     .frame,
     .tile-btn {
-      translate: none;
+      translate: -50% 0;
       opacity: 1;
       pointer-events: auto;
     }

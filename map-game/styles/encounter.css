@@ -30,6 +30,15 @@
   }
 }
 
+@keyframes encounter-ready-enter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 .encounter-container {
   position: absolute;
   left: 50%;
@@ -56,6 +65,30 @@
   }
 }
 
+.tile.encounter {
+  .encounter-ui {
+    position: absolute;
+  }
+
+  .encounter-transition {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+  }
+
+  .encounter-ready {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    opacity: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 @container scroll-state(snapped: x) or scroll-state(snapped: y) {
   .tile.encounter .encounter-transition::before {
     content: "";
@@ -66,15 +99,19 @@
     animation: encounter-flash 1.5s ease-in-out forwards;
   }
 
-  .tile.encounter .encounter-transition {
-    position: absolute;
+  .tile.encounter .encounter-ui {
     top: calc(-0.5 * var(--viewport-height) + 0.5 * var(--tile-height));
     left: calc(-0.5 * var(--viewport-width) + 0.5 * var(--tile-width));
     bottom: 0;
     right: 0;
-    z-index: 10;
     width: var(--viewport-width);
     height: var(--viewport-height);
+  }
+  .tile.encounter .encounter-ready {
+    animation: encounter-ready-enter 0.1s linear 2s forwards;
+  }
+
+  .tile.encounter .encounter-transition {
     display: flex;
     justify-content: center;
     align-items: center;

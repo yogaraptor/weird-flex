@@ -273,18 +273,23 @@ foreach ($lines as $i => $line) {
                   <?php endif; ?>
 
                   <?php if ($tileDef['encounter'] !== null): ?>
-                    <button class="tile-btn" command="show-modal" commandfor="encounter">Ready!</button>
-                    <div class="encounter-transition">A wild T-REX appeared!</div>
-
-                    <dialog class="encounter-container" id="encounter">
-                      Here's the encounter.
-                      <label for="encounter-give">Give her your sandwich</label><input type="checkbox" id="encounter-give" />
-                      <div class="encounter-give-result">
-                        <p>Looks like she's enjoying it! Oh, and look, she's giving you something in return&hellip;</p>
-                        <p><em>Yogaraptor received <b>POWER SPHERE</b></em></p>
-                        <button class="encounter-give-close" command="close" commandfor="encounter">Scuttle away before she changes her mind!</button>
+                    <div class="encounter-ui">
+                      <div class="encounter-transition"></div>
+                      <div class="encounter-ready">
+                        <p>A wild T-REX appeared!</p>
+                        <button class="tile-btn" command="show-modal" commandfor="encounter"><span class="frame-inner">Ready!</span></button>
                       </div>
-                    </dialog>
+
+                      <dialog class="encounter-container" id="encounter">
+                        Here's the encounter.
+                        <label for="encounter-give">Give her your sandwich</label><input type="checkbox" id="encounter-give" />
+                        <div class="encounter-give-result">
+                          <p>Looks like she's enjoying it! Oh, and look, she's giving you something in return&hellip;</p>
+                          <p><em>Yogaraptor received <b>POWER SPHERE</b></em></p>
+                          <button class="encounter-give-close" command="close" commandfor="encounter">Scuttle away before she changes her mind!</button>
+                        </div>
+                      </dialog>
+                    </div>
                   <?php endif; ?>
                 </div>
             <?php
