@@ -24,7 +24,7 @@
       </div>
 
       <div class="encounter-speech encounter-speech-3">
-        Yogaraptor received <b>STABILISER ROD</b>!
+        Yogaraptor received <b>OLD BACK PLATE</b>!
       </div>
 
       <button class="tile-btn encounter-give-close" command="close" commandfor="encounter-stego">
