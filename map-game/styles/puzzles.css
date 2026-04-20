@@ -74,6 +74,11 @@ body {
   pointer-events: none;
 }
 
+/* Fix positioning of initial reveal button - rendering within <summary> pushes it down for some reason */
+.tile.puzzle summary {
+  translate: 0 calc(var(--tile-height) / 2);
+}
+
 /* Set background for puzzle and prize tiles */
 .tile.puzzle {
   background-image: url("../assets/stone-puzzle/tile.png");

@@ -616,7 +616,7 @@
 .tile:is(.item, .speech, .door, .puzzle) {
   position: relative;
 
-  .frame,
+  .speech-bubble,
   .tile-btn {
     position: absolute;
     left: 50%;
@@ -695,7 +695,7 @@
   }
 
   .tile:is(.item, .speech, .door, .puzzle) {
-    .frame,
+    .speech-bubble,
     .tile-btn {
       translate: -50% 0;
       opacity: 1;

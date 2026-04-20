@@ -239,11 +239,13 @@ foreach ($lines as $i => $line) {
                   <?php endif; ?>
 
                   <?php if ($tileDef['showPuzzle'] !== null): ?>
-                    <details class="puzzle-wrapper frame" id="puzzle-<?php echo $tileDef['showPuzzle']; ?>">
-                      <div class="puzzle-content frame-inner">
-                        <label>Sun <input name="sun" type="range" min="1" max="5" value="1" /></label>
-                        <label>Moon <input name="moon" type="range" min="1" max="5" value="4" /></label>
-                        <label>Earth <input name="earth" type="range" min="1" max="5" value="2" /></label>
+                    <details class="puzzle-wrapper" id="puzzle-<?php echo $tileDef['showPuzzle']; ?>">
+                      <div class="frame">
+                        <div class="puzzle-content frame-inner">
+                          <label>Sun <input name="sun" type="range" min="1" max="5" value="1" /></label>
+                          <label>Moon <input name="moon" type="range" min="1" max="5" value="4" /></label>
+                          <label>Earth <input name="earth" type="range" min="1" max="5" value="2" /></label>
+                        </div>
                       </div>
 
                       <summary>
