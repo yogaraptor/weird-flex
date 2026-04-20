@@ -701,23 +701,4 @@
       pointer-events: auto;
     }
   }
-
-  .tile.encounter .encounter-transition {
-    position: absolute;
-    top: calc(-0.5 * var(--viewport-height) + 0.5 * var(--tile-height));
-    left: calc(-0.5 * var(--viewport-width) + 0.5 * var(--tile-width));
-    bottom: 0;
-    right: 0;
-    z-index: 10;
-    width: var(--viewport-width);
-    height: var(--viewport-height);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #000000f0;
-    opacity: 1;
-    pointer-events: auto;
-    background: red;
-    content: "";
-  }
 }
