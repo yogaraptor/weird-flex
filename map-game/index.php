@@ -41,9 +41,10 @@ foreach ($legendLines as $legendLine) {
   if ($metadata && preg_match('/^SPEECH (.+)$/', $metadata, $matches)) {
     $speech = $matches[1];
   }
-  if ($metadata && preg_match('/^ENCOUNTER (.+)$/', $metadata, $matches)) {
+  if ($metadata && preg_match('/^ENCOUNTER (\S+) (.+)$/', $metadata, $matches)) {
     $encounter = true;
     $encounterId = $matches[1];
+    $encounterWelcome = $matches[2];
   }
   $npc = null;
   if ($metadata && preg_match('/^NPC (\S+)$/', $metadata, $matches)) {
@@ -279,7 +280,7 @@ foreach ($lines as $i => $line) {
                     <div class="encounter-ui">
                       <div class="encounter-transition"></div>
                       <div class="encounter-ready">
-                        <p>A wild T-REX appeared!</p>
+                        <p><?php echo $encounterWelcome; ?></p>
                         <button class="tile-btn" command="show-modal" commandfor="encounter-<?php echo $encounterId; ?>"><span class="frame-inner">Ready!</span></button>
                       </div>
 
