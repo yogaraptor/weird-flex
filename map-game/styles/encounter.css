@@ -38,16 +38,7 @@
     opacity: 1;
   }
 }
-
-.encounter-container {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: 10;
-  transform: translate(-50%, -50%);
-  width: var(--viewport-width);
-  height: var(--viewport-height);
-
+.tile.encounter {
   .encounter-give-result {
     display: none;
   }
@@ -56,7 +47,22 @@
     .encounter-give-result {
       display: block;
     }
+
+    /* Don't show encounter prompt once completed */
+    .encounter-ui:has(dialog:not(:open)) {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
+}
+.encounter-container {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  width: var(--viewport-width);
+  height: var(--viewport-height);
 }
 
 .tile.encounter:has(#encounter-give:checked) {
