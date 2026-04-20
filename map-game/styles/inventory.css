@@ -98,6 +98,7 @@ body:has(#item-crystal:checked) {
   content: "";
   background-size: cover;
 }
+
 .item-icon {
   position: absolute;
   inset: 0;
@@ -106,6 +107,7 @@ body:has(#item-crystal:checked) {
     opacity 0s linear 0.3s;
   background-size: cover;
 }
+
 .app:has(#item-CROISSANT:checked) {
   .inventory li:nth-child(1) {
     &::before {
@@ -121,6 +123,11 @@ body:has(#item-crystal:checked) {
     );
     opacity: 0;
   }
+}
+/* Fade inventory croissant out when given to the stego */
+.app:has(#encounter-give:checked) .inventory li:nth-child(1)::before {
+  opacity: 0;
+  transition: opacity 0.4s linear;
 }
 
 .app:has(#item-KEY:checked) {

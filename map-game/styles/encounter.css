@@ -303,7 +303,11 @@
   position: absolute;
   bottom: 100%;
   left: 10%;
-  font-size: 2rem;
+  width: 2rem;
+  height: 2rem;
+  background-image: url("../assets/croissant.png");
+  background-size: cover;
+  image-rendering: pixelated;
   opacity: 0;
   pointer-events: none;
 }

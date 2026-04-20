@@ -17,7 +17,7 @@
     <input type="checkbox" id="encounter-give" />
 
     <div class="encounter-give-result">
-      <div class="encounter-croissant">🥐</div>
+      <div class="encounter-croissant"></div>
 
       <div class="encounter-speech encounter-speech-2">
         She looks happy! She's giving you something&hellip;
