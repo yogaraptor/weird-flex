@@ -22,10 +22,11 @@
   }
 }
 
-.tile {
+.speech-bubble .frame-inner {
+  background: #ccc;
+  color: #000;
 }
 
-/* UI frame */
 .tile-btn,
 .frame {
   background:
