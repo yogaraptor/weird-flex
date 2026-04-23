@@ -40,16 +40,30 @@
   initial-value: 0;
 }
 
+.map {
+  /* Adopt the scroll timelines from the child viewport so the animation
+     runs on .map (outside the scroll container) rather than inside it.
+     This keeps main-thread custom property work off the snap-settling path. */
+  timeline-scope: --map-timeline-x, --map-timeline-y;
+
+  animation:
+    set-scroll-x linear both,
+    set-scroll-y linear both;
+  animation-timeline: --map-timeline-x, --map-timeline-y;
+}
+
 .map .viewport {
   scroll-timeline:
     --map-timeline-x x,
     --map-timeline-y y;
 
-  /* Animate scroll position into custom properties */
-  animation:
-    set-scroll-x linear both,
-    set-scroll-y linear both;
-  animation-timeline: --map-timeline-x, --map-timeline-y;
+  /* Transition lives here — child of .map where --scroll-x is now set,
+     but not inside the scroll content, so it doesn't block snap settling */
+  transition:
+    --scroll-x-delayed 0.15s linear,
+    --scroll-y-delayed 0.15s linear;
+  --scroll-x-delayed: var(--scroll-x);
+  --scroll-y-delayed: var(--scroll-y);
 }
 
 @keyframes set-scroll-x {
@@ -86,14 +100,8 @@
   align-items: center;
   color: white;
 
-  /* Lag the scroll position to compute direction delta */
-  transition:
-    --scroll-x-delayed 0.15s linear,
-    --scroll-y-delayed 0.15s linear;
-  --scroll-x-delayed: var(--scroll-x);
-  --scroll-y-delayed: var(--scroll-y);
-
-  /* Compute 0/1 boolean per direction via clamp+sign */
+  /* Compute 0/1 boolean per direction via clamp+sign.
+     --scroll-x / --scroll-x-delayed are inherited from .map and .map .viewport */
   --going-right: clamp(
     0,
     sign(calc(var(--scroll-x) - var(--scroll-x-delayed))),
