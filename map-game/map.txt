@@ -131,15 +131,16 @@ BEGIN LEGEND
 🕝 road-tjunc-w
 🕞 road-cross
 🧙 grass1 NPC triceratops
+🧙‍♀️ grass1 NPC ankylosaurus
 🧑‍🔬 floor NPC pterodactyl
 💬 grass1 SPEECH <p>Are they nearly done building the rocket?</p><p>I hear a meteor is coming!</p>
 🗨️ grass1 SPEECH <p>I'm not going in that cave.</p><p>They say it holds a dark secret!</p>
+🗯️ grass1 SPEECH <p>Stay out of that long grass to the north-west if you've got food.</p><p>You might attract a big dino!</p>
 🔒️ grass1 SPEECH Locked...
 📅 road-bend-se SPEECH "CLOSED. Please come back tomorrow!"
 ↔️ road-h-middle SPEECH "NORTH: the village.<br><br> EAST: the gloomy caves. <br><br>SOUTH: DinoMart!<br><br> WEST: Rocket Lab 
-🥽 floor SPEECH <p>We're missing the stabiliser rod.</p><p>The rocket can't take off without it!</p>
-🦺 floor SPEECH <p>I saw a wild T-Rex sniffing around the storage area last night.</p><p>What could it possibly want?</p>
-🥼 floor SPEECH <p>The stabiliser rod? Oh, yeah...</p><p>it kinda looks like a giant bone, I guess?</p>
+🥼 floor SPEECH <p>We haven't got enough power crystals!</p><p>The rocket can't take off!</p>
+🦺 floor SPEECH <p>The heat shield needs patching too!</p><p>Anything flat and hard would do&hellip;</p>
 END LEGEND
 
 BEGIN MAP 10 home
@@ -172,7 +173,7 @@ BEGIN MAP 20 overworld
 🌳🌳🌳🌳🌱🌿🌿🌿🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌿🦖🌿🌱🪴🌱🌱🌱🌱🌱🪴🛖🏚️🏠️🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🪨⚪️🌱🌱🌱🌱🌱🌱🌱🕖🕑🕑🕑🕒🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🕖🕘🌱💬🧙🌱🌱🌱🌱🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🧙‍♀️🗯️🌱🌱🕖🕘🌱💬🧙🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱1️⃣2️⃣2️⃣3️⃣🌱🌱🌱🌱🧭🕔🌱🌱🌱🪴🌱🌱🌱🧗‍♀️🚵‍♂️⛰️⛰️⛰️
 🌳🌳🌳🌳🌱8️⃣🧪🌱4️⃣🌱🕖🕑🕑↔️🕞🕑🕑🕑🕑🕑🕑🕒🕳️🚵⛰️⛰️⛰️
 🌳🌳🌳🌳🌱8️⃣🌱🌱9️⃣🕐🕘🌱🌱🌱🕔🌱🌱🌱🌱🗨️🧙🌱🧗‍♂️🚵‍♀️⛰️⛰️⛰️
@@ -185,7 +186,7 @@ BEGIN MAP 20 overworld
 🌳🌳🌳🌳🌱🌱🌱🌱🌱⚪️🪨🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🪨🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
-🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧙🧗⛰️⛰️⛰️
+🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗‍♂️🚵‍♀️⛰️⛰️
 🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🌳🧗‍♂️🚵‍♀️⛰️
@@ -203,8 +204,8 @@ BEGIN MAP 30 lab
 ⬛️⬛️⬛️🇦🇹🔼🔙🔛🔛🔛🔛🔜⏫🔃⤴️⤵️🧑‍🔬🔄🔃🇦🇬⬛️⬛️⬛️
 ⬛️⬛️⬛️📈🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧🚧📉⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🦺🧑‍🔬💺🪑🟨🟨🟨🥼🧑‍🔬🟨🟨🇦🇬⬛️⬛️⬛️
-⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🥽🧑‍🔬🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🥼🧑‍🔬💺🪑🟨🟨🟨🦺🧑‍🔬🟨🟨🇦🇬⬛️⬛️⬛️
+⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇹🟨🟨🟨🟨🟨⏺️🟨🟨🟨🟨🟨🟨🟨🟨🇦🇬⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇷🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇧🇷🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇴🇦🇱⬛️⬛️⬛️
 ⬛️⬛️⬛️🇦🇸🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇧🇸🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇶🇦🇲⬛️⬛️⬛️
