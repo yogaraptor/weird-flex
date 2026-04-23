@@ -24,7 +24,7 @@ body:has(#item-crystal:checked) {
   z-index: 1000; /* Place above maps in stacking order so items can animate from map */
   transform: translate(
     -50%,
-    calc(-50% - (var(--viewport-height) / 2) - (var(--tile-height)))
+    calc(-50% - (var(--viewport-height) / 2) - (var(--tile-height) / 4))
   );
   width: var(--viewport-width);
   height: var(--tile-height) * 2;

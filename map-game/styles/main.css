@@ -1,14 +1,15 @@
 :root {
-  --tile-width: 50px;
-  --tile-height: 50px;
-  --viewport-width: 450px;
-  --viewport-height: 450px;
+  --tile-width: 64px;
+  --tile-height: 64px;
+  --viewport-width: 576px;
+  --viewport-height: 576px;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  image-rendering: pixelated; /* It's a pixel art game, yo! */
 }
 
 body {
@@ -33,7 +34,7 @@ body {
   left: 50%;
   top: 50%;
   z-index: 1;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, calc(-50% + var(--tile-height) / 2));
   overflow: hidden; /* Prevent any offscreen UI adding scrollbars */
   background-color: black;
 
