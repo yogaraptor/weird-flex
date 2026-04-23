@@ -50,6 +50,10 @@
     set-scroll-x linear both,
     set-scroll-y linear both;
   animation-timeline: --map-timeline-x, --map-timeline-y;
+
+  /* Style container here rather than on .player — keeps style query
+     evaluation outside the scroll content tree */
+  container-type: style;
 }
 
 .map .viewport {
@@ -122,9 +126,6 @@
     sign(calc(var(--scroll-y-delayed) - var(--scroll-y))),
     1
   );
-
-  /* Style container so children can query direction */
-  container-type: style;
 }
 
 /* Player sprite — background-image itself is the "memory" of last direction.
@@ -141,6 +142,7 @@
   animation: walk 0.6s steps(3) infinite paused;
   background-position: calc(-3 * var(--tile-width) / 2);
   transition: background-image 0s 999999s allow-discrete;
+  will-change: transform; /* Performance boost - separate player div from map for compositor */
 }
 
 @container style(--going-down: 1) {
