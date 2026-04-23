@@ -223,7 +223,7 @@ details.puzzle-wrapper[open] .summary-open {
   height: 5rem;
   display: flex;
   align-items: center;
-  padding-inline: 2rem;
+  padding-inline: 6rem;
   font-size: 0;
   background: url("../assets/stone-puzzle/groove.png") center center no-repeat;
 

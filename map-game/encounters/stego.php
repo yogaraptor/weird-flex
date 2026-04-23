@@ -19,12 +19,14 @@
 
     <div class="encounter-give-result">
 
-      <div class="encounter-speech encounter-speech-2">
-        She looks happy! She's giving you something&hellip;
-      </div>
+      <div>
+        <div class="encounter-speech encounter-speech-2">
+          She looks happy! She's giving you something&hellip;
+        </div>
 
-      <div class="encounter-speech encounter-speech-3">
-        Yogaraptor received <b>OLD BACK PLATE</b>!
+        <div class="encounter-speech encounter-speech-3">
+          Yogaraptor received <b>OLD BACK PLATE</b>!
+        </div>
       </div>
 
       <button class="tile-btn encounter-give-close" command="close" commandfor="encounter-stego">
