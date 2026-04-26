@@ -139,8 +139,8 @@ BEGIN LEGEND
 🔒️ grass1 SPEECH Locked...
 📅 road-bend-se SPEECH "CLOSED. Please come back tomorrow!"
 ↔️ road-h-middle SPEECH "NORTH: the village.<br><br> EAST: the gloomy caves. <br><br>SOUTH: DinoMart!<br><br> WEST: Rocket Lab 
-🥼 floor SPEECH <p>We haven't got enough power crystals!</p><p>The rocket can't take off!</p>
-🦺 floor SPEECH <p>The heat shield needs patching too!</p><p>Anything flat and hard would do&hellip;</p>
+🥼 floor ENDGAME crystal
+🦺 floor ENDGAME back-plate
 END LEGEND
 
 BEGIN MAP 10 home

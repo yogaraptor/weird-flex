@@ -534,9 +534,13 @@
 }
 /* NPCs */
 .tile.npc {
-  .npc-sprite {
+  .npc-wrapper {
     width: 50%;
     height: 50%;
+  }
+  .npc-sprite {
+    width: 100%;
+    height: 100%;
     background-size: cover;
   }
 }

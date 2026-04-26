@@ -20,6 +20,7 @@ foreach ($legendLines as $legendLine) {
   $speech = null;
   $encounter = null;
   $doorText = null;
+  $endgame = null;
   if ($metadata && preg_match('/^GOTO MAP (\d+)(?:\s+DOOR TEXT (.+))?$/', $metadata, $matches)) {
     $gotoMap = intval($matches[1]);
     $doorText = isset($matches[2]) && $matches[2] !== '' ? $matches[2] : null;
@@ -50,6 +51,9 @@ foreach ($legendLines as $legendLine) {
   if ($metadata && preg_match('/^NPC (\S+)$/', $metadata, $matches)) {
     $npc = $matches[1];
   }
+  if ($metadata && preg_match('/^ENDGAME (\S+)$/', $metadata, $matches)) {
+    $endgame = $matches[1];
+  }
   $tileTypes[$char] = [
     'name' => $name,
     'metadata' => $metadata,
@@ -61,7 +65,8 @@ foreach ($legendLines as $legendLine) {
     'encounter' => $encounter,
     'npc' => $npc,
     'doorText' => $doorText,
-    'prize' => $prize
+    'prize' => $prize,
+    'endgame' => $endgame
   ];
 }
 
@@ -121,6 +126,7 @@ foreach ($lines as $i => $line) {
   <link rel="stylesheet" type="text/css" href="styles/inventory.css" />
   <link rel="stylesheet" type="text/css" href="styles/widgets.css" />
   <link rel="stylesheet" type="text/css" href="styles/encounter.css" />
+  <link rel="stylesheet" type="text/css" href="styles/endgame.css" />
 </head>
 
 <body>
@@ -221,6 +227,11 @@ foreach ($lines as $i => $line) {
                 }
                 if ($tileDef['speech'] !== null) array_push($tileClasses, 'speech');
                 if ($tileDef['gotoMap'] !== null || $tileDef['exit']) array_push($tileClasses, 'door');
+                if ($tileDef['endgame'] !== null) {
+                  array_push($tileClasses, 'endgame');
+                  array_push($tileClasses, 'endgame-' . $tileDef['endgame']);
+                  array_push($tileClasses, 'speech');
+                };
             ?>
                 <div
                   class="<?php echo join(' ', $tileClasses); ?>"
@@ -273,7 +284,9 @@ foreach ($lines as $i => $line) {
                   <?php endif; ?>
 
                   <?php if ($tileDef['npc'] !== null): ?>
-                    <div class="npc-sprite"></div>
+                    <div class="npc-wrapper">
+                      <div class="npc-sprite"></div>
+                    </div>
                   <?php endif; ?>
 
                   <?php if ($tileDef['encounter'] !== null): ?>
@@ -287,6 +300,50 @@ foreach ($lines as $i => $line) {
                       <dialog class="encounter-container" id="encounter-<?php echo $encounterId; ?>">
                         <?php require_once('./encounters/' . $encounterId . '.php'); ?>
                       </dialog>
+                    </div>
+                  <?php endif; ?>
+
+                  <?php if ($tileDef['endgame'] === 'crystal'): ?>
+                    <div class="frame speech-bubble speech-bubble-notice">
+                      <div class="frame-inner">
+                        !
+                      </div>
+                    </div>
+
+                    <div class="frame speech-bubble speech-bubble-endgame">
+                      <div class="frame-inner">
+                        <p>You got the crystals!</p>
+                        <p>Enough to finish fueling the rocket!</p>
+                      </div>
+                    </div>
+
+                    <div class="frame speech-bubble">
+                      <div class="frame-inner">
+                        <p>We haven't got enough power crystals!</p>
+                        <p>The rocket can't take off!</p>
+                      </div>
+                    </div>
+
+                  <?php endif; ?>
+
+                  <?php if ($tileDef['endgame'] === 'back-plate'): ?>
+                    <div class="frame speech-bubble speech-bubble-notice">
+                      <div class="frame-inner">
+                        !
+                      </div>
+                    </div>
+
+                    <div class="frame speech-bubble speech-bubble-endgame">
+                      <div class="frame-inner">
+                        That old stego back plate looks like a perfect fit<br>for the gap in the heat shield!
+                      </div>
+                    </div>
+
+                    <div class="frame speech-bubble">
+                      <div class="frame-inner">
+                        <p>The heat shield needs patching too!</p>
+                        <p>Anything flat and hard would do&hellip;</p>
+                      </div>
                     </div>
                   <?php endif; ?>
                 </div>

@@ -1,0 +1,135 @@
+/*
+  The game is complete in terms of objectives if the user has picked up
+  the crystals (after solving the stone puzzle in the cave) and receiving
+  the old back plate from the Stegosaurus (by giving them the croissant
+  in the long grass encounter).
+ 
+  In terms of state this boils down to the crystal item checkbox and the
+  "give the stego your croissant" checkbox being checked
+*/
+
+/*
+  A few pre-endgame rules to hide stuff until the game objectives are
+  complete
+*/
+.speech-bubble-notice,
+.speech-bubble-endgame {
+  visibility: hidden;
+}
+
+/*
+  The endgame plays out as a cut-scene, in which:
+  1. The pterodactyl scientists notice Yogaraptor enter the lab
+  2. They move to greet him and exchange some words
+  3. The lab map is hidden, revealing the overworld map, where a rocket
+    tile has appeared next to the lab
+  4. A queue of dinos enter the rocket
+  5. A speech bubble appears announcing the countdown
+  6. The rocket lifts off, the scene fades to white
+  7. Speech bubbles of dialogue from the saved dinosaurs fill the screen
+*/
+.app:has(#item-crystal:checked).app:has(#encounter-give:checked) .map-lab:open {
+  /*
+    0. Disable scrolling (and therefore player movement) to make it feel like a prope cut-scene
+    We have to do this using a (brief) animation, because if we set it immediately, the browser
+    won't scroll to the autofocused "start" tile, and the player will appear to enter the room
+    in the top-left rather than by the door.
+
+    Also hide the exit door message
+  */
+  .viewport {
+    animation: disable-scrolling 0.1s forwards;
+  }
+  .tile.door .tile-btn {
+    display: none;
+  }
+
+  /*
+      1. Show "!" speech bubble over scientists head as player enters lab
+  */
+  .tile.endgame-crystal,
+  .tile.endgame-back-plate {
+    .speech-bubble-notice {
+      animation: npc-speech-reveal 2s steps(6) forwards 1s;
+    }
+  }
+  .tile.endgame-crystal {
+    .speech-bubble-endgame {
+      bottom: calc(var(--tile-height) * -1);
+      animation: npc-speech-reveal 2s steps(6) forwards 10s;
+    }
+  }
+  .tile.endgame-back-plate {
+    .speech-bubble-endgame {
+      bottom: calc(var(--tile-height) * -1);
+      left: calc(var(--tile-width) * -7);
+      animation: npc-speech-reveal 2s steps(6) forwards 14s;
+    }
+  }
+
+  .tile.tile.endgame-crystal + .tile.npc {
+    justify-content: flex-end;
+
+    .npc-wrapper {
+      scale: -1 1;
+      animation: npc-crystal-move 2s linear forwards 4s;
+    }
+  }
+
+  .tile.tile.endgame-back-plate + .tile.npc .npc-wrapper {
+    animation: npc-back-plate-move 7s linear forwards 4s;
+  }
+}
+
+@keyframes disable-scrolling {
+  0% {
+    interactivity: auto;
+  }
+
+  100% {
+    interactivity: inert;
+  }
+}
+
+@keyframes npc-speech-reveal {
+  0% {
+    visibility: visible;
+    translate: 0 0;
+    opacity: 0;
+  }
+  25%,
+  75%,
+  100% {
+    translate: 0 -50%;
+    opacity: 1;
+  }
+  /* 100% {
+    translate: 0 0;
+    opacity: 0;
+  } */
+}
+
+@keyframes npc-crystal-move {
+  0% {
+    translate: 0 0;
+  }
+
+  100% {
+    translate: 0 calc(var(--tile-height) * 2);
+  }
+}
+
+@keyframes npc-back-plate-move {
+  0% {
+    translate: 0 0;
+  }
+
+  20% {
+    translate: 0 calc(var(--tile-height) * 2);
+  }
+
+  70%,
+  100% {
+    translate: calc(var(--tile-height) * -5) calc(var(--tile-height) * 2);
+  }
+}
