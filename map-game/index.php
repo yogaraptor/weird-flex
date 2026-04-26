@@ -18,6 +18,7 @@ foreach ($legendLines as $legendLine) {
   $item = null;
   $prize = null;
   $speech = null;
+  $speechPosition = null;
   $encounter = null;
   $doorText = null;
   $endgame = null;
@@ -39,8 +40,9 @@ foreach ($legendLines as $legendLine) {
     $prize = intval($matches[1]);
     $item = $name;
   }
-  if ($metadata && preg_match('/^SPEECH (.+)$/', $metadata, $matches)) {
-    $speech = $matches[1];
+  if ($metadata && preg_match('/^SPEECH (left|middle|right) (.+)$/', $metadata, $matches)) {
+    $speechPosition = $matches[1];
+    $speech = $matches[2];
   }
   if ($metadata && preg_match('/^ENCOUNTER (\S+) (.+)$/', $metadata, $matches)) {
     $encounter = true;
@@ -62,6 +64,7 @@ foreach ($legendLines as $legendLine) {
     'showPuzzle' => $showPuzzle,
     'item' => $item,
     'speech' => $speech,
+    'speechPosition' => $speechPosition,
     'encounter' => $encounter,
     'npc' => $npc,
     'doorText' => $doorText,
@@ -225,7 +228,10 @@ foreach ($lines as $i => $line) {
                   array_push($tileClasses, 'npc');
                   array_push($tileClasses, 'npc-' . $tileDef['npc']);
                 }
-                if ($tileDef['speech'] !== null) array_push($tileClasses, 'speech');
+                if ($tileDef['speech'] !== null) {
+                  array_push($tileClasses, 'speech');
+                  array_push($tileClasses, 'speech-' . $tileDef['speechPosition']);
+                }
                 if ($tileDef['gotoMap'] !== null || $tileDef['exit']) array_push($tileClasses, 'door');
                 if ($tileDef['endgame'] !== null) {
                   array_push($tileClasses, 'endgame');

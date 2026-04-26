@@ -133,12 +133,12 @@ BEGIN LEGEND
 🧙 grass1 NPC triceratops
 🧙‍♀️ grass1 NPC ankylosaurus
 🧑‍🔬 floor NPC pterodactyl
-💬 grass1 SPEECH <p>Are they nearly done building the rocket?</p><p>I hear a meteor is coming!</p>
-🗨️ grass1 SPEECH <p>I'm not going in that cave.</p><p>They say it holds a dark secret!</p>
-🗯️ grass1 SPEECH <p>Stay out of that long grass to the north-west if you've got food.</p><p>You might attract a big dino!</p>
-🔒️ grass1 SPEECH Locked...
-📅 road-bend-se SPEECH "CLOSED. Please come back tomorrow!"
-↔️ road-h-middle SPEECH "NORTH: the village.<br><br> EAST: the gloomy caves. <br><br>SOUTH: DinoMart!<br><br> WEST: Rocket Lab 
+💬 grass1 SPEECH left <p>Are they nearly done building the rocket?</p><p>I hear a meteor is coming!</p>
+🗨️ grass1 SPEECH left <p>I'm not going in that cave.</p><p>They say it holds a dark secret!</p>
+🗯️ grass1 SPEECH right <p>Stay out of that long grass to the north-west if you've got food.</p><p>You might attract a big dino!</p>
+🔒️ grass1 SPEECH middle Locked...
+📅 road-bend-se SPEECH middle "CLOSED. Please come back tomorrow!"
+↔️ road-h-middle SPEECH middle "NORTH: the village.<br><br> EAST: the gloomy caves. <br><br>SOUTH: DinoMart!<br><br> WEST: Rocket Lab 
 🥼 floor ENDGAME crystal
 🦺 floor ENDGAME back-plate
 END LEGEND

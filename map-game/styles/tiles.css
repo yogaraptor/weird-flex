@@ -633,6 +633,13 @@
     pointer-events: none;
   }
 }
+.tile.speech-left .speech-bubble {
+  translate: calc(-50% + var(--tile-width)) 5rem;
+}
+
+.tile.speech-right .speech-bubble {
+  translate: calc(-50% - var(--tile-width)) 5rem;
+}
 
 /* Special tile states when player is "on" that tile */
 @container scroll-state(snapped: x) or scroll-state(snapped: y) {
@@ -684,5 +691,13 @@
       opacity: 1;
       pointer-events: auto;
     }
+  }
+
+  .tile.speech-left .speech-bubble {
+    translate: calc(-50% + var(--tile-width)) 0;
+  }
+
+  .tile.speech-right .speech-bubble {
+    translate: calc(-50% - var(--tile-width)) 0;
   }
 }
