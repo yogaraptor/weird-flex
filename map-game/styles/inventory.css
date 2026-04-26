@@ -132,7 +132,7 @@ body:has(#item-crystal:checked) {
   }
   .inventory li:nth-child(4)::before {
     opacity: 1;
-    transition: opacity 0.4s linear 4.5s;
+    transition: opacity 0.4s linear 6s;
   }
 }
 
