@@ -129,6 +129,7 @@ foreach ($lines as $i => $line) {
   <link rel="stylesheet" type="text/css" href="styles/inventory.css" />
   <link rel="stylesheet" type="text/css" href="styles/widgets.css" />
   <link rel="stylesheet" type="text/css" href="styles/encounter.css" />
+  <link rel="stylesheet" type="text/css" href="styles/npcs.css" />
   <link rel="stylesheet" type="text/css" href="styles/endgame.css" />
 </head>
 
@@ -297,7 +298,7 @@ foreach ($lines as $i => $line) {
 
                   <?php if ($tileDef['npc'] !== null): ?>
                     <div class="npc-wrapper">
-                      <div class="npc-sprite"></div>
+                      <div class="npc-sprite npc-sprite-<?php echo $tileDef['npc']; ?>"></div>
                     </div>
                   <?php endif; ?>
 
@@ -315,49 +316,7 @@ foreach ($lines as $i => $line) {
                     </div>
                   <?php endif; ?>
 
-                  <?php if ($tileDef['endgame'] === 'crystal'): ?>
-                    <div class="frame speech-bubble speech-bubble-notice">
-                      <div class="frame-inner">
-                        !
-                      </div>
-                    </div>
-
-                    <div class="frame speech-bubble speech-bubble-endgame">
-                      <div class="frame-inner">
-                        <p>You got the crystals!</p>
-                        <p>Enough to finish fueling the rocket!</p>
-                      </div>
-                    </div>
-
-                    <div class="frame speech-bubble">
-                      <div class="frame-inner">
-                        <p>We haven't got enough power crystals!</p>
-                        <p>The rocket can't take off!</p>
-                      </div>
-                    </div>
-
-                  <?php endif; ?>
-
-                  <?php if ($tileDef['endgame'] === 'back-plate'): ?>
-                    <div class="frame speech-bubble speech-bubble-notice">
-                      <div class="frame-inner">
-                        !
-                      </div>
-                    </div>
-
-                    <div class="frame speech-bubble speech-bubble-endgame">
-                      <div class="frame-inner">
-                        That old stego back plate looks like a perfect fit<br>for the gap in the heat shield too!
-                      </div>
-                    </div>
-
-                    <div class="frame speech-bubble">
-                      <div class="frame-inner">
-                        <p>The heat shield needs patching too!</p>
-                        <p>Anything flat and hard would do&hellip;</p>
-                      </div>
-                    </div>
-                  <?php endif; ?>
+                  <?php require('./endgame.php'); ?>
                 </div>
             <?php
                 $index++;

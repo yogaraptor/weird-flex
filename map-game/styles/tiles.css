@@ -532,54 +532,6 @@
 .tile.cave-wall-entrance-s1 {
   background-image: url("../assets/cave-wall-entrance-s1.png");
 }
-/* NPCs */
-.tile.npc {
-  .npc-wrapper {
-    width: 50%;
-    height: 50%;
-  }
-  .npc-sprite {
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-  }
-}
-
-.npc-triceratops {
-  justify-content: start; /* Triceratops is facing left, align to left of tile */
-
-  .npc-sprite {
-    background-image: url("../assets/triceratops.png");
-    animation: spritesheet 1s steps(8) infinite;
-  }
-}
-
-.tile.npc-ankylosaurus {
-  .npc-sprite {
-    width: 100%;
-    height: 100%;
-    background-image: url("../assets/ankylo.png");
-    animation: spritesheet 1s steps(8) infinite;
-  }
-}
-
-.npc-pterodactyl {
-  justify-content: start; /* Triceratops is facing left, align to left of tile */
-
-  .npc-sprite {
-    background-image: url("../assets/pterodactyl.png");
-    animation: spritesheet 1s steps(8) infinite;
-  }
-}
-
-@keyframes spritesheet {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: -100% 0;
-  }
-}
 
 /* Tiles with interactive buttons (e.g. doors, puzzles, signposts) */
 .tile:is(.item, .speech, .door, .puzzle) .tile-btn {
