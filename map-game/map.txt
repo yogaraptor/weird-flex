@@ -141,6 +141,7 @@ BEGIN LEGEND
 ↔️ road-h-middle SPEECH middle "NORTH: the village.<br><br> EAST: the gloomy caves. <br><br>SOUTH: DinoMart!<br><br> WEST: Rocket Lab 
 🥼 floor ENDGAME crystal
 🦺 floor ENDGAME back-plate
+🚀 grass1 ENDGAME rocket
 END LEGEND
 
 BEGIN MAP 10 home
@@ -175,7 +176,7 @@ BEGIN MAP 20 overworld
 🌳🌳🌳🌳🌱🌱🪨⚪️🌱🌱🌱🌱🌱🌱🌱🕖🕑🕑🕑🕒🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱🌱🌱🌱🌱🌱🧙‍♀️🗯️🌱🌱🕖🕘🌱💬🧙🌱🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱1️⃣2️⃣2️⃣3️⃣🌱🌱🌱🌱🧭🕔🌱🌱🌱🪴🌱🌱🌱🧗‍♀️🚵‍♂️⛰️⛰️⛰️
-🌳🌳🌳🌳🌱8️⃣🧪🌱4️⃣🌱🕖🕑🕑↔️🕞🕑🕑🕑🕑🕑🕑🕒🕳️🚵⛰️⛰️⛰️
+🌳🌳🌳🌳🌱8️⃣🧪🚀4️⃣🌱🕖🕑🕑↔️🕞🕑🕑🕑🕑🕑🕑🕒🕳️🚵⛰️⛰️⛰️
 🌳🌳🌳🌳🌱8️⃣🌱🌱9️⃣🕐🕘🌱🌱🌱🕔🌱🌱🌱🌱🗨️🧙🌱🧗‍♂️🚵‍♀️⛰️⛰️⛰️
 🌳🌳🌳🌳🌱8️⃣🌱🪨4️⃣🌱🌱🌱🌱🌱🕔🌱🌱🌱🌱🪴🌱🌱🌱🧗⛰️⛰️⛰️
 🌳🌳🌳🌳🌱7️⃣6️⃣6️⃣5️⃣🌱🌱🌱🌱🌱🕔🏪🌱🌱🌱🌱🌱🌱🌱🧗⛰️⛰️⛰️
