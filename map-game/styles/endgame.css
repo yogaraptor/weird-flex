@@ -35,15 +35,18 @@
       display: none;
     }
 
+    .map:not(.map-lab, .map-overworld) {
+      display: none;
+    }
     .map-overworld {
-      animation: endgame-show-overworld 2s steps(6) 4s forwards;
+      filter: brightness(0);
+      animation: endgame-show-overworld 2s steps(6) 24s forwards;
     }
   }
 
   .map-lab:open {
-    .player,
-    .tile-btn {
-      display: block;
+    .player {
+      display: flex;
     }
     /*
     0. Disable scrolling (and therefore player movement) to make it feel like a prope cut-scene
@@ -63,6 +66,9 @@
     /*
     1. Show "!" speech bubble over scientists head as player enters lab
   */
+    .tile.endgame-crystal + .tile .npc-wrapper {
+      scale: -1 1; /* Turn NPC to face player */
+    }
     .tile.endgame-crystal,
     .tile.endgame-back-plate {
       .speech-bubble-notice {
@@ -77,15 +83,19 @@
       z-index: 20; /* We move these NPCs south on the map. Southerly tiles will be higher in stacking context, so we need to bump the speech bubbles above them */
     }
     .tile.endgame-crystal {
+      --speech-offset-x: calc(-50% + calc(var(--tile-width) * 1.25));
+
       .speech-bubble-endgame {
         bottom: calc(var(--tile-height) * -1);
         animation: endgame-npc-speech-reveal 4s steps(12) forwards 10s;
       }
     }
     .tile.endgame-back-plate {
+      --speech-offset-x: calc(-50% + var(--tile-width));
+
       .speech-bubble-endgame {
         bottom: calc(var(--tile-height) * -1);
-        left: calc(var(--tile-width) * -7);
+        left: calc(var(--tile-width) * -4) !important;
         animation: endgame-npc-speech-reveal 4s steps(12) forwards 14s;
       }
     }
@@ -94,7 +104,6 @@
       justify-content: flex-end;
 
       .npc-wrapper {
-        scale: -1 1;
         animation: endgame-npc-crystal-move 2s linear forwards 4s;
       }
     }
@@ -112,7 +121,7 @@
     }
 
     /* 3. Fade out lab to overworld */
-    animation: endgame-hide-lab 2s steps(12) forwards 2s;
+    animation: endgame-hide-lab 2s steps(12) forwards 22s;
   }
 }
 
@@ -129,14 +138,19 @@
 @keyframes endgame-npc-speech-reveal {
   0% {
     visibility: visible;
-    translate: 0 1rem;
+    translate: var(--speech-offset-x) 1rem;
     opacity: 0;
   }
   25%,
-  95%,
-  100% {
-    translate: 0 0;
+  95% {
+    translate: var(--speech-offset-x) 0;
     opacity: 1;
+    visibility: visible;
+  }
+  100% {
+    visibility: hidden;
+    translate: var(--speech-offset-x) 1rem;
+    opacity: 0;
   }
 }
 
@@ -197,6 +211,7 @@
   }
   100% {
     filter: brightness(0);
+    opacity: 0;
     visibility: hidden;
   }
 }

@@ -238,6 +238,12 @@ foreach ($lines as $i => $line) {
                   array_push($tileClasses, 'endgame-' . $tileDef['endgame']);
                   array_push($tileClasses, 'speech');
                 };
+                if ($tileDef['endgame'] == "crystal") {
+                  array_push($tileClasses, "speech-right");
+                }
+                if ($tileDef['endgame'] == "back-plate") {
+                  array_push($tileClasses, "speech-left");
+                }
             ?>
                 <div
                   class="<?php echo join(' ', $tileClasses); ?>"
