@@ -51,7 +51,7 @@
     set-scroll-y linear both;
   animation-timeline: --map-timeline-x, --map-timeline-y;
 
-  /* Style container here rather than on .player — keeps style query
+  /* Style container here rather than on .player-sprite — keeps style query
      evaluation outside the scroll content tree */
   container-type: style;
 }
@@ -132,7 +132,7 @@
    999999s transition-delay prevents revert to idle after walking stops.
    Container queries override with transition-delay:0s for instant swaps.
    animation-play-state paused by default; running while walking. */
-.player::before {
+.player-sprite::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -146,28 +146,28 @@
 }
 
 @container style(--going-down: 1) {
-  .player::before {
+  .player-sprite::before {
     background-image: url("../assets/player-walk-down.png");
     animation-play-state: running;
     transition-delay: 0s;
   }
 }
 @container style(--going-up: 1) {
-  .player::before {
+  .player-sprite::before {
     background-image: url("../assets/player-walk-up.png");
     animation-play-state: running;
     transition-delay: 0s;
   }
 }
 @container style(--going-right: 1) {
-  .player::before {
+  .player-sprite::before {
     background-image: url("../assets/player-walk-right.png");
     animation-play-state: running;
     transition-delay: 0s;
   }
 }
 @container style(--going-left: 1) {
-  .player::before {
+  .player-sprite::before {
     background-image: url("../assets/player-walk-left.png");
     animation-play-state: running;
     transition-delay: 0s;
@@ -191,4 +191,12 @@
   50% {
     box-shadow: 0 0 50px 10px yellow;
   }
+}
+
+/*
+  Position speech bubble
+*/
+.player .speech-bubble {
+  top: -2rem;
+  translate: 0 2rem;
 }

@@ -45,25 +45,32 @@
   }
 
   /*
-      1. Show "!" speech bubble over scientists head as player enters lab
+    1. Show "!" speech bubble over scientists head as player enters lab
   */
   .tile.endgame-crystal,
   .tile.endgame-back-plate {
     .speech-bubble-notice {
-      animation: npc-speech-reveal 2s steps(6) forwards 1s;
+      animation: endgame-npc-speech-reveal 2s steps(6) forwards 1s;
     }
+  }
+
+  /*
+    2. NPC movement and greeting
+  */
+  .tile.speech.endgame {
+    z-index: 20; /* We move these NPCs south on the map. Southerly tiles will be higher in stacking context, so we need to bump the speech bubbles above them */
   }
   .tile.endgame-crystal {
     .speech-bubble-endgame {
       bottom: calc(var(--tile-height) * -1);
-      animation: npc-speech-reveal 2s steps(6) forwards 10s;
+      animation: endgame-npc-speech-reveal 4s steps(12) forwards 10s;
     }
   }
   .tile.endgame-back-plate {
     .speech-bubble-endgame {
       bottom: calc(var(--tile-height) * -1);
       left: calc(var(--tile-width) * -7);
-      animation: npc-speech-reveal 2s steps(6) forwards 14s;
+      animation: endgame-npc-speech-reveal 4s steps(12) forwards 14s;
     }
   }
 
@@ -72,12 +79,20 @@
 
     .npc-wrapper {
       scale: -1 1;
-      animation: npc-crystal-move 2s linear forwards 4s;
+      animation: endgame-npc-crystal-move 2s linear forwards 4s;
     }
   }
 
   .tile.tile.endgame-back-plate + .tile.npc .npc-wrapper {
-    animation: npc-back-plate-move 7s linear forwards 4s;
+    animation: endgame-npc-back-plate-move 7s linear forwards 4s;
+  }
+
+  .player {
+    animation: endgame-character-excitement 0.2s linear infinite 20.5s;
+
+    .speech-bubble-endgame {
+      animation: endgame-player-speech-reveal 0.5s steps(6) forwards 20s;
+    }
   }
 }
 
@@ -91,25 +106,34 @@
   }
 }
 
-@keyframes npc-speech-reveal {
+@keyframes endgame-npc-speech-reveal {
   0% {
     visibility: visible;
-    translate: 0 0;
+    translate: 0 1rem;
     opacity: 0;
   }
   25%,
-  75%,
+  95%,
   100% {
-    translate: 0 -50%;
+    translate: 0 0;
     opacity: 1;
   }
-  /* 100% {
-    translate: 0 0;
-    opacity: 0;
-  } */
 }
 
-@keyframes npc-crystal-move {
+@keyframes endgame-player-speech-reveal {
+  0% {
+    visibility: visible;
+    translate: 0 2rem;
+    opacity: 0;
+  }
+  100% {
+    translate: 0 -1rem;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes endgame-npc-crystal-move {
   0% {
     translate: 0 0;
   }
@@ -119,7 +143,7 @@
   }
 }
 
-@keyframes npc-back-plate-move {
+@keyframes endgame-npc-back-plate-move {
   0% {
     translate: 0 0;
   }
@@ -131,5 +155,14 @@
   70%,
   100% {
     translate: calc(var(--tile-height) * -5) calc(var(--tile-height) * 2);
+  }
+}
+
+@keyframes endgame-character-excitement {
+  0% {
+    translate: 0 0;
+  }
+  100% {
+    translate: 0 -3px;
   }
 }

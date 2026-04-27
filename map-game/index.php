@@ -341,7 +341,7 @@ foreach ($lines as $i => $line) {
 
                     <div class="frame speech-bubble speech-bubble-endgame">
                       <div class="frame-inner">
-                        That old stego back plate looks like a perfect fit<br>for the gap in the heat shield!
+                        That old stego back plate looks like a perfect fit<br>for the gap in the heat shield too!
                       </div>
                     </div>
 
@@ -359,7 +359,14 @@ foreach ($lines as $i => $line) {
             endforeach; ?>
 
             <!-- Player element -->
-            <div class="player"></div>
+            <div class="player">
+              <div class="player-sprite"></div>
+              <div class="frame speech-bubble speech-bubble-endgame">
+                <div class="frame-inner">
+                  Then what are we waiting for? Let's go!
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </dialog>
