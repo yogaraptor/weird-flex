@@ -28,8 +28,24 @@
   6. The rocket lifts off, the scene fades to white
   7. Speech bubbles of dialogue from the saved dinosaurs fill the screen
 */
-.app:has(#item-crystal:checked).app:has(#encounter-give:checked) .map-lab:open {
-  /*
+.app:has(#item-crystal:checked).app:has(#encounter-give:checked) {
+  &:has(.map-lab:open) {
+    .player,
+    .tile-btn {
+      display: none;
+    }
+
+    .map-overworld {
+      animation: endgame-show-overworld 2s steps(6) 4s forwards;
+    }
+  }
+
+  .map-lab:open {
+    .player,
+    .tile-btn {
+      display: block;
+    }
+    /*
     0. Disable scrolling (and therefore player movement) to make it feel like a prope cut-scene
     We have to do this using a (brief) animation, because if we set it immediately, the browser
     won't scroll to the autofocused "start" tile, and the player will appear to enter the room
@@ -37,62 +53,66 @@
 
     Also hide the exit door message
   */
-  .viewport {
-    animation: disable-scrolling 0.1s forwards;
-  }
-  .tile.door .tile-btn {
-    display: none;
-  }
+    .viewport {
+      animation: disable-scrolling 0.1s forwards;
+    }
+    .tile.door .tile-btn {
+      display: none;
+    }
 
-  /*
+    /*
     1. Show "!" speech bubble over scientists head as player enters lab
   */
-  .tile.endgame-crystal,
-  .tile.endgame-back-plate {
-    .speech-bubble-notice {
-      animation: endgame-npc-speech-reveal 2s steps(6) forwards 1s;
+    .tile.endgame-crystal,
+    .tile.endgame-back-plate {
+      .speech-bubble-notice {
+        animation: endgame-npc-speech-reveal 2s steps(6) forwards 1s;
+      }
     }
-  }
 
-  /*
+    /*
     2. NPC movement and greeting
   */
-  .tile.speech.endgame {
-    z-index: 20; /* We move these NPCs south on the map. Southerly tiles will be higher in stacking context, so we need to bump the speech bubbles above them */
-  }
-  .tile.endgame-crystal {
-    .speech-bubble-endgame {
-      bottom: calc(var(--tile-height) * -1);
-      animation: endgame-npc-speech-reveal 4s steps(12) forwards 10s;
+    .tile.speech.endgame {
+      z-index: 20; /* We move these NPCs south on the map. Southerly tiles will be higher in stacking context, so we need to bump the speech bubbles above them */
     }
-  }
-  .tile.endgame-back-plate {
-    .speech-bubble-endgame {
-      bottom: calc(var(--tile-height) * -1);
-      left: calc(var(--tile-width) * -7);
-      animation: endgame-npc-speech-reveal 4s steps(12) forwards 14s;
+    .tile.endgame-crystal {
+      .speech-bubble-endgame {
+        bottom: calc(var(--tile-height) * -1);
+        animation: endgame-npc-speech-reveal 4s steps(12) forwards 10s;
+      }
     }
-  }
-
-  .tile.tile.endgame-crystal + .tile.npc {
-    justify-content: flex-end;
-
-    .npc-wrapper {
-      scale: -1 1;
-      animation: endgame-npc-crystal-move 2s linear forwards 4s;
+    .tile.endgame-back-plate {
+      .speech-bubble-endgame {
+        bottom: calc(var(--tile-height) * -1);
+        left: calc(var(--tile-width) * -7);
+        animation: endgame-npc-speech-reveal 4s steps(12) forwards 14s;
+      }
     }
-  }
 
-  .tile.tile.endgame-back-plate + .tile.npc .npc-wrapper {
-    animation: endgame-npc-back-plate-move 7s linear forwards 4s;
-  }
+    .tile.tile.endgame-crystal + .tile.npc {
+      justify-content: flex-end;
 
-  .player {
-    animation: endgame-character-excitement 0.2s linear infinite 20.5s;
-
-    .speech-bubble-endgame {
-      animation: endgame-player-speech-reveal 0.5s steps(6) forwards 20s;
+      .npc-wrapper {
+        scale: -1 1;
+        animation: endgame-npc-crystal-move 2s linear forwards 4s;
+      }
     }
+
+    .tile.tile.endgame-back-plate + .tile.npc .npc-wrapper {
+      animation: endgame-npc-back-plate-move 7s linear forwards 4s;
+    }
+
+    .player {
+      animation: endgame-character-excitement 0.2s linear infinite 20.5s;
+
+      .speech-bubble-endgame {
+        animation: endgame-player-speech-reveal 0.5s steps(6) forwards 20s;
+      }
+    }
+
+    /* 3. Fade out lab to overworld */
+    animation: endgame-hide-lab 2s steps(12) forwards 2s;
   }
 }
 
@@ -164,5 +184,28 @@
   }
   100% {
     translate: 0 -3px;
+  }
+}
+
+@keyframes endgame-hide-lab {
+  0% {
+    filter: brightness(1);
+  }
+  99% {
+    filter: brightness(0);
+    visibility: visible;
+  }
+  100% {
+    filter: brightness(0);
+    visibility: hidden;
+  }
+}
+
+@keyframes endgame-show-overworld {
+  0% {
+    filter: brightness(0);
+  }
+  100% {
+    filter: brightness(1);
   }
 }
