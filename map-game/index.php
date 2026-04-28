@@ -347,10 +347,10 @@ foreach ($lines as $i => $line) {
             <p>&hellip;Safe at last.</p>
           </div>
         </div>
+
+      </dialog>
+    <?php endforeach; ?>
   </div>
-  </dialog>
-<?php endforeach; ?>
-</div>
 </body>
 
 </html>

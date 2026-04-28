@@ -13,8 +13,13 @@
   complete
 */
 .speech-bubble-notice,
-.speech-bubble-endgame {
+.speech-bubble-endgame,
+.dino-queue,
+.endgame-rocket :is(.rocket-sprite, .speech-bubble) {
   visibility: hidden;
+}
+.endgame-speech {
+  display: none;
 }
 
 /* Rocket sprite which sits next to the lab on the overworld map */
@@ -39,6 +44,7 @@
   7. Speech bubbles of dialogue from the saved dinosaurs fill the screen
 */
 .app:has(#item-crystal:checked).app:has(#encounter-give:checked) {
+  --time-show-overworld: 24s;
   &:has(.map-lab:open) {
     .player,
     .tile-btn {
@@ -50,7 +56,150 @@
     }
     .map-overworld {
       filter: brightness(0);
-      animation: endgame-show-overworld 2s steps(6) 24s forwards;
+      animation: endgame-show-overworld 2s steps(6) var(--time-show-overworld)
+        forwards;
+    }
+
+    .endgame-rocket .rocket-sprite {
+      visibility: visible;
+    }
+
+    /* 4. Queue of dinos enters the rocket */
+    .dino-queue {
+      --dino-size: calc(var(--tile-width) / 2);
+      display: grid;
+      visibility: visible;
+      position: absolute;
+      top: 0;
+      left: calc(var(--dino-size) / 2);
+      width: calc(8 * var(--dino-size));
+      grid-template-columns: repeat(8, var(--dino-size));
+      grid-template-rows: repeat(2, var(--dino-size));
+      place-content: center;
+
+      > :nth-child(1) {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      > :nth-child(n + 2) {
+        grid-row: 2;
+      }
+    }
+    .dino-queue > :nth-child(1) {
+      animation: endgame-dino-queue-move1 1s linear var(--time-show-overworld)
+        forwards;
+    }
+    .dino-queue > :nth-child(2) {
+      animation: endgame-dino-queue-move2 2s linear
+        calc(var(--time-show-overworld) + 1s) forwards;
+    }
+    .dino-queue > :nth-child(3) {
+      animation: endgame-dino-queue-move3 3s linear
+        calc(var(--time-show-overworld) + 2s) forwards;
+    }
+    .dino-queue > :nth-child(4) {
+      animation: endgame-dino-queue-move4 4s linear
+        calc(var(--time-show-overworld) + 3s) forwards;
+    }
+
+    /* 5. Speech bubble announcing countdown */
+    .endgame-rocket .speech-bubble {
+      left: 50%;
+      --speech-offset-x: -50%;
+    }
+    .endgame-rocket .speech-bubble-1 {
+      animation: endgame-npc-speech-reveal 4s steps(6)
+        calc(var(--time-show-overworld) + 10s) forwards;
+    }
+    .endgame-rocket .speech-bubble-2 {
+      animation: endgame-npc-speech-reveal 4s steps(6)
+        calc(var(--time-show-overworld) + 14s) forwards;
+    }
+
+    /* 6. It's happening - lift off! Tears and applause not included */
+    .endgame-rocket .rocket-sprite {
+      animation:
+        spritesheet 3s steps(7) calc(var(--time-show-overworld) + 13.5s),
+        endgame-rocket-liftoff 8s ease-in
+          calc(var(--time-show-overworld) + 14.5s);
+      animation-iteration-count: infinite, 1;
+    }
+    .map-overworld .viewport {
+      transform-origin: 60% 50%;
+      animation:
+        endgame-whiteout 3s steps(12) calc(var(--time-show-overworld) + 20.5s)
+          forwards,
+        endgame-zoom 6s linear calc(var(--time-show-overworld) + 17s) backwards;
+
+      /* Hide NPCs from pervious gameplay - they are in the dino queue now! */
+      .tile.npc .npc-wrapper {
+        visibility: hidden;
+      }
+    }
+
+    /* 7. Outro speech */
+    .endgame-speech {
+      display: block;
+      position: absolute;
+      inset: 0;
+      visibility: hidden;
+      animation: endgame-outro-speech-show 1s linear
+        calc(var(--time-show-overworld) + 24s) forwards;
+
+      .endgame-speech-main,
+      .endgame-speech-final {
+        position: absolute;
+        inset: 0;
+      }
+
+      p {
+        visibility: hidden;
+        position: absolute;
+        animation: endgame-outro-speech-show 1s linear
+          calc(var(--time-show-overworld) + 26s) forwards;
+      }
+      .endgame-speech-main {
+        animation: endgame-outro-speech-hide 1s steps(6)
+          calc(var(--time-show-overworld) + 36s) forwards;
+
+        > :nth-child(1) {
+          top: 20%;
+          left: 10%;
+        }
+        > :nth-child(2) {
+          top: 30%;
+          left: 5%;
+          animation-delay: calc(var(--time-show-overworld) + 28s);
+        }
+        > :nth-child(3) {
+          top: 40%;
+          left: 50%;
+          animation-delay: calc(var(--time-show-overworld) + 30s);
+        }
+        > :nth-child(4) {
+          top: 50%;
+          left: 15%;
+          animation-delay: calc(var(--time-show-overworld) + 32s);
+        }
+        > :nth-child(5) {
+          top: 55%;
+          left: 15%;
+          animation-delay: calc(var(--time-show-overworld) + 33s);
+        }
+      }
+
+      .endgame-speech-final {
+        translate: 0;
+        animation: endgame-outro-speech-final-hide 6s steps(6)
+          calc(var(--time-show-overworld) + 38s) forwards;
+
+        p {
+          top: 60%;
+          left: 50%;
+          translate: -50% 0;
+          animation-delay: calc(var(--time-show-overworld) + 36s);
+        }
+      }
     }
   }
 
@@ -135,42 +284,6 @@
   }
 }
 
-/* 4. Queue of dinos enters the rocket */
-.dino-queue {
-  display: none;
-}
-.dino-queue {
-  --dino-size: calc(var(--tile-width) / 2);
-  display: grid;
-  position: absolute;
-  top: 0;
-  left: calc(var(--dino-size) / 2);
-  width: calc(8 * var(--dino-size));
-  grid-template-columns: repeat(8, var(--dino-size));
-  grid-template-rows: repeat(2, var(--dino-size));
-  place-content: center;
-
-  > :nth-child(1) {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  > :nth-child(n + 2) {
-    grid-row: 2;
-  }
-}
-.dino-queue > :nth-child(1) {
-  animation: endgame-dino-queue-move1 1s linear forwards;
-}
-.dino-queue > :nth-child(2) {
-  animation: endgame-dino-queue-move2 2s linear 1s forwards;
-}
-.dino-queue > :nth-child(3) {
-  animation: endgame-dino-queue-move3 3s linear 2s forwards;
-}
-.dino-queue > :nth-child(4) {
-  animation: endgame-dino-queue-move4 4s linear 3s forwards;
-}
-
 @keyframes endgame-dino-queue-move1 {
   100% {
     translate: 0 calc(-1 * var(--dino-size));
@@ -211,19 +324,6 @@
   }
 }
 
-/* 5. Speech bubble announcing countdown */
-.endgame-rocket .speech-bubble {
-  left: 50%;
-  --speech-offset-x: -50%;
-}
-.endgame-rocket .speech-bubble-1 {
-  animation: endgame-npc-speech-reveal 4s steps(6) 10s forwards;
-}
-.endgame-rocket .speech-bubble-2 {
-  animation: endgame-npc-speech-reveal 4s steps(6) 14s forwards;
-}
-
-/* 6. It's happening - lift off! Tears and applause not included */
 @keyframes endgame-rocket-liftoff {
   0% {
     background-image: url("../assets/rocket-fly.png");
@@ -255,25 +355,6 @@
   }
 }
 
-.endgame-rocket .rocket-sprite {
-  animation:
-    spritesheet 3s steps(7) 13.5s,
-    endgame-rocket-liftoff 8s ease-in 14.5s;
-  animation-iteration-count: infinite, 1;
-}
-.map-overworld .viewport {
-  transform-origin: 60% 50%;
-  animation:
-    endgame-whiteout 3s steps(12) 20.5s forwards,
-    endgame-zoom 6s linear 17s backwards;
-
-  /* Hide NPCs from pervious gameplay - they are in the dino queue now! */
-  .tile.npc .npc-wrapper {
-    visibility: hidden;
-  }
-}
-
-/* 7. Outro speech */
 @keyframes endgame-outro-speech-show {
   100% {
     visibility: visible;
@@ -306,65 +387,6 @@
   }
   100% {
     opacity: 0;
-  }
-}
-
-.endgame-speech {
-  position: absolute;
-  inset: 0;
-  visibility: hidden;
-  animation: endgame-outro-speech-show 1s linear 24s forwards;
-
-  .endgame-speech-main,
-  .endgame-speech-final {
-    position: absolute;
-    inset: 0;
-  }
-
-  p {
-    visibility: hidden;
-    position: absolute;
-    animation: endgame-outro-speech-show 1s linear 26s forwards;
-  }
-  .endgame-speech-main {
-    animation: endgame-outro-speech-hide 1s steps(6) 36s forwards;
-
-    > :nth-child(1) {
-      top: 20%;
-      left: 10%;
-    }
-    > :nth-child(2) {
-      top: 30%;
-      left: 5%;
-      animation-delay: 28s;
-    }
-    > :nth-child(3) {
-      top: 40%;
-      left: 50%;
-      animation-delay: 30s;
-    }
-    > :nth-child(4) {
-      top: 50%;
-      left: 15%;
-      animation-delay: 32s;
-    }
-    > :nth-child(5) {
-      top: 55%;
-      left: 15%;
-      animation-delay: 33s;
-    }
-  }
-
-  .endgame-speech-final {
-    translate: 0;
-    animation: endgame-outro-speech-final-hide 6s steps(6) 38s forwards;
-
-    p {
-      top: 60%;
-      left: 50%;
-      translate: -50% 0;
-      animation-delay: 36s;
-    }
   }
 }
 
