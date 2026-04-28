@@ -135,6 +135,7 @@
   }
 }
 
+/* 4. Queue of dinos enters the rocket */
 .dino-queue {
   display: none;
 }
@@ -207,6 +208,163 @@
   100% {
     visibility: hidden;
     translate: calc(-2 * var(--dino-size)) calc(-2 * var(--dino-size));
+  }
+}
+
+/* 5. Speech bubble announcing countdown */
+.endgame-rocket .speech-bubble {
+  left: 50%;
+  --speech-offset-x: -50%;
+}
+.endgame-rocket .speech-bubble-1 {
+  animation: endgame-npc-speech-reveal 4s steps(6) 10s forwards;
+}
+.endgame-rocket .speech-bubble-2 {
+  animation: endgame-npc-speech-reveal 4s steps(6) 14s forwards;
+}
+
+/* 6. It's happening - lift off! Tears and applause not included */
+@keyframes endgame-rocket-liftoff {
+  0% {
+    background-image: url("../assets/rocket-fly.png");
+  }
+  75% {
+    translate: 0 calc(var(--tile-height) * -1);
+  }
+  100% {
+    background-image: url("../assets/rocket-fly.png");
+    translate: 0 calc(var(--tile-height) * -6);
+  }
+}
+
+@keyframes endgame-zoom {
+  0% {
+    scale: 1;
+  }
+  100% {
+    transform-origin: 60% 0;
+    scale: 4;
+  }
+}
+@keyframes endgame-whiteout {
+  0% {
+    filter: brightness(1);
+  }
+  100% {
+    filter: brightness(10);
+  }
+}
+
+.endgame-rocket .rocket-sprite {
+  animation:
+    spritesheet 3s steps(7) 13.5s,
+    endgame-rocket-liftoff 8s ease-in 14.5s;
+  animation-iteration-count: infinite, 1;
+}
+.map-overworld .viewport {
+  transform-origin: 60% 50%;
+  animation:
+    endgame-whiteout 3s steps(12) 20.5s forwards,
+    endgame-zoom 6s linear 17s backwards;
+
+  /* Hide NPCs from pervious gameplay - they are in the dino queue now! */
+  .tile.npc .npc-wrapper {
+    visibility: hidden;
+  }
+}
+
+/* 7. Outro speech */
+@keyframes endgame-outro-speech-show {
+  100% {
+    visibility: visible;
+  }
+}
+
+@keyframes endgame-outro-final-speech-show {
+  100% {
+    visibility: visible;
+  }
+}
+
+@keyframes endgame-outro-speech-final-hide {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+    translate: 0 -15%;
+  }
+  100% {
+    opacity: 0;
+    translate: 0 -15%;
+  }
+}
+
+@keyframes endgame-outro-speech-hide {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.endgame-speech {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  animation: endgame-outro-speech-show 1s linear 24s forwards;
+
+  .endgame-speech-main,
+  .endgame-speech-final {
+    position: absolute;
+    inset: 0;
+  }
+
+  p {
+    visibility: hidden;
+    position: absolute;
+    animation: endgame-outro-speech-show 1s linear 26s forwards;
+  }
+  .endgame-speech-main {
+    animation: endgame-outro-speech-hide 1s steps(6) 36s forwards;
+
+    > :nth-child(1) {
+      top: 20%;
+      left: 10%;
+    }
+    > :nth-child(2) {
+      top: 30%;
+      left: 5%;
+      animation-delay: 28s;
+    }
+    > :nth-child(3) {
+      top: 40%;
+      left: 50%;
+      animation-delay: 30s;
+    }
+    > :nth-child(4) {
+      top: 50%;
+      left: 15%;
+      animation-delay: 32s;
+    }
+    > :nth-child(5) {
+      top: 55%;
+      left: 15%;
+      animation-delay: 33s;
+    }
+  }
+
+  .endgame-speech-final {
+    translate: 0;
+    animation: endgame-outro-speech-final-hide 6s steps(6) 38s forwards;
+
+    p {
+      top: 60%;
+      left: 50%;
+      translate: -50% 0;
+      animation-delay: 36s;
+    }
   }
 }
 

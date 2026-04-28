@@ -1,0 +1,40 @@
+.npc-sprite {
+  width: calc(var(--tile-width) / 2);
+  height: calc(var(--tile-height) / 2);
+  background-size: cover;
+}
+
+.tile.npc-triceratops {
+  justify-content: start; /* Triceratops is facing left, align to left of tile */
+}
+.npc-sprite-triceratops {
+  background-image: url("../assets/triceratops.png");
+  animation: spritesheet 1s steps(8) infinite;
+}
+
+.npc-sprite-ankylosaurus {
+  background-image: url("../assets/ankylo.png");
+  animation: spritesheet 1s steps(8) infinite;
+}
+
+.npc-pterodactyl {
+  justify-content: start; /* Triceratops is facing left, align to left of tile */
+}
+.npc-sprite-pterodactyl {
+  background-image: url("../assets/pterodactyl.png");
+  animation: spritesheet 1s steps(8) infinite;
+}
+
+.npc-sprite-stegosaurus {
+  background-image: url("../assets/stegosaurus/stegosaurus-idle.png");
+  animation: spritesheet 1s steps(7) infinite;
+}
+
+@keyframes spritesheet {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}

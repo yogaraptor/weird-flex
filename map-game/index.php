@@ -332,11 +332,25 @@ foreach ($lines as $i => $line) {
                 </div>
               </div>
             </div>
+
           </div>
         </div>
-      </dialog>
-    <?php endforeach; ?>
+        <div class="endgame-speech">
+          <div class="endgame-speech-main">
+            <p>Look&hellip; you can see Pangea&hellip;</p>
+            <p>It's so beautiful!</p>
+            <p>And so fragile&hellip;</p>
+            <p>&laquo;LEO attained&raquo;</p>
+            <p>&laquo;Stand by for trans-lunar injection burn&raquo;</p>
+          </div>
+          <div class="endgame-speech-final">
+            <p>&hellip;Safe at last.</p>
+          </div>
+        </div>
   </div>
+  </dialog>
+<?php endforeach; ?>
+</div>
 </body>
 
 </html>

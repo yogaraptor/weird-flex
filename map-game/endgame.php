@@ -44,6 +44,12 @@
 
 <?php if ($tileDef['endgame'] === 'rocket'): ?>
   <div class="rocket-sprite"></div>
+  <div class="speech-bubble speech-bubble-1 frame">
+    <div class="frame-inner">5..4..3..2..1..</div>
+  </div>
+  <div class="speech-bubble speech-bubble-2 frame">
+    <div class="frame-inner">We have lift-off!</div>
+  </div>
 <?php endif; ?>
 
 <?php if ($tileDef['endgame'] === 'dino-queue'): ?>
