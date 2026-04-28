@@ -253,7 +253,6 @@ foreach ($lines as $i => $line) {
                   <?php if ($tileId) echo "id=\"{$tileId}\""; ?>
                   <?php if ($map['playerStart'] !== null && $index === $map['playerStart']): ?>tabindex="0" autofocus<?php endif; ?>>
 
-                  <?php if ($tileDef['item'] === null): ?><p></p><?php endif; ?>
                   <?php if ($tileDef['gotoMap'] !== null): ?>
                     <button class="tile-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">
                       <span class="frame-inner"><?php echo htmlspecialchars($tileDef['doorText'] ?? 'Enter'); ?></span>
@@ -350,6 +349,7 @@ foreach ($lines as $i => $line) {
             <div class="endgame-speech-final">
               <p>&hellip;Safe at last.</p>
             </div>
+            <button class="endgame-show-credits" command="show-modal" commandfor="credits">Credits</button>
           </div>
         <?php endif; ?>
       </dialog>
