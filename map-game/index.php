@@ -163,23 +163,23 @@ foreach ($lines as $i => $line) {
           $isFirstMap = false;
         ?>
           <div class="cut-scene">
-            <div class="speech-bubble frame cut-scene-part1">
+            <div class="speech-bubble frame cut-scene-part cut-scene-part1">
               <div class="frame-inner">beep. Beep. BEEP!</div>
             </div>
-            <div class="speech-bubble frame cut-scene-part2">
+            <div class="speech-bubble frame cut-scene-part cut-scene-part2">
               <div class="frame-inner">What? No! It's too soon!</div>
             </div>
-            <div class="speech-bubble frame cut-scene-part3">
+            <div class="speech-bubble frame cut-scene-part cut-scene-part3">
               <div class="frame-inner">The rocket's not ready!</div>
             </div>
-            <div class="speech-bubble frame cut-scene-part4">
-              <div class="frame-inner">Where's the stabiliser rod?!</div>
+            <div class="speech-bubble frame cut-scene-part cut-scene-part4">
+              <div class="frame-inner">We're missing bits of the heat shield!</div>
             </div>
-            <div class="speech-bubble frame cut-scene-part5">
+            <div class="speech-bubble frame cut-scene-part cut-scene-part5">
               <div class="frame-inner">Look! Out the window!</div>
             </div>
-            <div class="speech-bubble frame cut-scene-part6">
-              <div class="frame-inner">Ugh... dreaming again.</div>
+            <div class="cut-scene-part cut-scene-part6">
+              Ugh... dreaming again.
             </div>
           </div>
         <?php endif; ?>
