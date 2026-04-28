@@ -349,7 +349,6 @@ foreach ($lines as $i => $line) {
             <div class="endgame-speech-final">
               <p>&hellip;Safe at last.</p>
             </div>
-            <button class="endgame-show-credits" command="show-modal" commandfor="credits">Credits</button>
           </div>
         <?php endif; ?>
       </dialog>
