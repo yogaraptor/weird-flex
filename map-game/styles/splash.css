@@ -18,7 +18,3 @@
     }
   }
 }
-
-:has(.map[open]) .splash-screen {
-  display: none;
-}
