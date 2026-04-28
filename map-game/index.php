@@ -122,6 +122,7 @@ foreach ($lines as $i => $line) {
   <link href="https://fonts.googleapis.com/css2?family=Tiny5&display=swap" rel="stylesheet">
   <link rel="stylesheet" type="text/css" href="styles/main.css" />
   <link rel="stylesheet" type="text/css" href="styles/splash.css" />
+  <link rel="stylesheet" type="text/css" href="styles/credits.css" />
   <link rel="stylesheet" type="text/css" href="styles/intro.css" />
   <link rel="stylesheet" type="text/css" href="styles/tiles.css" />
   <link rel="stylesheet" type="text/css" href="styles/player.css" />
@@ -138,6 +139,7 @@ foreach ($lines as $i => $line) {
     <div class="splash-screen">
       <h1>Yogaraptor presents:<span>The Dinosaurs DID have a space agency!</span></h1>
       <button class="frame tile-btn" command="show-modal" commandfor="map-10"><span class="frame-inner">Start game</span></button>
+      <button class="frame tile-btn" command="show-modal" commandfor="credits"><span class="frame-inner">View credits</span></button>
     </div>
 
     <div class="frame inventory">
@@ -335,22 +337,27 @@ foreach ($lines as $i => $line) {
 
           </div>
         </div>
-        <div class="endgame-speech">
-          <div class="endgame-speech-main">
-            <p>Look&hellip; you can see Pangea&hellip;</p>
-            <p>It's so beautiful!</p>
-            <p>And so fragile&hellip;</p>
-            <p>&laquo;LEO attained&raquo;</p>
-            <p>&laquo;Stand by for trans-lunar injection burn&raquo;</p>
-          </div>
-          <div class="endgame-speech-final">
-            <p>&hellip;Safe at last.</p>
-          </div>
-        </div>
 
+        <?php if ($map['name'] === 'overworld'): ?>
+          <div class="endgame-speech">
+            <div class="endgame-speech-main">
+              <p>Look&hellip; you can see Pangea&hellip;</p>
+              <p>It's so beautiful!</p>
+              <p>And so fragile&hellip;</p>
+              <p>&laquo;LEO attained&raquo;</p>
+              <p>&laquo;Stand by for trans-lunar injection burn&raquo;</p>
+            </div>
+            <div class="endgame-speech-final">
+              <p>&hellip;Safe at last.</p>
+            </div>
+          </div>
+        <?php endif; ?>
       </dialog>
     <?php endforeach; ?>
+
+    <?php require('./credits.php'); ?>
   </div>
+
 </body>
 
 </html>

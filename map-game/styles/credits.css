@@ -1,0 +1,41 @@
+#credits:open {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  li {
+    margin: 0 0 1rem 0;
+    list-style: none;
+  }
+
+  a {
+    color: var(--scale-green-dark);
+  }
+
+  button[command="close"] {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+  }
+
+  .sprites {
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .npc-sprite-yogaraptor {
+    background-image: url("../assets/player-walk-up.png");
+    animation: spritesheet 1s steps(3) infinite;
+  }
+  .npc-wrapper {
+    width: 4rem;
+    height: 4rem;
+    filter: brightness(0);
+  }
+}
