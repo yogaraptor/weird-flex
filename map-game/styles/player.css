@@ -1,4 +1,30 @@
-/* Scroll direction detection — Bramus technique */
+/*
+  Player styles - this is the element we place in the center of each map's
+  viewport to represent the main character that the user controls.
+
+  The character has left, right, up and down walk animations, which are
+  switched between using a technique from Bramus Van Damme that is absolutely
+  _wild_.
+  
+  Bramus explains it much better than I can, but the gist is that you can tell
+  which direction the user is scrolling in with pure CSS:
+  
+  - defining two @property values to represent the progress of a scroll axis.
+      One is the "lead" value, the other "delayed"
+  - update the "main" value using scroll-timeline (a "scroll-linked animation")
+  - transition the delayed value in response to the lead value, but with a
+      short delay (0.15s in our case)
+  - derive the direction of scroll by comparing the two values (with some swanky
+      CSS math functions clamp() and sign()) - if the delayed value is less than
+      the lead value then you're scrolling down; if it's greater than you're
+      scrolling up.
+
+  Bramus also uses this technique to determine scroll speed, which we don't use
+  here, but we could in future switch to a "run" spritesheet when the user
+  scrolls quickly.
+
+  His full write up is here: https://www.bram.us/2023/10/23/css-scroll-detection/
+*/
 @property --scroll-x {
   syntax: "<number>";
   inherits: true;
@@ -41,19 +67,35 @@
 }
 
 .map {
-  /* Adopt the scroll timelines from the child viewport so the animation
-     runs on .map (outside the scroll container) rather than inside it.
-     This keeps main-thread custom property work off the snap-settling path. */
+  /*
+    Two attempts at improving the performance of scrolling when holding down
+    arrow keys (rather than scrolling using mouse/touch). BOth were suggestions
+    from Copilot which do seem to help but I'd like to understand better. I've
+    outlined what I understand of Copilot's reasoning below.
+  */
+
+  /*
+    Adopt the scroll timelines from the child viewport so the animation
+    runs on .map (outside the scroll container) rather than inside it.
+    This means that even though custom properties are animated on the main
+    thread, we at least keep them from running on the scroll container. The
+    hunch here is that this helps with performance because it stops conflict
+    with the scroll-snapping on .viewport.
+  */
   timeline-scope: --map-timeline-x, --map-timeline-y;
+
+  /*
+    Define the style container here rather than on .player-sprite.
+    Even though this is technically looser than what we need, it keeps style
+    query evaluation outside the scroll content tree. Again, this should improve
+    performance.
+  */
+  container-type: style;
 
   animation:
     set-scroll-x linear both,
     set-scroll-y linear both;
   animation-timeline: --map-timeline-x, --map-timeline-y;
-
-  /* Style container here rather than on .player-sprite — keeps style query
-     evaluation outside the scroll content tree */
-  container-type: style;
 }
 
 .map .viewport {
@@ -61,8 +103,12 @@
     --map-timeline-x x,
     --map-timeline-y y;
 
-  /* Transition lives here — child of .map where --scroll-x is now set,
-     but not inside the scroll content, so it doesn't block snap settling */
+  /*
+    The transition mentioned above lives here; on the child of .map where
+    --scroll-x is set, but not inside the scroll content, so it doesn't
+    block scroll-snap settling. Again, this was Copilot's idea, and again,
+    it seems to improve performance but I would like to delve into exactly why.
+  */
   transition:
     --scroll-x-delayed 0.15s linear,
     --scroll-y-delayed 0.15s linear;
@@ -88,13 +134,14 @@
   }
 }
 
+/*
+  Basic player container styles
+*/
 .player {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate3d(-50%, -50%, 0);
-  /* background-image: url("../assets/player/player-walk-x.png");
-  background-size: auto 100%; */
   width: calc(var(--tile-width) / 2);
   height: calc(var(--tile-height) / 2);
   pointer-events: none;
@@ -104,8 +151,10 @@
   align-items: center;
   color: white;
 
-  /* Compute 0/1 boolean per direction via clamp+sign.
-     --scroll-x / --scroll-x-delayed are inherited from .map and .map .viewport */
+  /*
+    Compute 0/1 boolean per direction via clamp+sign.
+     --scroll-x / --scroll-x-delayed are inherited from .map and .map .viewport
+  */
   --going-right: clamp(
     0,
     sign(calc(var(--scroll-x) - var(--scroll-x-delayed))),
@@ -128,10 +177,20 @@
   );
 }
 
-/* Player sprite — background-image itself is the "memory" of last direction.
-   999999s transition-delay prevents revert to idle after walking stops.
-   Container queries override with transition-delay:0s for instant swaps.
-   animation-play-state paused by default; running while walking. */
+/*
+  Player sprite styles. This uses the --going-* variables defined on its parent
+  to pick which spritesheet to show, so that the character appears to face the 
+  direction that the user is making them walk.
+  
+  When not scrolling, we don't have a direction, so we use the background-image
+  property itself as the "memory" of last direction. How? An all-but infinite
+  999999s transition-delay prevents us reverting to the initial spritesheet
+  after walking stops.
+
+  When the user resumes scrolling and the character resumes walking in a
+  particular direction, the container queries below set transition-delay to 0
+  so that the directional background-image swaps in immediately.
+*/
 .player-sprite::before {
   content: "";
   position: absolute;
@@ -142,7 +201,7 @@
   animation: walk 0.6s steps(3) infinite paused;
   background-position: calc(-3 * var(--tile-width) / 2);
   transition: background-image 0s 999999s allow-discrete;
-  will-change: transform; /* Performance boost - separate player div from map for compositor */
+  will-change: transform; /* Performance boost - tell the compositor to separate the player div from map */
 }
 
 @container style(--going-down: 1) {
@@ -183,18 +242,8 @@
   }
 }
 
-@keyframes playerHurt {
-  0% {
-    box-shadow: none;
-  }
-
-  50% {
-    box-shadow: 0 0 50px 10px yellow;
-  }
-}
-
 /*
-  Position speech bubble
+  Position the player's speech bubble - currently only used in endgame cut-scene (see endgame.css)
 */
 .player .speech-bubble {
   top: -2rem;
