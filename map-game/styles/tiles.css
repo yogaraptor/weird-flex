@@ -565,10 +565,6 @@
       opacity: 0;
     }
   }
-
-  .item-icon {
-    color: white;
-  }
 }
 
 .tile:is(.item, .speech, .door, .puzzle) {
