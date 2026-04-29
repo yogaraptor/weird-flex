@@ -8,7 +8,7 @@
   justify-content: start; /* Triceratops is facing left, align to left of tile */
 }
 .npc-sprite-triceratops {
-  background-image: url("../assets/triceratops.png");
+  background-image: url("../assets/npcs/triceratops.png");
   animation: spritesheet 1s steps(8) infinite;
 }
 
@@ -17,7 +17,7 @@
     --tile-width
   ); /* Override default half tile size - Ankylosaurus is a chunky one */
   height: var(--tile-height);
-  background-image: url("../assets/ankylo.png");
+  background-image: url("../assets/npcs/ankylo.png");
   animation: spritesheet 1s steps(8) infinite;
 }
 
@@ -25,7 +25,7 @@
   justify-content: start; /* Triceratops is facing left, align to left of tile */
 }
 .npc-sprite-pterodactyl {
-  background-image: url("../assets/pterodactyl.png");
+  background-image: url("../assets/npcs/pterodactyl.png");
   animation: spritesheet 1s steps(8) infinite;
 }
 
@@ -34,7 +34,7 @@
     var(--tile-width)
   ); /* Override default half tile size - Stegosaurus is large, like Ankylosaurus */
   height: calc(var(--tile-height));
-  background-image: url("../assets/stegosaurus/stegosaurus-idle.png");
+  background-image: url("../assets/npcs/stegosaurus-idle.png");
   animation: spritesheet 1s steps(9) infinite;
 }
 

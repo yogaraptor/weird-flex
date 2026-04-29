@@ -27,49 +27,49 @@
   background-color: #27ae60;
 }
 .tile.grass1 {
-  background-image: url("../assets/grass1.png");
+  background-image: url("../assets/tiles/grass1.png");
 }
 .tile.grass2 {
-  background-image: url("../assets/grass2.png");
+  background-image: url("../assets/tiles/grass2.png");
 }
 
 .tile.mound-nw {
-  background-image: url("../assets/mound-nw.png");
+  background-image: url("../assets/tiles/mound-nw.png");
 }
 .tile.mound-n {
-  background-image: url("../assets/mound-n.png");
+  background-image: url("../assets/tiles/mound-n.png");
 }
 .tile.mound-ne {
-  background-image: url("../assets/mound-ne.png");
+  background-image: url("../assets/tiles/mound-ne.png");
 }
 .tile.mound-e {
-  background-image: url("../assets/mound-e.png");
+  background-image: url("../assets/tiles/mound-e.png");
 }
 .tile.mound-ramp-e {
-  background-image: url("../assets/mound-ramp-e.png");
+  background-image: url("../assets/tiles/mound-ramp-e.png");
 }
 .tile.mound-se {
-  background-image: url("../assets/mound-se.png");
+  background-image: url("../assets/tiles/mound-se.png");
 }
 .tile.mound-s {
-  background-image: url("../assets/mound-s.png");
+  background-image: url("../assets/tiles/mound-s.png");
 }
 .tile.mound-sw {
-  background-image: url("../assets/mound-sw.png");
+  background-image: url("../assets/tiles/mound-sw.png");
 }
 .tile.mound-w {
-  background-image: url("../assets/mound-w.png");
+  background-image: url("../assets/tiles/mound-w.png");
 }
 
 .tile.lab {
-  background-image: url("../assets/lab.png");
+  background-image: url("../assets/tiles/lab.png");
 }
 
 .tile.lava {
-  background-image: url("../assets/lava.gif");
+  background-image: url("../assets/tiles/lava.gif");
 }
 .tile.lava-wall-n1 {
-  background-image: url("../assets/lava-wall-n1.png");
+  background-image: url("../assets/tiles/lava-wall-n1.png");
 }
 
 .tile.door {
@@ -78,28 +78,25 @@
 
 .tile.floor {
   background-color: burlywood;
-  background-image: url("../assets/floor1.png");
+  background-image: url("../assets/tiles/floor1.png");
 }
 
 .tile.doormat {
   background-color: burlywood;
-  background-image: url("../assets/doormat.png");
+  background-image: url("../assets/tiles/doormat.png");
 }
 .tile.houseplant {
   background-color: olive;
   background-image:
-    url("../assets/houseplant.png"), url("../assets/floor1.png");
-}
-.tile.croissant {
-  background-image: url("../assets/croissant.png"), url("../assets/floor1.png");
+    url("../assets/tiles/houseplant.png"), url("../assets/tiles/floor1.png");
 }
 .tile.bookcase-n {
   background-image:
-    url("../assets/bookcase-n.png"), url("../assets/wall-n2.png");
+    url("../assets/tiles/bookcase-n.png"), url("../assets/tiles/wall-n2.png");
 }
 .tile.bookcase-s {
   background-image:
-    url("../assets/bookcase-s.png"), url("../assets/wall-n1.png");
+    url("../assets/tiles/bookcase-s.png"), url("../assets/tiles/wall-n1.png");
 }
 
 .tile.wall {
@@ -107,108 +104,113 @@
 }
 /* Default wall tiles */
 .tile.wall-n1 {
-  background-image: url("../assets/wall-n1.png");
+  background-image: url("../assets/tiles/wall-n1.png");
 }
 .tile.wall-n2 {
-  background-image: url("../assets/wall-n2.png");
+  background-image: url("../assets/tiles/wall-n2.png");
 }
 .tile.wall-lamp-n2 {
-  background-image: url("../assets/wall-lamp-n2.png");
+  background-image: url("../assets/tiles/wall-lamp-n2.png");
 }
 .tile.wall-picture-n1 {
-  background-image: url("../assets/wall-picture-n1.png");
+  background-image: url("../assets/tiles/wall-picture-n1.png");
 }
 .tile.wall-picture-n2 {
-  background-image: url("../assets/wall-picture-n2.png");
+  background-image: url("../assets/tiles/wall-picture-n2.png");
 }
 .tile.wall-ne1 {
-  background-image: url("../assets/wall-ne1.png");
+  background-image: url("../assets/tiles/wall-ne1.png");
 }
 .tile.wall-ne2 {
-  background-image: url("../assets/wall-ne2.png");
+  background-image: url("../assets/tiles/wall-ne2.png");
 }
 .tile.wall-e1 {
-  background-image: url("../assets/wall-e1.png");
-}
-.tile.wall-e2 {
-  background-image: url("../assets/wall-e2.png");
+  background-image: url("../assets/tiles/wall-e1.png");
 }
 .tile.wall-se1 {
-  background-image: url("../assets/wall-se1.png");
+  background-image: url("../assets/tiles/wall-se1.png");
 }
 .tile.wall-se2 {
-  background-image: url("../assets/wall-se2.png");
+  background-image: url("../assets/tiles/wall-se2.png");
 }
 .tile.wall-s1 {
-  background-image: url("../assets/wall-s1.png");
+  background-image: url("../assets/tiles/wall-s1.png");
 }
 .tile.wall-s2 {
-  background-image: url("../assets/wall-s2.png");
+  background-image: url("../assets/tiles/wall-s2.png");
 }
 .tile.wall-sw1 {
-  background-image: url("../assets/wall-sw1.png");
+  background-image: url("../assets/tiles/wall-sw1.png");
 }
 .tile.wall-sw2 {
-  background-image: url("../assets/wall-sw2.png");
+  background-image: url("../assets/tiles/wall-sw2.png");
 }
 .tile.wall-w1 {
-  background-image: url("../assets/wall-w1.png");
-}
-.tile.wall-w2 {
-  background-image: url("../assets/wall-w2.png");
+  background-image: url("../assets/tiles/wall-w1.png");
 }
 .tile.wall-nw1 {
-  background-image: url("../assets/wall-nw1.png");
+  background-image: url("../assets/tiles/wall-nw1.png");
 }
 .tile.wall-nw2 {
-  background-image: url("../assets/wall-nw2.png");
+  background-image: url("../assets/tiles/wall-nw2.png");
 }
 .tile.door-s1 {
-  background-image: url("../assets/door-s1.png");
+  background-image: url("../assets/tiles/door-s1.png");
 }
 .tile.door-s2 {
-  background-image: url("../assets/door-s2.png");
+  background-image: url("../assets/tiles/door-s2.png");
 }
 .tile.wall-window-s1 {
-  background-image: url("../assets/wall-window-s1.png");
+  background-image: url("../assets/tiles/wall-window-s1.png");
 }
 .tile.wall-window-s2 {
-  background-image: url("../assets/wall-window-s2.png");
+  background-image: url("../assets/tiles/wall-window-s2.png");
 }
 
 .tile.bed-n {
-  background-image: url("../assets/bed-n.png"), url("../assets/floor1.png");
+  background-image:
+    url("../assets/tiles/bed-n.png"), url("../assets/tiles/floor1.png");
 }
 .tile.bed-s {
-  background-image: url("../assets/bed-s.png"), url("../assets/floor1.png");
+  background-image:
+    url("../assets/tiles/bed-s.png"), url("../assets/tiles/floor1.png");
 }
 
 .tile.rug-n {
-  background-image: url("../assets/rug-n.png"), url("../assets/floor1.png");
+  background-image:
+    url("../assets/tiles/rug-n.png"), url("../assets/tiles/floor1.png");
 }
 .tile.rug-ne {
-  background-image: url("../assets/rug-ne.png"), url("../assets/floor1.png");
+  background-image:
+    url("../assets/tiles/rug-ne.png"), url("../assets/tiles/floor1.png");
 }
 .tile.rug-e {
-  background-image: url("../assets/rug-e.png"), url("../assets/floor1.png");
+  background-image:
+    url("../assets/tiles/rug-e.png"), url("../assets/tiles/floor1.png");
 }
 .tile.rug-se {
-  background-image: url("../assets/rug-se.png"), url("../assets/floor1.png");
+  background-image:
+    url("../assets/tiles/rug-se.png"), url("../assets/tiles/floor1.png");
 }
 .tile.rug-s {
-  background-image: url("../assets/rug-s.png"), url("../assets/floor1.png");
+  background-image:
+    url("../assets/tiles/rug-s.png"), url("../assets/tiles/floor1.png");
 }
 .tile.rug-sw {
-  background-image: url("../assets/rug-sw.png"), url("../assets/floor1.png");
+  background-image:
+    url("../assets/tiles/rug-sw.png"), url("../assets/tiles/floor1.png");
 }
 .tile.rug-w {
-  background-image: url("../assets/rug-w.png"), url("../assets/floor1.png");
+  background-image:
+    url("../assets/tiles/rug-w.png"), url("../assets/tiles/floor1.png");
 }
 .tile.rug-nw {
-  background-image: url("../assets/rug-nw.png"), url("../assets/floor1.png");
+  background-image:
+    url("../assets/tiles/rug-nw.png"), url("../assets/tiles/floor1.png");
 }
 .tile.rug-c {
-  background-image: url("../assets/rug-c.png"), url("../assets/floor1.png");
+  background-image:
+    url("../assets/tiles/rug-c.png"), url("../assets/tiles/floor1.png");
 }
 
 /* Lab tiles */
@@ -241,13 +243,13 @@
     background-image: url("../assets/lab/lab-wall-n2.png");
   }
   .tile.wall-lamp-n2 {
-    background-image: url("../assets/wall-lamp-n2.png");
+    background-image: url("../assets/tiles/wall-lamp-n2.png");
   }
   .tile.wall-picture-n1 {
-    background-image: url("../assets/wall-picture-n1.png");
+    background-image: url("../assets/tiles/wall-picture-n1.png");
   }
   .tile.wall-picture-n2 {
-    background-image: url("../assets/wall-picture-n2.png");
+    background-image: url("../assets/tiles/wall-picture-n2.png");
   }
   .tile.wall-ne1 {
     background-image: url("../assets/lab/lab-wall-ne1.png");
@@ -350,23 +352,23 @@
 }
 .tile.tree1 {
   background-color: darkolivegreen;
-  background-image: url("../assets/tree1.png");
+  background-image: url("../assets/tiles/tree1.png");
 }
 .tile.bush1 {
   background-color: darkolivegreen;
-  background-image: url("../assets/bush1.png");
+  background-image: url("../assets/tiles/bush1.png");
 }
 .tile.bush2 {
   background-color: darkolivegreen;
-  background-image: url("../assets/bush2.png");
+  background-image: url("../assets/tiles/bush2.png");
 }
 .tile.rock1 {
   background-color: gray;
-  background-image: url("../assets/rock1.png");
+  background-image: url("../assets/tiles/rock1.png");
 }
 .tile.rock2 {
   background-color: gray;
-  background-image: url("../assets/rock2.png");
+  background-image: url("../assets/tiles/rock2.png");
 }
 .tile.long-grass {
   background-color: darkgreen;
@@ -375,47 +377,47 @@
   background-color: darkslategrey;
 }
 .tile.cliff-w {
-  background-image: url("../assets/cliff-w.png");
+  background-image: url("../assets/tiles/cliff-w.png");
 }
 .tile.cliff-corner-nw {
-  background-image: url("../assets/cliff-corner-nw.png");
+  background-image: url("../assets/tiles/cliff-corner-nw.png");
 }
 .tile.cliff-corner-sw {
-  background-image: url("../assets/cliff-corner-sw.png");
+  background-image: url("../assets/tiles/cliff-corner-sw.png");
 }
 .tile.cliff-corner-nw2 {
-  background-image: url("../assets/cliff-corner-nw2.png");
+  background-image: url("../assets/tiles/cliff-corner-nw2.png");
 }
 .tile.cliff-corner-sw2 {
-  background-image: url("../assets/cliff-corner-sw2.png");
+  background-image: url("../assets/tiles/cliff-corner-sw2.png");
 }
 .tile.cliff-cave-w {
-  background-image: url("../assets/cliff-cave-w.png");
+  background-image: url("../assets/tiles/cliff-cave-w.png");
 }
 .tile.cliff-cave-w2 {
-  background-image: url("../assets/cliff-cave-w2.png");
+  background-image: url("../assets/tiles/cliff-cave-w2.png");
 }
 .tile.mountain1 {
-  background-image: url("../assets/mountain1.png");
+  background-image: url("../assets/tiles/mountain1.png");
 }
 
 .tile.sign1 {
-  background-image: url("../assets/sign1.png");
+  background-image: url("../assets/tiles/sign1.png");
 }
 .tile.sign2 {
-  background-image: url("../assets/sign2.png");
+  background-image: url("../assets/tiles/sign2.png");
 }
 .tile.house1 {
-  background-image: url("../assets/house1.png");
+  background-image: url("../assets/tiles/house1.png");
 }
 .tile.house2 {
-  background-image: url("../assets/house2.png");
+  background-image: url("../assets/tiles/house2.png");
 }
 .tile.house3 {
-  background-image: url("../assets/house3.png");
+  background-image: url("../assets/tiles/house3.png");
 }
 .tile.shop1 {
-  background-image: url("../assets/shop1.png");
+  background-image: url("../assets/tiles/shop1.png");
 }
 
 /* Road tiles */
@@ -423,114 +425,114 @@
   background-color: #555;
 }
 .tile.road-h-cap-w {
-  background-image: url("../assets/road-w.png");
+  background-image: url("../assets/tiles/road-w.png");
 }
 .tile.road-h-middle {
-  background-image: url("../assets/road-h-middle.png");
+  background-image: url("../assets/tiles/road-h-middle.png");
 }
 .tile.road-h-cap-e {
-  background-image: url("../assets/road-h-cap-e.png");
+  background-image: url("../assets/tiles/road-h-cap-e.png");
 }
 .tile.road-v-cap-n {
-  background-image: url("../assets/road-v-cap-n.png");
+  background-image: url("../assets/tiles/road-v-cap-n.png");
 }
 .tile.road-v-middle {
-  background-image: url("../assets/road-v-middle.png");
+  background-image: url("../assets/tiles/road-v-middle.png");
 }
 .tile.road-v-cap-s {
-  background-image: url("../assets/road-v-cap-s.png");
+  background-image: url("../assets/tiles/road-v-cap-s.png");
 }
 .tile.road-bend-nw {
-  background-image: url("../assets/road-bend-nw.png");
+  background-image: url("../assets/tiles/road-bend-nw.png");
 }
 .tile.road-bend-ne {
-  background-image: url("../assets/road-bend-ne.png");
+  background-image: url("../assets/tiles/road-bend-ne.png");
 }
 .tile.road-bend-se {
-  background-image: url("../assets/road-bend-se.png");
+  background-image: url("../assets/tiles/road-bend-se.png");
 }
 .tile.road-bend-sw {
-  background-image: url("../assets/road-bend-sw.png");
+  background-image: url("../assets/tiles/road-bend-sw.png");
 }
 .tile.road-tjunc-n {
-  background-image: url("../assets/road-tjunc-n.png");
+  background-image: url("../assets/tiles/road-tjunc-n.png");
 }
 .tile.road-tjunc-e {
-  background-image: url("../assets/road-tjunc-e.png");
+  background-image: url("../assets/tiles/road-tjunc-e.png");
 }
 .tile.road-tjunc-s {
-  background-image: url("../assets/road-tjunc-s.png");
+  background-image: url("../assets/tiles/road-tjunc-s.png");
 }
 .tile.road-tjunc-w {
-  background-image: url("../assets/road-tjunc-w.png");
+  background-image: url("../assets/tiles/road-tjunc-w.png");
 }
 .tile.road-cross {
-  background-image: url("../assets/road-cross.png");
+  background-image: url("../assets/tiles/road-cross.png");
 }
 
 /* Cave interior */
 .tile.cave-wall-n1 {
-  background-image: url("../assets/cave-wall-n1.png");
+  background-image: url("../assets/tiles/cave-wall-n1.png");
 }
 .tile.cave-wall-n2 {
-  background-image: url("../assets/cave-wall-n2.png");
+  background-image: url("../assets/tiles/cave-wall-n2.png");
 }
 .tile.cave-wall-ne1 {
-  background-image: url("../assets/cave-wall-ne1.png");
+  background-image: url("../assets/tiles/cave-wall-ne1.png");
 }
 .tile.cave-wall-ne2 {
-  background-image: url("../assets/cave-wall-ne2.png");
+  background-image: url("../assets/tiles/cave-wall-ne2.png");
 }
 .tile.cave-wall-e1 {
-  background-image: url("../assets/cave-wall-e1.png");
+  background-image: url("../assets/tiles/cave-wall-e1.png");
 }
 .tile.cave-wall-se1 {
-  background-image: url("../assets/cave-wall-se1.png");
+  background-image: url("../assets/tiles/cave-wall-se1.png");
 }
 .tile.cave-wall-se2 {
-  background-image: url("../assets/cave-wall-se2.png");
+  background-image: url("../assets/tiles/cave-wall-se2.png");
 }
 .tile.cave-wall-s1 {
-  background-image: url("../assets/cave-wall-s1.png");
+  background-image: url("../assets/tiles/cave-wall-s1.png");
 }
 .tile.cave-wall-s2 {
-  background-image: url("../assets/cave-wall-s2.png");
+  background-image: url("../assets/tiles/cave-wall-s2.png");
 }
 .tile.cave-wall-sw1 {
-  background-image: url("../assets/cave-wall-sw1.png");
+  background-image: url("../assets/tiles/cave-wall-sw1.png");
 }
 .tile.cave-wall-sw2 {
-  background-image: url("../assets/cave-wall-sw2.png");
+  background-image: url("../assets/tiles/cave-wall-sw2.png");
 }
 .tile.cave-wall-w1 {
-  background-image: url("../assets/cave-wall-w1.png");
+  background-image: url("../assets/tiles/cave-wall-w1.png");
 }
 .tile.cave-wall-nw1 {
-  background-image: url("../assets/cave-wall-nw1.png");
+  background-image: url("../assets/tiles/cave-wall-nw1.png");
 }
 .tile.cave-wall-nw2 {
-  background-image: url("../assets/cave-wall-nw2.png");
+  background-image: url("../assets/tiles/cave-wall-nw2.png");
 }
 .tile.cave-floor1 {
-  background-image: url("../assets/cave-floor1.png");
+  background-image: url("../assets/tiles/cave-floor1.png");
 }
 .tile.cave-floor2 {
-  background-image: url("../assets/cave-floor2.png");
+  background-image: url("../assets/tiles/cave-floor2.png");
 }
 .tile.cave-floor-entrance1 {
-  background-image: url("../assets/cave-floor-entrance1.png");
+  background-image: url("../assets/tiles/cave-floor-entrance1.png");
 }
 .tile.cave-floor-entrance2 {
-  background-image: url("../assets/cave-floor-entrance2.png");
+  background-image: url("../assets/tiles/cave-floor-entrance2.png");
 }
 .tile.cave-wall-entrance-n1 {
-  background-image: url("../assets/cave-wall-entrance-n1.png");
+  background-image: url("../assets/tiles/cave-wall-entrance-n1.png");
 }
 .tile.cave-wall-entrance-n2 {
-  background-image: url("../assets/cave-wall-entrance-n2.png");
+  background-image: url("../assets/tiles/cave-wall-entrance-n2.png");
 }
 .tile.cave-wall-entrance-s1 {
-  background-image: url("../assets/cave-wall-entrance-s1.png");
+  background-image: url("../assets/tiles/cave-wall-entrance-s1.png");
 }
 
 /* Tiles with interactive buttons (e.g. doors, puzzles, signposts) */

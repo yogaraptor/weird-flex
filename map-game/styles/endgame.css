@@ -27,7 +27,7 @@
   .rocket-sprite {
     width: 100%;
     height: 100%;
-    background-image: url("../assets/rocket.png");
+    background-image: url("../assets/endgame/rocket.png");
     background-size: cover;
   }
 }
@@ -331,13 +331,13 @@
 
 @keyframes endgame-rocket-liftoff {
   0% {
-    background-image: url("../assets/rocket-fly.png");
+    background-image: url("../assets/endgame/rocket-fly.png");
   }
   75% {
     translate: 0 calc(var(--tile-height) * -1);
   }
   100% {
-    background-image: url("../assets/rocket-fly.png");
+    background-image: url("../assets/endgame/rocket-fly.png");
     translate: 0 calc(var(--tile-height) * -6);
   }
 }

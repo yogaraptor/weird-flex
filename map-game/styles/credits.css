@@ -30,7 +30,7 @@
   }
 
   .npc-sprite-yogaraptor {
-    background-image: url("../assets/player-walk-up.png");
+    background-image: url("../assets/player/player-walk-up.png");
     animation: spritesheet 1s steps(3) infinite;
   }
   .npc-wrapper {

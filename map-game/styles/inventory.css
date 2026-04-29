@@ -177,15 +177,15 @@ body:has(#item-crystal:checked) {
 /* Item icons */
 .inventory li:nth-child(1)::before,
 .item-croissant .item-icon {
-  background-image: url("../assets/croissant.png");
+  background-image: url("../assets/items/croissant.png");
 }
 .inventory li:nth-child(2)::before,
 .item-key .item-icon {
-  background-image: url("../assets/keycard.png");
+  background-image: url("../assets/items/keycard.png");
 }
 .inventory li:nth-child(3)::before,
 .item-crystal .item-icon {
-  background-image: url("../assets/stone-puzzle/crystal.png");
+  background-image: url("../assets/items/crystal.png");
 }
 .inventory li:nth-child(4)::before,
 .item-back-plate .item-icon {

@@ -84,7 +84,7 @@ body {
   background-image: url("../assets/stone-puzzle/tile.png");
 }
 .tile.tile.prize-puzzle-1 {
-  background-image: url("../assets/cave-floor1.png");
+  background-image: url("../assets/tiles/cave-floor1.png");
 }
 
 /* Puzzle solved: reveal prize, swap thumbs, animate, close puzzle */
