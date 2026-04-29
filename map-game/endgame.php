@@ -54,17 +54,17 @@
 
 <?php if ($tileDef['endgame'] === 'dino-queue'): ?>
   <div class="dino-queue">
-    <div class="npc-wrapper">
-      <div class="npc-sprite npc-sprite-triceratops"></div>
+    <div class="npc-wrapper-triceratops">
+      <div class="npc-sprite"></div>
     </div>
-    <div class="npc-wrapper">
-      <div class="npc-sprite npc-sprite-pterodactyl"></div>
+    <div class="npc-wrapper-pterodactyl">
+      <div class="npc-sprite"></div>
     </div>
-    <div class="npc-wrapper">
-      <div class="npc-sprite npc-sprite-ankylosaurus"></div>
+    <div class="npc-wrapper-ankylosaurus">
+      <div class="npc-sprite"></div>
     </div>
-    <div class="npc-wrapper">
-      <div class="npc-sprite npc-sprite-stegosaurus"></div>
+    <div class="npc-wrapper-stegosaurus">
+      <div class="npc-sprite"></div>
     </div>
   </div>
 <?php endif; ?>

@@ -299,8 +299,8 @@ foreach ($lines as $i => $line) {
                   <?php endif; ?>
 
                   <?php if ($tileDef['npc'] !== null): ?>
-                    <div class="npc-wrapper">
-                      <div class="npc-sprite npc-sprite-<?php echo $tileDef['npc']; ?>"></div>
+                    <div class="npc-wrapper npc-wrapper-<?php echo $tileDef['npc']; ?>">
+                      <div class="npc-sprite"></div>
                     </div>
                   <?php endif; ?>
 

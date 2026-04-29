@@ -1,48 +1,66 @@
+/*
+  Various NPC (non-player character) sprites - these are the dinos Yogaraptor
+  meets along the way :)
+*/
+
+/*
+  Common styles
+*/
+/*
+  Speech bubbles are typically added in an adjacent tile so that speech shows
+  when the player is next to an NPC,not on top of it. Here we allow overriding
+  alignment of the NPC within its tile to allow bringing them closer to their
+  speech bubble.
+*/
+.npc-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: var(--npc-justify, center);
+  align-items: center;
+}
+
 .npc-sprite {
-  width: calc(var(--tile-width) / 2);
-  height: calc(var(--tile-height) / 2);
+  width: var(--npc-width, calc(var(--tile-width) / 2));
+  height: var(--npc-height, calc(var(--tile-height) / 2));
   background-size: cover;
 }
 
-.tile.npc-triceratops {
-  justify-content: start; /* Triceratops is facing left, align to left of tile */
-}
-.npc-sprite-triceratops {
-  background-image: url("../assets/npcs/triceratops.png");
-  animation: spritesheet 1s steps(8) infinite;
-}
+/*
+  Specific NPC styles
+*/
+.npc-wrapper-ankylosaurus .npc-sprite {
+  /* Override default half tile size - Ankylosaurus is a chunky one */
+  --npc-width: var(--tile-width);
+  --npc-height: var(--tile-height);
 
-.npc-sprite-ankylosaurus {
-  width: var(
-    --tile-width
-  ); /* Override default half tile size - Ankylosaurus is a chunky one */
-  height: var(--tile-height);
   background-image: url("../assets/npcs/ankylo.png");
   animation: spritesheet 1s steps(8) infinite;
 }
 
-.npc-pterodactyl {
-  justify-content: start; /* Triceratops is facing left, align to left of tile */
-}
-.npc-sprite-pterodactyl {
-  background-image: url("../assets/npcs/pterodactyl.png");
-  animation: spritesheet 1s steps(8) infinite;
-}
+.npc-wrapper-stegosaurus .npc-sprite {
+  /* Override default half tile size - Stegosaurus is large, like Ankylosaurus */
+  --npc-width: calc(var(--tile-width));
+  --npc-height: calc(var(--tile-height));
 
-.npc-sprite-stegosaurus {
-  width: calc(
-    var(--tile-width)
-  ); /* Override default half tile size - Stegosaurus is large, like Ankylosaurus */
-  height: calc(var(--tile-height));
   background-image: url("../assets/npcs/stegosaurus-idle.png");
   animation: spritesheet 1s steps(9) infinite;
 }
 
-@keyframes spritesheet {
-  0% {
-    background-position: 0 0;
+.npc-wrapper-triceratops {
+  --npc-justify: start; /* Triceratops is facing left, align to left of tile */
+
+  .npc-sprite {
+    background-image: url("../assets/npcs/triceratops.png");
+    animation: spritesheet 1s steps(8) infinite;
   }
-  100% {
-    background-position: -100% 0;
+}
+
+.npc-wrapper-pterodactyl {
+  --npc-justify: start; /* Pterodactyl is facing left, align to left of tile */
+
+  .npc-sprite {
+    background-image: url("../assets/npcs/pterodactyl.png");
+    animation: spritesheet 1s steps(8) infinite;
   }
 }

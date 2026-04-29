@@ -86,7 +86,7 @@
       }
 
       /* Make ankylo face same way as other dinos */
-      .npc-sprite-ankylosaurus {
+      .npc-wrapper-ankylosaurus {
         scale: -1 1;
       }
     }
