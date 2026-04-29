@@ -108,45 +108,11 @@ body {
   input[name="sun"],
   input[name="moon"],
   input[name="earth"] {
-    animation: puzzle-thumb-shake 0.5s ease-in-out 3;
+    animation: tremor 0.5s ease-in-out 3;
   }
   /* After 2 shake cycles, flash white then fade puzzle out */
   details.puzzle-wrapper {
     animation: puzzle-solved-outro 1.5s 1s forwards;
-  }
-}
-
-@keyframes puzzle-thumb-shake {
-  0%,
-  100% {
-    transform: translateX(0);
-  }
-  10% {
-    transform: translateX(-8px);
-  }
-  20% {
-    transform: translateX(8px);
-  }
-  30% {
-    transform: translateX(-7px);
-  }
-  40% {
-    transform: translateX(7px);
-  }
-  50% {
-    transform: translateX(-5px);
-  }
-  60% {
-    transform: translateX(5px);
-  }
-  70% {
-    transform: translateX(-3px);
-  }
-  80% {
-    transform: translateX(3px);
-  }
-  90% {
-    transform: translateX(-1px);
   }
 }
 

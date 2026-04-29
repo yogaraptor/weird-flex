@@ -9,9 +9,9 @@
   align-items: center;
   gap: 2rem;
   animation:
-    earthquake 0.5s,
+    tremor 0.5s,
     whiteout 4s steps(12) forwards,
-    cut-scene-out 2.5s steps(6) forwards;
+    fade-out 2.5s steps(6) forwards;
   animation-delay: 8s, 9s, 18s;
   animation-iteration-count: 4, 1, 1;
 }
@@ -70,42 +70,6 @@
   }
 }
 
-@keyframes earthquake {
-  0% {
-    transform: translateX(0);
-  }
-  10% {
-    transform: translateX(4px);
-  }
-  20% {
-    transform: translateX(-8px);
-  }
-  30% {
-    transform: translateX(8px);
-  }
-  40% {
-    transform: translateX(-6px);
-  }
-  50% {
-    transform: translateX(6px);
-  }
-  60% {
-    transform: translateX(-4px);
-  }
-  70% {
-    transform: translateX(4px);
-  }
-  80% {
-    transform: translateX(0);
-  }
-  90% {
-    transform: translateX(2px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
 @keyframes whiteout {
   0% {
     background-color: black;
@@ -113,21 +77,4 @@
   100% {
     background-color: white;
   }
-}
-
-@keyframes cut-scene-out {
-  0% {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  100% {
-    opacity: 0;
-    visibility: hidden;
-  }
-}
-
-/* Hide while developing */
-.cut-scene {
-  display: none;
 }

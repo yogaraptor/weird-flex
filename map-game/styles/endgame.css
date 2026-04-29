@@ -164,8 +164,8 @@
           calc(var(--time-show-overworld) + 26s) forwards;
       }
       .endgame-speech-main {
-        animation: endgame-outro-speech-hide 1s steps(6)
-          calc(var(--time-show-overworld) + 36s) forwards;
+        animation: fade-out 1s steps(6) calc(var(--time-show-overworld) + 36s)
+          forwards;
 
         > :nth-child(1) {
           top: 20%;
@@ -366,12 +366,6 @@
   }
 }
 
-@keyframes endgame-outro-final-speech-show {
-  100% {
-    visibility: visible;
-  }
-}
-
 @keyframes endgame-outro-speech-final-hide {
   0% {
     opacity: 1;
@@ -383,15 +377,6 @@
   100% {
     opacity: 0;
     translate: 0 -15%;
-  }
-}
-
-@keyframes endgame-outro-speech-hide {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
   }
 }
 
