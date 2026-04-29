@@ -597,47 +597,6 @@
 
 /* Special tile states when player is "on" that tile */
 @container scroll-state(snapped: x) or scroll-state(snapped: y) {
-  /* Fire effect around player when on lava */
-  .tile.lava::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 1;
-    transform: translate(-50%, -50%);
-    width: calc(var(--tile-width) / 2);
-    height: calc(var(--tile-height) / 2);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 48px;
-    color: white;
-    animation: playerHurt 1s ease-in-out infinite;
-  }
-
-  .tile.lava::after {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 10;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    content: "GAME OVER";
-    animation: gameOver 5s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    pointer-events: none;
-  }
-
-  .tile.lava p {
-    border: 2px solid green;
-  }
-
   .tile:is(.item, .speech, .door, .puzzle) {
     .speech-bubble,
     .button {
