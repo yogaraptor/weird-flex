@@ -13,6 +13,10 @@
 }
 
 .npc-sprite-ankylosaurus {
+  width: var(
+    --tile-width
+  ); /* Override default half tile size - Ankylo is a chunky one */
+  height: var(--tile-height);
   background-image: url("../assets/ankylo.png");
   animation: spritesheet 1s steps(8) infinite;
 }
