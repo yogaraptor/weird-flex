@@ -5,7 +5,10 @@
   in the long grass encounter).
  
   In terms of state this boils down to the crystal item checkbox and the
-  "give the stego your croissant" checkbox being checked
+  "give the stego your croissant" checkbox being checked.
+
+  This is probably the least interesting file in the whole game; it's 
+  essentially a big long chain of hurriedly-written CSS animations.
 */
 
 /*
@@ -90,6 +93,8 @@
         scale: -1 1;
       }
     }
+
+    /* The dinos walk in to the rocket one by one (hoorah, hoorah!) */
     .dino-queue > :nth-child(1) {
       animation: endgame-dino-queue-move1 1s linear var(--time-show-overworld)
         forwards;
@@ -204,6 +209,13 @@
           translate: -50% 0;
           animation-delay: calc(var(--time-show-overworld) + 36s);
         }
+      }
+
+      .endgame-thanks {
+        top: 40%;
+        left: 50%;
+        translate: -50% 0;
+        animation: show 1s linear calc(var(--time-show-overworld) + 47s) both;
       }
     }
   }
@@ -463,11 +475,13 @@
   99% {
     filter: brightness(0);
     visibility: visible;
+    display: block;
   }
   100% {
-    filter: brightness(0);
     opacity: 0;
+    filter: brightness(0);
     visibility: hidden;
+    display: none;
   }
 }
 

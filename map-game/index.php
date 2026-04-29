@@ -350,6 +350,7 @@ foreach ($lines as $i => $line) {
             <div class="endgame-speech-final">
               <p>&hellip;Safe at last.</p>
             </div>
+            <p class="endgame-thanks">And that's it! Thanks for playing. Refresh the page to go back to the start and see the credits.</p>
           </div>
         <?php endif; ?>
       </dialog>
