@@ -6,12 +6,12 @@
     pointer-events: none;
   }
 
-  .encounter-ready > .tile-btn {
+  .encounter-ready > .button {
     bottom: -1rem;
   }
 
   &:has(#encounter-give:checked) {
-    > .tile-btn {
+    > .button {
       opacity: 0;
       pointer-events: none;
     }
@@ -281,7 +281,8 @@
 .encounter-player {
   width: calc(var(--tile-width) * 2);
   height: calc(var(--tile-height) * 2);
-  background: url("../assets/player/player-walk-up.png") 0 0 / auto 100% no-repeat;
+  background: url("../assets/player/player-walk-up.png") 0 0 / auto 100%
+    no-repeat;
   image-rendering: pixelated;
   align-self: flex-start;
   animation: encounter-slide-in-left 0.6s steps(8) both;

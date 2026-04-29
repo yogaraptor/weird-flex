@@ -147,7 +147,7 @@ details.puzzle-wrapper {
 details.puzzle-wrapper > summary {
   list-style: none;
 
-  .tile-btn {
+  .button {
     z-index: 1000;
   }
 }

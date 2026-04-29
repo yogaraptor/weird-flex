@@ -12,7 +12,7 @@
       The Stego is growling. She sounds hungry!
     </div>
 
-    <label for="encounter-give" class="tile-btn encounter-speech encounter-action">
+    <label for="encounter-give" class="button encounter-speech encounter-action">
       <span class="frame-inner">Give her your croissant?</span>
     </label>
     <input type="checkbox" id="encounter-give" />
@@ -29,7 +29,7 @@
         </div>
       </div>
 
-      <button class="tile-btn encounter-give-close" command="close" commandfor="encounter-stego">
+      <button class="button encounter-give-close" command="close" commandfor="encounter-stego">
         <span class="frame-inner">Scuttle away before she changes her mind!</span>
       </button>
     </div>

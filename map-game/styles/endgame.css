@@ -47,7 +47,7 @@
   --time-show-overworld: 24s;
   &:has(.map-lab:open) {
     .player,
-    .tile-btn {
+    .button {
       display: none;
     }
 
@@ -223,7 +223,7 @@
     .viewport {
       animation: disable-scrolling 0.1s forwards;
     }
-    .tile.door .tile-btn {
+    .tile.door .button {
       display: none;
     }
 

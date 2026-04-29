@@ -14,7 +14,7 @@
     </li>
   </ul>
 
-  <button class=" tile-btn" command="close" commandfor="credits"><span class="frame-inner">Close</span></button>
+  <button class=" button" command="close" commandfor="credits"><span class="frame-inner">Close</span></button>
 
   <div class="sprites">
     <div class="npc-wrapper">

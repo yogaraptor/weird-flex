@@ -139,8 +139,8 @@ foreach ($lines as $i => $line) {
   <div class="app">
     <div class="splash-screen">
       <h1>Yogaraptor presents:<span>The Dinosaurs DID have a space agency!</span></h1>
-      <button class="frame tile-btn" command="show-modal" commandfor="map-10"><span class="frame-inner">Start game</span></button>
-      <button class="frame tile-btn" command="show-modal" commandfor="credits"><span class="frame-inner">View credits</span></button>
+      <button class="frame button" command="show-modal" commandfor="map-10"><span class="frame-inner">Start game</span></button>
+      <button class="frame button" command="show-modal" commandfor="credits"><span class="frame-inner">View credits</span></button>
     </div>
 
     <div class="frame inventory">
@@ -255,13 +255,13 @@ foreach ($lines as $i => $line) {
                   <?php if ($map['playerStart'] !== null && $index === $map['playerStart']): ?>tabindex="0" autofocus<?php endif; ?>>
 
                   <?php if ($tileDef['gotoMap'] !== null): ?>
-                    <button class="tile-btn" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">
+                    <button class="button" command="show-modal" commandfor="map-<?php echo $tileDef['gotoMap']; ?>">
                       <span class="frame-inner"><?php echo htmlspecialchars($tileDef['doorText'] ?? 'Enter'); ?></span>
                     </button>
                   <?php endif; ?>
 
                   <?php if ($tileDef['exit'] !== null): ?>
-                    <button class="tile-btn" command="close" commandfor="map-<?php echo $mapNum; ?>">
+                    <button class="button" command="close" commandfor="map-<?php echo $mapNum; ?>">
                       <span class="frame-inner"><?php echo htmlspecialchars($tileDef['doorText'] ?? 'Exit'); ?></span>
                     </button>
                   <?php endif; ?>
@@ -277,14 +277,14 @@ foreach ($lines as $i => $line) {
                       </div>
 
                       <summary>
-                        <span class="tile-btn summary-open"><span class="frame-inner">Investigate stone mechanism</span></span>
+                        <span class="button summary-open"><span class="frame-inner">Investigate stone mechanism</span></span>
                       </summary>
                     </details>
                   <?php endif; ?>
 
                   <?php if ($tileDef['item'] !== null): ?>
                     <div class="item-wrapper">
-                      <label class="frame tile-btn" for="item-<?php echo $tileDef['item']; ?>">
+                      <label class="frame button" for="item-<?php echo $tileDef['item']; ?>">
                         <div class="frame-inner">Pick up <?php echo $tileDef['item']; ?></div>
                       </label>
                       <input class="item-checkbox" type="checkbox" id="item-<?php echo $tileDef['item']; ?>" />
@@ -309,7 +309,7 @@ foreach ($lines as $i => $line) {
                       <div class="encounter-transition"></div>
                       <div class="encounter-ready">
                         <p><?php echo $encounterWelcome; ?></p>
-                        <button class="tile-btn" command="show-modal" commandfor="encounter-<?php echo $encounterId; ?>"><span class="frame-inner">Ready!</span></button>
+                        <button class="button" command="show-modal" commandfor="encounter-<?php echo $encounterId; ?>"><span class="frame-inner">Ready!</span></button>
                       </div>
 
                       <dialog class="encounter-container" id="encounter-<?php echo $encounterId; ?>">

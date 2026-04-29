@@ -536,7 +536,7 @@
 }
 
 /* Tiles with interactive buttons (e.g. doors, puzzles, signposts) */
-.tile:is(.item, .speech, .door, .puzzle) .tile-btn {
+.tile:is(.item, .speech, .door, .puzzle) .button {
   display: flex;
   pointer-events: none;
   z-index: 20;
@@ -575,7 +575,7 @@
   position: relative;
 
   .speech-bubble,
-  .tile-btn {
+  .button {
     position: absolute;
     left: 50%;
     bottom: var(--tile-height);
@@ -640,7 +640,7 @@
 
   .tile:is(.item, .speech, .door, .puzzle) {
     .speech-bubble,
-    .tile-btn {
+    .button {
       translate: -50% 0;
       opacity: 1;
       pointer-events: auto;
