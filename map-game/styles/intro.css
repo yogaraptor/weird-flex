@@ -10,10 +10,10 @@
   gap: 2rem;
   animation:
     tremor 0.5s,
-    whiteout 4s steps(12) forwards,
+    cut-scene-whiteout 4s ease-in forwards,
     fade-out 2.5s steps(6) forwards;
-  animation-delay: 8s, 9s, 18s;
-  animation-iteration-count: 4, 1, 1;
+  animation-delay: 8s, 8s, 20s;
+  animation-iteration-count: 5, 1, 1;
 }
 
 .cut-scene {
@@ -70,9 +70,9 @@
   }
 }
 
-@keyframes whiteout {
+@keyframes cut-scene-whiteout {
   0% {
-    background-color: black;
+    brightness: black;
   }
   100% {
     background-color: white;
