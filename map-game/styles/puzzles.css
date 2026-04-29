@@ -1,4 +1,19 @@
-/* Scroll-driven slider @property registrations - see https://css-tip.com/css-variables-range-slider/ for details */
+/*
+  This puzzle uses CSS @property values to allow styling based on the value of the sliders (range inputs)
+
+  In short, the three-way mechanism is:
+  - define view-timeline on the range inputs to track their position
+  - link view-timeline to @property values on :root using animation-timeline
+  - use a style @container to define styles for certain values of the inputs
+    (in our case, when all the inputs have the middle value selected, we show
+    the "solved" state of the puzzle, and reveal of the prize)
+
+  I borrowed this _brilliant_ technique from Temani Afif of CSS Tip - see
+  https://css-tip.com/css-variables-range-slider for his excellent article
+  explaining how it all works.
+
+  Thanks Temani!
+*/
 @property --_sun {
   syntax: "<number>";
   inherits: true;
@@ -59,63 +74,158 @@
 }
 
 /*
-  Define style container at top-level so prize/puzzle solved state is available globally
-  @todo move this to main.css and standardise for re-use
+  Define style container at top-level. This makes prize/puzzle solved state
+  available globally, so we can use it to "unlock" other parts of the game.
+  In this particular game, we only use it to reveal an item within the same
+  map, but in theory we could make it open up a new area on another map, or
+  trigger some new NPC conversation, etc.
 */
-
-body {
+.app {
   container-name: game;
   container-type: style;
 }
 
-/* Prize tile item hidden until linked puzzle is solved */
+/*
+  Puzzle tile styles
+*/
+.tile.puzzle {
+  background-image: url("../assets/stone-puzzle/tile.png");
+}
+
+/*
+  Once the puzzle is solved, we will reveal the prize! For now, just set the
+  floor background and hide the item
+*/
+.tile.tile.prize-puzzle-1 {
+  background-image: url("../assets/tiles/cave-floor1.png");
+}
 .tile.prize .item-wrapper {
   opacity: 0;
   pointer-events: none;
 }
 
-/* Fix positioning of initial reveal button - rendering within <summary> pushes it down for some reason */
+/*
+  Puzzle interface styles
+*/
+
+/*
+  Unlike maps and the stego encounter, we want the puzzle UI to "close" on
+  it's own, without the user having to press a button. This rules out using a
+  <dialog>, so instead we use <details> and <summary>. This does seem to
+  introduce a quirk with the positioning of the initial reveal button, so we
+  nudge it here
+*/
 .tile.puzzle summary {
   translate: 0 calc(var(--tile-height) / 2);
 }
 
-/* Set background for puzzle and prize tiles */
-.tile.puzzle {
-  background-image: url("../assets/stone-puzzle/tile.png");
-}
-.tile.tile.prize-puzzle-1 {
-  background-image: url("../assets/tiles/cave-floor1.png");
+/*
+  Pre-create stacking context so filter animation doesn't cause re-stacking
+  This prevents other tiles from appearing over the puzzle when the filter-based
+  "solved" animation begins
+*/
+details.puzzle-wrapper {
+  position: relative;
+  z-index: 20;
+  will-change: filter, opacity;
 }
 
-/* Puzzle solved: reveal prize, swap thumbs, animate, close puzzle */
-@container game style(--puzzle-1-solved: 1) {
-  /* Change dias tile to exploded stone */
-  .tile.puzzle {
-    background-image: url("../assets/stone-puzzle/tile-after.png");
-  }
-  /* Show item prize and allow picking up */
-  .tile.prize-puzzle-1 .item-wrapper {
-    opacity: 1;
-    pointer-events: auto;
-  }
+/* Hide default arrow marker on expand button of <details>/<summary> */
+details.puzzle-wrapper > summary {
+  list-style: none;
 
-  /* Hide open puzzle button */
-  .tile.puzzle .summary-open {
+  &::-webkit-details-marker {
     display: none;
   }
+}
 
-  /* Shake all three inputs for DRAMA */
-  input[name="sun"],
-  input[name="moon"],
-  input[name="earth"] {
-    animation: tremor 0.5s ease-in-out 3;
+/*
+  Puzzle interface proper
+*/
+/*
+  Remove stacking context from tile so we can easily position the puzzle UI
+  relative to the whole map
+*/
+.map:has(.puzzle-wrapper[open]) .tile.puzzle {
+  position: static;
+}
+.puzzle-wrapper .puzzle-content {
+  width: var(--viewport-width);
+  height: var(--viewport-height);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding-block: 6rem;
+  background-image: url("../assets/stone-puzzle/stone-bg.png");
+}
+
+/*
+  Slider styles
+*/
+/* Labels positioned over each groove */
+.puzzle-wrapper .puzzle-content label {
+  width: 356px; /* Width of groove image - not responsive */
+  height: 5rem;
+  display: flex;
+  align-items: center;
+  font-size: 0; /* Hide label text */
+  background: url("../assets/stone-puzzle/groove.png") center center no-repeat;
+}
+
+.puzzle-wrapper input[type="range"] {
+  overflow: hidden;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+
+  &::-webkit-slider-thumb {
+    translate: 0 -2rem;
+    appearance: none;
+    width: 4rem;
+    height: 4rem;
+    border: none;
+    border-radius: 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
   }
-  /* After 2 shake cycles, flash white then fade puzzle out */
-  details.puzzle-wrapper {
-    animation: puzzle-solved-outro 1.5s 1s forwards;
+
+  /* Transparent track — the groove image is the visual */
+  &::-webkit-slider-runnable-track {
+    background: transparent;
+    height: 0;
   }
 }
 
+/* Set slider thumb images and named view-timelines */
+input[name="sun"]::-webkit-slider-thumb {
+  view-timeline: --_sun inline;
+  background-image: url("../assets/stone-puzzle/sun.png");
+}
+input[name="moon"]::-webkit-slider-thumb {
+  view-timeline: --_moon inline;
+  background-image: url("../assets/stone-puzzle/moon.png");
+}
+input[name="earth"]::-webkit-slider-thumb {
+  view-timeline: --_earth inline;
+  background-image: url("../assets/stone-puzzle/earth.png");
+}
+
+/*
+  Puzzle solution effects and state:
+  - the range input thumbs shake
+  - we show a whiteout effect
+  - the puzzle interface fades out
+  - we replace the stone dias on the puzzle tile with rubble
+  - the prize tile shows its item
+
+  This uses the CSS var set way up top, derived from the @property values
+  which are tracking the values of each range input
+*/
 @keyframes puzzle-solved-outro {
   0% {
     opacity: 1;
@@ -132,118 +242,34 @@ body {
     pointer-events: none;
   }
 }
-
-/*
-  Pre-create stacking context so filter animation doesn't cause re-stacking
-  This prevents other tiles from appearing over the puzzle when the filter-based
-  "solved" animation begins
-*/
-details.puzzle-wrapper {
-  position: relative;
-  z-index: 200;
-  will-change: filter, opacity;
-}
-
-details.puzzle-wrapper > summary {
-  list-style: none;
-
-  .button {
-    z-index: 1000;
+@container game style(--puzzle-1-solved: 1) {
+  /* Switch dias tile to rubble */
+  .tile.puzzle {
+    background-image: url("../assets/stone-puzzle/tile-after.png");
   }
-}
-details.puzzle-wrapper > summary::-webkit-details-marker {
-  display: none;
-}
 
-/* Hide the open button while puzzle is open */
-details.puzzle-wrapper[open] .summary-open {
-  display: none;
-}
-
-/* ─── Puzzle content layout ──────────────────────────────────────────────── */
-
-.puzzle-wrapper .puzzle-content {
-  position: sticky;
-  width: var(--viewport-width);
-  height: var(--viewport-height);
-  top: 0;
-  left: 0;
-  z-index: 100;
-  display: flex;
-  flex-direction: column;
-  gap: 0.9rem;
-  align-items: stretch;
-  justify-content: space-between;
-  background-image: url("../assets/stone-puzzle/stone-bg.png");
-  color: white;
-}
-
-:has(.puzzle-wrapper[open]) .tile.puzzle {
-  position: static;
-}
-
-/* Labels positioned over each groove; font-size:0 hides text nodes */
-.puzzle-wrapper .puzzle-content label {
-  position: absolute;
-  width: 100%;
-  height: 5rem;
-  display: flex;
-  align-items: center;
-  padding-inline: 6rem;
-  font-size: 0;
-  background: url("../assets/stone-puzzle/groove.png") center center no-repeat;
-
-  &:nth-child(1) {
-    top: 18%;
+  /* Shake all three inputs for DRAMA */
+  input[name="sun"],
+  input[name="moon"],
+  input[name="earth"] {
+    animation: tremor 0.5s ease-in-out 3;
   }
-  &:nth-child(2) {
-    top: 37%;
+  /* After 2 shake cycles, flash white then fade puzzle out */
+  details.puzzle-wrapper {
+    animation: puzzle-solved-outro 1.5s 1s forwards;
   }
-  &:nth-child(3) {
-    top: 56%;
+
+  /* Show item prize and allow picking up */
+  .tile.prize-puzzle-1 .item-wrapper {
+    opacity: 1;
+    pointer-events: auto;
   }
-}
 
-/* ─── Slider styles ──────────────────────────────────────────────────────── */
-
-.puzzle-wrapper input[type="range"] {
-  overflow: hidden;
-  -webkit-appearance: none;
-  appearance: none;
-  width: 100%;
-  height: 100%;
-  background-color: transparent;
-
-  &::-webkit-slider-thumb {
-    translate: 0 -1.75rem;
-    appearance: none;
-    width: 4rem;
-    height: 4rem;
-    border: none;
-    border-radius: 50%;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    cursor: pointer;
+  /*
+    Hide open puzzle button - the puzzle can only be done once
+    (because, well, it explodes)
+  */
+  .tile.puzzle .summary-open {
+    display: none;
   }
-}
-
-/* Thumb images + named view-timelines */
-input[name="sun"]::-webkit-slider-thumb {
-  view-timeline: --_sun inline;
-  background-image: url("../assets/stone-puzzle/sun.png");
-}
-input[name="moon"]::-webkit-slider-thumb {
-  view-timeline: --_moon inline;
-  background-image: url("../assets/stone-puzzle/moon.png");
-}
-input[name="earth"]::-webkit-slider-thumb {
-  view-timeline: --_earth inline;
-  background-image: url("../assets/stone-puzzle/earth.png");
-}
-
-/* Transparent track — the groove image is the visual */
-.puzzle-content input[type="range"]::-webkit-slider-runnable-track {
-  background: transparent;
-  height: 4px;
 }
