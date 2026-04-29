@@ -296,7 +296,7 @@
   --enemy-size: calc(var(--viewport-height) / 3);
   width: var(--enemy-size);
   height: var(--enemy-size);
-  background-image: url("../assets/stegosaurus/stegosaurus-idle.png");
+  background-image: url("../assets/stegosaurus/stegosaurus-encounter-idle.png");
   background-size: cover; /* 8 frames across, so each frame = element width */
   background-position: 0 0;
   image-rendering: pixelated;

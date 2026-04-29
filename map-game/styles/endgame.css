@@ -84,6 +84,11 @@
       > :nth-child(n + 2) {
         grid-row: 2;
       }
+
+      /* Make ankylo face same way as other dinos */
+      .npc-sprite-ankylosaurus {
+        scale: -1 1;
+      }
     }
     .dino-queue > :nth-child(1) {
       animation: endgame-dino-queue-move1 1s linear var(--time-show-overworld)
