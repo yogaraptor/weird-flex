@@ -131,7 +131,7 @@ foreach ($lines as $i => $line) {
   <link rel="stylesheet" type="text/css" href="styles/puzzles.css" />
   <link rel="stylesheet" type="text/css" href="styles/inventory.css" />
   <link rel="stylesheet" type="text/css" href="styles/xp.css" />
-  <link rel="stylesheet" type="text/css" href="styles/widgets.css" />
+  <link rel="stylesheet" type="text/css" href="styles/ui.css" />
   <link rel="stylesheet" type="text/css" href="styles/encounter.css" />
   <link rel="stylesheet" type="text/css" href="styles/npcs.css" />
   <link rel="stylesheet" type="text/css" href="styles/endgame.css" />

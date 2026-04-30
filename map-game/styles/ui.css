@@ -1,4 +1,21 @@
-/* Speech bubbles used for conversation or signpost reading */
+/*
+  Reusable game UI components:
+  - Buttons
+  - Speech bubbles
+  - Frame borders (used on pretty much everything - buttons, speech bubbles,
+    map container, inventory box)
+*/
+.button {
+  appearance: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+}
+
+/*
+  Action buttons used for doors, items, miscellaneous actions and speech bubbles
+  used for conversations, signpost reading etc
+*/
 .speech-bubble,
 .button {
   position: relative;
@@ -24,6 +41,7 @@
 }
 
 .speech-bubble {
+  /* Make these grey to distinguish from buttons */
   filter: grayscale(1);
 
   .frame-inner {
@@ -68,11 +86,4 @@
 .frame-inner {
   width: 100%;
   background-color: var(--riverbed-brown);
-}
-
-.button {
-  appearance: none;
-  border: none;
-  padding: 0;
-  font: inherit;
 }
