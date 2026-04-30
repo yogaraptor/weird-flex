@@ -45,7 +45,7 @@ BEGIN LEGEND
 🎱 rug-nw
 🥏 rug-c
 🍀 houseplant
-🥐 floor ITEM CROISSANT
+🥐 floor ITEM croissant
 📗 bookcase-n
 📘 bookcase-s
 🚧 barrier

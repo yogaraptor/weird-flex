@@ -208,7 +208,7 @@
   fire the flash + wipe transition sequence.
 */
 @container scroll-state(snapped: x) or scroll-state(snapped: y) {
-  body:has(#item-CROISSANT:checked)
+  body:has(#item-croissant:checked)
     .tile.encounter
     .encounter-transition::before {
     content: "";
@@ -219,7 +219,7 @@
     animation: encounter-flash 1.5s ease-in-out forwards;
   }
 
-  body:has(#item-CROISSANT:checked) .tile.encounter .encounter-ui {
+  body:has(#item-croissant:checked) .tile.encounter .encounter-ui {
     top: calc(-0.5 * var(--viewport-height) + 0.5 * var(--tile-height));
     left: calc(-0.5 * var(--viewport-width) + 0.5 * var(--tile-width));
     bottom: 0;
@@ -227,11 +227,11 @@
     width: var(--viewport-width);
     height: var(--viewport-height);
   }
-  body:has(#item-CROISSANT:checked) .tile.encounter .encounter-ready {
+  body:has(#item-croissant:checked) .tile.encounter .encounter-ready {
     animation: fade-in 0.1s linear 2s forwards;
   }
 
-  body:has(#item-CROISSANT:checked) .tile.encounter .encounter-transition {
+  body:has(#item-croissant:checked) .tile.encounter .encounter-transition {
     display: flex;
     justify-content: center;
     align-items: center;

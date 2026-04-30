@@ -1,0 +1,34 @@
+/*
+  We use a CSS counter to track the player#s XP (Experience Points) as a record of their achievements.
+  XP can be gained by picking up items, solving puzzles, etc.
+*/
+body {
+  counter-reset: xp;
+}
+
+/*
+  We can't target the checkboxes themselves because they lives inside <dialog>
+  elements, which when exited (when the player leaves map, or closes the 
+  encounter) get display: none'd, which removes the counter-increment. So
+  instead we target its inventory slot. (It could be any element that will
+  always be visible and doesn't have another xp increment on, but we might as
+  well use an element related to the item.
+
+  We technically wouldn't have to do this with the croissant because it lives 
+  in the house map, which is the first map and therefore never gets closed,
+  but for consistency (and to allow the croissant to be placed on another map
+  in the future) we do the same for all the items.
+
+  See https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/counters
+  for more information about CSS counters (and some more reasonable use cases
+  for them!)
+*/
+:has(#item-croissant:checked) .inventory li:nth-child(1) {
+  counter-increment: xp 10;
+}
+:has(#item-crystal:checked) .inventory li:nth-child(3) {
+  counter-increment: xp 20;
+}
+:has(#encounter-give:checked) .inventory li:nth-child(4) {
+  counter-increment: xp 50;
+}

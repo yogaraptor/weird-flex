@@ -33,7 +33,7 @@ foreach ($legendLines as $legendLine) {
   if ($metadata && preg_match('/^SHOW PUZZLE (\d+)$/', $metadata, $matches)) {
     $showPuzzle = intval($matches[1]);
   }
-  if ($metadata && preg_match('/^ITEM ([A-Z]+)$/', $metadata, $matches)) {
+  if ($metadata && preg_match('/^ITEM (\S+)$/', $metadata, $matches)) {
     $item = $matches[1];
   }
   if ($metadata && preg_match('/^PRIZE PUZZLE (\d+)$/', $metadata, $matches)) {
@@ -130,6 +130,7 @@ foreach ($lines as $i => $line) {
   <link rel="stylesheet" type="text/css" href="styles/player.css" />
   <link rel="stylesheet" type="text/css" href="styles/puzzles.css" />
   <link rel="stylesheet" type="text/css" href="styles/inventory.css" />
+  <link rel="stylesheet" type="text/css" href="styles/xp.css" />
   <link rel="stylesheet" type="text/css" href="styles/widgets.css" />
   <link rel="stylesheet" type="text/css" href="styles/encounter.css" />
   <link rel="stylesheet" type="text/css" href="styles/npcs.css" />
@@ -140,9 +141,9 @@ foreach ($lines as $i => $line) {
   <div class="app">
     <?php require_once('./splash.php'); ?>
 
-    <?php require_once('./inventory.php'); ?>
-
     <?php require_once('./maps.php'); ?>
+
+    <?php require_once('./inventory.php'); ?>
 
     <?php require_once('./credits.php'); ?>
   </div>
