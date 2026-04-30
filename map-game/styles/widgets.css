@@ -23,9 +23,13 @@
   }
 }
 
-.speech-bubble .frame-inner {
-  background: #ccc;
-  color: #000;
+.speech-bubble {
+  filter: grayscale(1);
+
+  .frame-inner {
+    background: #ccc;
+    color: #000;
+  }
 }
 
 .button,
