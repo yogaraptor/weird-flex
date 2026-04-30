@@ -1,30 +1,95 @@
+/*
+  A mildly interactive Pokémon-inspired encounter (not a battle, all love here)
+  sequence.
+
+  Triggered when the player moves onto a particular tile while possessing the
+  croissant item.
+
+  1. Flash + conic-gradient wipe on enter (detected via scroll-state:snapped
+     query, as with all other tile effects.
+  2. Wipe reveals an encounter scene. We make the user press a "Ready" button
+     so we can use a dialog (means we can trap keyboard focus and return it
+     after)
+  3. When the user opens the dialog we slide with player and opponent in, just
+     like in Gameboy-era Pokémon, and show some flavour text.
+  4. The user checks #encounter-give to throw the croissant item to opponent
+  5. We show some more flavour text and a close button
+*/
+
 .tile.encounter {
   position: relative;
 
+  .encounter-ui {
+    position: absolute;
+  }
+
   .encounter-transition {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
     opacity: 0;
     pointer-events: none;
   }
 
-  .encounter-ready > .button {
-    bottom: -1rem;
+  .encounter-ready {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    opacity: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    > .button {
+      bottom: -1rem;
+    }
   }
 
+  .encounter-give-result {
+    display: none;
+  }
+
+  /*
+    Once the user has checked this box (styled like a button), the encounter
+    is complete. This game state is used later in the game to infer that the
+    character has received the stego back plate item.
+  */
   &:has(#encounter-give:checked) {
+    /* Show the thank you message and close button */
+    .encounter-give-result {
+      display: flex;
+    }
+
+    /* Don't show prompts or UI once completed */
+    .encounter-ui:has(dialog:not(:open)) {
+      opacity: 0;
+      pointer-events: none;
+    }
     > .button {
       opacity: 0;
       pointer-events: none;
     }
+    .encounter-transition {
+      display: none;
+    }
   }
 }
 
+/*
+  Flash and double-clock-wipe animation to mimic the Gameboy-era Pokémon games
+  of my youth <3
+
+  The @property is the enabler of the gradient animation. Temani called it again:
+  https://dev.to/afif/we-can-finally-animate-css-gradient-kdk
+
+  We could have probably done this with some rotate() but this is cooler, right?
+*/
 @property --wipe-angle {
   syntax: "<angle>";
   inherits: false;
   initial-value: 0deg;
 }
-
-/* ── Keyframes ──────────────────────────────────────────── */
 
 @keyframes encounter-flash {
   0% {
@@ -49,15 +114,6 @@
   }
   to {
     --wipe-angle: 180deg;
-  }
-}
-
-@keyframes encounter-ready-enter {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
   }
 }
 
@@ -90,21 +146,11 @@
   }
 }
 
-@keyframes encounter-speech-fade-out {
-  0% {
-    opacity: 1;
-    display: block;
-  }
-  99% {
-    opacity: 0;
-    display: block;
-  }
-  100% {
-    opacity: 0;
-    display: none;
-  }
-}
-
+/*
+  OK, we didn't really need to animate the croissant quite this much, but I
+  think it looks pretty neat.
+*/
+/* Fling it across */
 @keyframes encounter-croissant-fly-x {
   from {
     left: 10%;
@@ -113,7 +159,7 @@
     left: 50%;
   }
 }
-
+/* Arc it up then down */
 @keyframes encounter-croissant-fly-y {
   0% {
     bottom: 0;
@@ -127,6 +173,7 @@
     bottom: 45%;
   }
 }
+/* Simulate it flying towards the horizon */
 @keyframes encounter-croissant-fly-z {
   0%,
   75% {
@@ -136,6 +183,7 @@
     scale: 0.5;
   }
 }
+/* Spinning is so much cooler than not spinning */
 @keyframes encounter-croissant-spin {
   from {
     rotate: 0deg;
@@ -145,67 +193,20 @@
   }
 }
 
-/* ── Pre-encounter (tile level) ─────────────────────────── */
-
-.tile.encounter {
-  .encounter-give-result {
-    display: none;
-  }
-
-  &:has(#encounter-give:checked) {
-    .encounter-give-result {
-      display: flex;
-    }
-
-    /* Don't show encounter prompt once completed */
-    .encounter-ui:has(dialog:not(:open)) {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
-}
 .encounter-container {
   position: absolute;
   left: 50%;
   top: 50%;
   z-index: 10;
-  transform: translate(-50%, calc(-50% + var(--tile-height) / 2));
+  translate: -50% calc(-50% + var(--tile-height) / 2);
   width: var(--viewport-width);
   height: var(--viewport-height);
 }
 
-.tile.encounter:has(#encounter-give:checked) {
-  .encounter-transition {
-    display: none;
-  }
-}
-
-.tile.encounter {
-  .encounter-ui {
-    position: absolute;
-  }
-
-  .encounter-transition {
-    position: absolute;
-    inset: 0;
-    z-index: 10;
-  }
-
-  .encounter-ready {
-    position: absolute;
-    inset: 0;
-    z-index: 20;
-    opacity: 0;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-/* ── Wipe transition (scroll-snap activated) ────────────── */
-
+/*
+  When the encounter tile snaps into view and the player has the croissant,
+  fire the flash + wipe transition sequence.
+*/
 @container scroll-state(snapped: x) or scroll-state(snapped: y) {
   body:has(#item-CROISSANT:checked)
     .tile.encounter
@@ -227,7 +228,7 @@
     height: var(--viewport-height);
   }
   body:has(#item-CROISSANT:checked) .tile.encounter .encounter-ready {
-    animation: encounter-ready-enter 0.1s linear 2s forwards;
+    animation: fade-in 0.1s linear 2s forwards;
   }
 
   body:has(#item-CROISSANT:checked) .tile.encounter .encounter-transition {
@@ -236,6 +237,11 @@
     align-items: center;
     opacity: 1;
     pointer-events: auto;
+    /*
+      Two opposing conic wedges sweep from 0° to 180° to give us the Pokémon
+      wipe, with a lowered frame rate. I didn't go so far as to make the
+      edges blocky - maybe in future!
+    */
     background: conic-gradient(
       black 0deg var(--wipe-angle),
       transparent var(--wipe-angle) 180deg,
@@ -246,8 +252,9 @@
   }
 }
 
-/* ── Battle scene (inside dialog) ───────────────────────── */
-
+/*
+  Encounter scene layout
+*/
 .encounter-scene {
   display: flex;
   flex-direction: column;
@@ -266,7 +273,7 @@
   overflow: hidden;
 }
 
-/* Battle arena — top portion with combatants */
+/* Top portion with player and enemy sprites */
 .encounter-area {
   position: relative;
   flex: 1 1 60%;
@@ -277,7 +284,7 @@
   padding: 2rem 2rem 0 2rem;
 }
 
-/* Player: rear-view sprite, bottom-left */
+/* Player rear-view sprite, slides in from the left */
 .encounter-player {
   width: calc(var(--tile-width) * 2);
   height: calc(var(--tile-height) * 2);
@@ -288,33 +295,35 @@
   animation: encounter-slide-in-left 0.6s steps(8) both;
 }
 
-/* Enemy */
 .encounter-enemy {
   animation: encounter-slide-in-right 0.6s steps(8) 0.3s both;
 }
 .encounter-enemy-sprite {
-  /* Show one 32px frame scaled up to ~1/5 viewport height */
   --enemy-size: calc(var(--viewport-height) / 3);
   width: var(--enemy-size);
   height: var(--enemy-size);
   background-image: url("../assets/npcs/stegosaurus-encounter-idle.png");
-  background-size: cover; /* 8 frames across, so each frame = element width */
+  background-size: cover;
   background-position: 0 0;
   image-rendering: pixelated;
   align-self: flex-start;
+  /*
+    Shared spritesheet keyframe from animations.css doesn't seem to work here,
+    possibly because the sprite is scaled up?
+  */
   animation: encounter-enemy-idle 1s steps(7) infinite;
 }
 
 @keyframes encounter-enemy-idle {
-  from {
+  0% {
     background-position: 0 0;
   }
-  to {
+  100% {
     background-position: -700% 0;
   }
 }
 
-/* Dialogue tray — bottom portion */
+/* Bottom tray with speech bubbles and actions */
 .encounter-dialogue {
   position: relative;
   display: flex;
@@ -327,36 +336,34 @@
   border-top: 1px solid #888;
 }
 
-/* All battle speech bubbles share the stepped reveal */
+/* Speech bubbles start hidden; each gets a delayed reveal animation */
 .encounter-speech {
   opacity: 0;
   white-space: normal;
-
-  .frame-inner {
-    white-space: normal;
-  }
 }
 
 .encounter-speech-1 {
   animation: encounter-speech-reveal 0.3s steps(6) 1s forwards;
 }
 
-/* Croissant offer — appears after first speech */
+/* Croissant offer appears after first speech bubble */
 .encounter-action {
   opacity: 0;
   cursor: pointer;
   animation: encounter-speech-reveal 0.3s steps(6) 2s forwards;
 }
 
-/* Hide the bare checkbox */
+/* Hidden checkbox that drives the post-give state */
 #encounter-give {
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
-/* ── Post-give sequence (checkbox checked) ──────────────── */
-
+/*
+  Post-give sequence - triggered when #encounter-give is checked.
+  The croissant flies to the enemy, thank-you speech plays, close button appears.
+*/
 .encounter-give-result {
   position: relative;
   display: flex;
@@ -365,7 +372,7 @@
   justify-content: space-between;
 }
 
-/* Flying croissant */
+/* Croissant sprite that arcs across the screen when given */
 .encounter-croissant {
   position: absolute;
   bottom: 100%;
@@ -379,7 +386,7 @@
   pointer-events: none;
 }
 
-/* Once checked: hide the offer, play the give sequence */
+/* :checked state kicks off the flying croissant and sequential speech */
 .encounter-scene:has(#encounter-give:checked) {
   .encounter-action {
     display: none;
@@ -401,7 +408,7 @@
   .encounter-speech-2 {
     animation:
       encounter-speech-reveal 0.3s steps(6) 2s forwards,
-      encounter-speech-fade-out 0.3s steps(6) 5s forwards;
+      fade-out-hard 0.3s steps(6) 5s forwards;
   }
 
   .encounter-speech-3 {
