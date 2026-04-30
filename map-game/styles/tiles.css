@@ -1,4 +1,20 @@
-/* Ensure any targeted tile is centered in the viewport */
+/*
+  This file is mostly just a load of different tile types - floor, grass, wall
+  etc, plus the mechanism for showing effects based on which tile the player
+  is "on".
+*/
+
+/*
+  The starting tile for each map is set by adding an autofocus attribute on the
+  tile to force the browser to scroll to it (and we force it into centre with 
+  scroll-padding). This works because our maps are inside <dialog>s and we open
+  them using buttons with command/commandfor, so lifecycle events are triggered,
+  including checking for autofocus elements.
+
+  See:
+  - https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/button#show-modal
+  - https://developer.chrome.com/blog/dialog-element-modals-made-easy
+*/
 .tile:target,
 .tile[autofocus] {
   scroll-margin: calc((var(--viewport-height) / 2) - (var(--tile-height) / 2))
@@ -6,7 +22,7 @@
   outline: none;
 }
 
-/* Common tile styles */
+/* Basic tile style */
 .tile {
   width: var(--tile-width);
   height: var(--tile-height);
@@ -21,61 +37,93 @@
   background-size: cover;
 }
 
-/* Basic tile graphics */
-.tile.grass,
-.tile[class~="mound"] {
-  background-color: #27ae60;
-}
-.tile.grass1 {
-  background-image: url("../assets/tiles/grass1.png");
-}
-.tile.grass2 {
-  background-image: url("../assets/tiles/grass2.png");
+/* Tiles with interactive buttons (e.g. doors, puzzles, signposts) */
+.tile:is(.item, .speech, .door, .puzzle) .button {
+  display: flex;
+  pointer-events: none;
+  z-index: var(--stacking-layer-overlay);
+  text-decoration: none;
+  cursor: pointer;
 }
 
-.tile.mound-nw {
-  background-image: url("../assets/tiles/mound-nw.png");
-}
-.tile.mound-n {
-  background-image: url("../assets/tiles/mound-n.png");
-}
-.tile.mound-ne {
-  background-image: url("../assets/tiles/mound-ne.png");
-}
-.tile.mound-e {
-  background-image: url("../assets/tiles/mound-e.png");
-}
-.tile.mound-ramp-e {
-  background-image: url("../assets/tiles/mound-ramp-e.png");
-}
-.tile.mound-se {
-  background-image: url("../assets/tiles/mound-se.png");
-}
-.tile.mound-s {
-  background-image: url("../assets/tiles/mound-s.png");
-}
-.tile.mound-sw {
-  background-image: url("../assets/tiles/mound-sw.png");
-}
-.tile.mound-w {
-  background-image: url("../assets/tiles/mound-w.png");
+/* Item tiles */
+.tile.item {
+  position: relative;
+
+  /* Hide control until on tile */
+  label,
+  .item-checkbox {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  label {
+    cursor: pointer;
+  }
+
+  &:has(:checked) {
+    label,
+    .item-checkbox {
+      opacity: 0;
+    }
+  }
 }
 
-.tile.lab {
-  background-image: url("../assets/tiles/lab.png");
+.tile:is(.item, .speech, .door, .puzzle) {
+  position: relative;
+
+  .speech-bubble,
+  .button {
+    position: absolute;
+    left: 50%;
+    bottom: var(--tile-height);
+    translate: -50% 5rem;
+    opacity: 0;
+    transition:
+      translate 0.5s steps(6),
+      opacity 0.5s steps(6);
+    pointer-events: none;
+  }
+}
+.tile.speech-left .speech-bubble {
+  translate: calc(-50% + var(--tile-width)) 5rem;
 }
 
-.tile.lava {
-  background-image: url("../assets/tiles/lava.gif");
-}
-.tile.lava-wall-n1 {
-  background-image: url("../assets/tiles/lava-wall-n1.png");
+.tile.speech-right .speech-bubble {
+  translate: calc(-50% - var(--tile-width)) 5rem;
 }
 
-.tile.door {
-  background-color: black;
+/* Special tile states when player is "on" that tile */
+@container scroll-state(snapped: x) or scroll-state(snapped: y) {
+  .tile:is(.item, .speech, .door, .puzzle) {
+    .speech-bubble,
+    .button {
+      translate: -50% 0;
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
+  .tile.speech-left .speech-bubble {
+    translate: calc(-50% + var(--tile-width)) 0;
+  }
+
+  .tile.speech-right .speech-bubble {
+    translate: calc(-50% - var(--tile-width)) 0;
+  }
 }
 
+/*
+  Shared map tile graphics
+*/
+.tile.void {
+  background-color: #000;
+}
+
+/*
+  Per-map tile graphics
+*/
+/* House map tiles */
 .tile.floor {
   background-color: burlywood;
   background-image: url("../assets/tiles/floor1.png");
@@ -85,11 +133,13 @@
   background-color: burlywood;
   background-image: url("../assets/tiles/doormat.png");
 }
+
 .tile.houseplant {
   background-color: olive;
   background-image:
     url("../assets/tiles/houseplant.png"), url("../assets/tiles/floor1.png");
 }
+
 .tile.bookcase-n {
   background-image:
     url("../assets/tiles/bookcase-n.png"), url("../assets/tiles/wall-n2.png");
@@ -102,7 +152,6 @@
 .tile.wall {
   background-color: #444;
 }
-/* Default wall tiles */
 .tile.wall-n1 {
   background-image: url("../assets/tiles/wall-n1.png");
 }
@@ -213,14 +262,180 @@
     url("../assets/tiles/rug-c.png"), url("../assets/tiles/floor1.png");
 }
 
-/* Lab tiles */
+/* Overworld map tiles */
+.tile.grass,
+.tile[class~="mound"] {
+  background-color: #27ae60;
+}
+.tile.grass1 {
+  background-image: url("../assets/tiles/grass1.png");
+}
+.tile.grass2 {
+  background-image: url("../assets/tiles/grass2.png");
+}
+
+.tile.mound-nw {
+  background-image: url("../assets/tiles/mound-nw.png");
+}
+.tile.mound-n {
+  background-image: url("../assets/tiles/mound-n.png");
+}
+.tile.mound-ne {
+  background-image: url("../assets/tiles/mound-ne.png");
+}
+.tile.mound-e {
+  background-image: url("../assets/tiles/mound-e.png");
+}
+.tile.mound-ramp-e {
+  background-image: url("../assets/tiles/mound-ramp-e.png");
+}
+.tile.mound-se {
+  background-image: url("../assets/tiles/mound-se.png");
+}
+.tile.mound-s {
+  background-image: url("../assets/tiles/mound-s.png");
+}
+.tile.mound-sw {
+  background-image: url("../assets/tiles/mound-sw.png");
+}
+.tile.mound-w {
+  background-image: url("../assets/tiles/mound-w.png");
+}
+
+.tile.lab {
+  background-image: url("../assets/tiles/lab.png");
+}
+
+.tile.tree1 {
+  background-color: darkolivegreen;
+  background-image: url("../assets/tiles/tree1.png");
+}
+.tile.bush1 {
+  background-color: darkolivegreen;
+  background-image: url("../assets/tiles/bush1.png");
+}
+.tile.bush2 {
+  background-color: darkolivegreen;
+  background-image: url("../assets/tiles/bush2.png");
+}
+
+.tile.rock1 {
+  background-color: gray;
+  background-image: url("../assets/tiles/rock1.png");
+}
+.tile.rock2 {
+  background-color: gray;
+  background-image: url("../assets/tiles/rock2.png");
+}
+
+.tile[class~="cliff"] {
+  background-color: darkslategrey;
+}
+.tile.cliff-w {
+  background-image: url("../assets/tiles/cliff-w.png");
+}
+.tile.cliff-corner-nw {
+  background-image: url("../assets/tiles/cliff-corner-nw.png");
+}
+.tile.cliff-corner-sw {
+  background-image: url("../assets/tiles/cliff-corner-sw.png");
+}
+.tile.cliff-corner-nw2 {
+  background-image: url("../assets/tiles/cliff-corner-nw2.png");
+}
+.tile.cliff-corner-sw2 {
+  background-image: url("../assets/tiles/cliff-corner-sw2.png");
+}
+.tile.cliff-cave-w {
+  background-image: url("../assets/tiles/cliff-cave-w.png");
+}
+.tile.cliff-cave-w2 {
+  background-image: url("../assets/tiles/cliff-cave-w2.png");
+}
+
+.tile.mountain1 {
+  background-image: url("../assets/tiles/mountain1.png");
+}
+
+.tile.sign1 {
+  background-image: url("../assets/tiles/sign1.png");
+}
+.tile.sign2 {
+  background-image: url("../assets/tiles/sign2.png");
+}
+
+.tile.house1 {
+  background-image: url("../assets/tiles/house1.png");
+}
+.tile.house2 {
+  background-image: url("../assets/tiles/house2.png");
+}
+.tile.house3 {
+  background-image: url("../assets/tiles/house3.png");
+}
+.tile.shop1 {
+  background-image: url("../assets/tiles/shop1.png");
+}
+
+.tile[class*="road-"] {
+  background-color: #555;
+}
+.tile.road-h-cap-w {
+  background-image: url("../assets/tiles/road-w.png");
+}
+.tile.road-h-middle {
+  background-image: url("../assets/tiles/road-h-middle.png");
+}
+.tile.road-h-cap-e {
+  background-image: url("../assets/tiles/road-h-cap-e.png");
+}
+.tile.road-v-cap-n {
+  background-image: url("../assets/tiles/road-v-cap-n.png");
+}
+.tile.road-v-middle {
+  background-image: url("../assets/tiles/road-v-middle.png");
+}
+.tile.road-v-cap-s {
+  background-image: url("../assets/tiles/road-v-cap-s.png");
+}
+.tile.road-bend-nw {
+  background-image: url("../assets/tiles/road-bend-nw.png");
+}
+.tile.road-bend-ne {
+  background-image: url("../assets/tiles/road-bend-ne.png");
+}
+.tile.road-bend-se {
+  background-image: url("../assets/tiles/road-bend-se.png");
+}
+.tile.road-bend-sw {
+  background-image: url("../assets/tiles/road-bend-sw.png");
+}
+.tile.road-tjunc-n {
+  background-image: url("../assets/tiles/road-tjunc-n.png");
+}
+.tile.road-tjunc-e {
+  background-image: url("../assets/tiles/road-tjunc-e.png");
+}
+.tile.road-tjunc-s {
+  background-image: url("../assets/tiles/road-tjunc-s.png");
+}
+.tile.road-tjunc-w {
+  background-image: url("../assets/tiles/road-tjunc-w.png");
+}
+.tile.road-cross {
+  background-image: url("../assets/tiles/road-cross.png");
+}
+
+/* Lab map tiles */
 .map-lab {
   .tile.floor {
     background-image: url("../assets/lab/lab-floor1.png");
   }
+
   .tile.doormat {
     background-image: url("../assets/lab/lab-floor1.png");
   }
+
   .tile.barrier {
     background-image: url("../assets/lab/lab-barrier.png");
   }
@@ -230,12 +445,14 @@
   .tile.barrier-cap-e {
     background-image: url("../assets/lab/lab-barrier-cap-e.png");
   }
+
   .tile.bookcase-n {
     background-image: url("../assets/lab/lab-mainframe-n.png");
   }
   .tile.bookcase-s {
     background-image: url("../assets/lab/lab-mainframe-s.png");
   }
+
   .tile.wall-n1 {
     background-image: url("../assets/lab/lab-wall-n1.png");
   }
@@ -342,135 +559,15 @@
   background-image:
     url("../assets/lab/rocket/misc4.png"), url("../assets/lab/lab-floor1.png");
 }
-/* End lab tiles */
 
-.tile.stone {
-  background-color: grey;
+/* Cave map tiles */
+.tile.lava {
+  background-image: url("../assets/tiles/lava.gif");
 }
-.tile.void {
-  background-color: #000;
-}
-.tile.tree1 {
-  background-color: darkolivegreen;
-  background-image: url("../assets/tiles/tree1.png");
-}
-.tile.bush1 {
-  background-color: darkolivegreen;
-  background-image: url("../assets/tiles/bush1.png");
-}
-.tile.bush2 {
-  background-color: darkolivegreen;
-  background-image: url("../assets/tiles/bush2.png");
-}
-.tile.rock1 {
-  background-color: gray;
-  background-image: url("../assets/tiles/rock1.png");
-}
-.tile.rock2 {
-  background-color: gray;
-  background-image: url("../assets/tiles/rock2.png");
-}
-.tile.long-grass {
-  background-color: darkgreen;
-}
-.tile[class~="cliff"] {
-  background-color: darkslategrey;
-}
-.tile.cliff-w {
-  background-image: url("../assets/tiles/cliff-w.png");
-}
-.tile.cliff-corner-nw {
-  background-image: url("../assets/tiles/cliff-corner-nw.png");
-}
-.tile.cliff-corner-sw {
-  background-image: url("../assets/tiles/cliff-corner-sw.png");
-}
-.tile.cliff-corner-nw2 {
-  background-image: url("../assets/tiles/cliff-corner-nw2.png");
-}
-.tile.cliff-corner-sw2 {
-  background-image: url("../assets/tiles/cliff-corner-sw2.png");
-}
-.tile.cliff-cave-w {
-  background-image: url("../assets/tiles/cliff-cave-w.png");
-}
-.tile.cliff-cave-w2 {
-  background-image: url("../assets/tiles/cliff-cave-w2.png");
-}
-.tile.mountain1 {
-  background-image: url("../assets/tiles/mountain1.png");
+.tile.lava-wall-n1 {
+  background-image: url("../assets/tiles/lava-wall-n1.png");
 }
 
-.tile.sign1 {
-  background-image: url("../assets/tiles/sign1.png");
-}
-.tile.sign2 {
-  background-image: url("../assets/tiles/sign2.png");
-}
-.tile.house1 {
-  background-image: url("../assets/tiles/house1.png");
-}
-.tile.house2 {
-  background-image: url("../assets/tiles/house2.png");
-}
-.tile.house3 {
-  background-image: url("../assets/tiles/house3.png");
-}
-.tile.shop1 {
-  background-image: url("../assets/tiles/shop1.png");
-}
-
-/* Road tiles */
-.tile[class*="road-"] {
-  background-color: #555;
-}
-.tile.road-h-cap-w {
-  background-image: url("../assets/tiles/road-w.png");
-}
-.tile.road-h-middle {
-  background-image: url("../assets/tiles/road-h-middle.png");
-}
-.tile.road-h-cap-e {
-  background-image: url("../assets/tiles/road-h-cap-e.png");
-}
-.tile.road-v-cap-n {
-  background-image: url("../assets/tiles/road-v-cap-n.png");
-}
-.tile.road-v-middle {
-  background-image: url("../assets/tiles/road-v-middle.png");
-}
-.tile.road-v-cap-s {
-  background-image: url("../assets/tiles/road-v-cap-s.png");
-}
-.tile.road-bend-nw {
-  background-image: url("../assets/tiles/road-bend-nw.png");
-}
-.tile.road-bend-ne {
-  background-image: url("../assets/tiles/road-bend-ne.png");
-}
-.tile.road-bend-se {
-  background-image: url("../assets/tiles/road-bend-se.png");
-}
-.tile.road-bend-sw {
-  background-image: url("../assets/tiles/road-bend-sw.png");
-}
-.tile.road-tjunc-n {
-  background-image: url("../assets/tiles/road-tjunc-n.png");
-}
-.tile.road-tjunc-e {
-  background-image: url("../assets/tiles/road-tjunc-e.png");
-}
-.tile.road-tjunc-s {
-  background-image: url("../assets/tiles/road-tjunc-s.png");
-}
-.tile.road-tjunc-w {
-  background-image: url("../assets/tiles/road-tjunc-w.png");
-}
-.tile.road-cross {
-  background-image: url("../assets/tiles/road-cross.png");
-}
-
-/* Cave interior */
 .tile.cave-wall-n1 {
   background-image: url("../assets/tiles/cave-wall-n1.png");
 }
@@ -513,6 +610,16 @@
 .tile.cave-wall-nw2 {
   background-image: url("../assets/tiles/cave-wall-nw2.png");
 }
+.tile.cave-wall-entrance-n1 {
+  background-image: url("../assets/tiles/cave-wall-entrance-n1.png");
+}
+.tile.cave-wall-entrance-n2 {
+  background-image: url("../assets/tiles/cave-wall-entrance-n2.png");
+}
+.tile.cave-wall-entrance-s1 {
+  background-image: url("../assets/tiles/cave-wall-entrance-s1.png");
+}
+
 .tile.cave-floor1 {
   background-image: url("../assets/tiles/cave-floor1.png");
 }
@@ -524,89 +631,4 @@
 }
 .tile.cave-floor-entrance2 {
   background-image: url("../assets/tiles/cave-floor-entrance2.png");
-}
-.tile.cave-wall-entrance-n1 {
-  background-image: url("../assets/tiles/cave-wall-entrance-n1.png");
-}
-.tile.cave-wall-entrance-n2 {
-  background-image: url("../assets/tiles/cave-wall-entrance-n2.png");
-}
-.tile.cave-wall-entrance-s1 {
-  background-image: url("../assets/tiles/cave-wall-entrance-s1.png");
-}
-
-/* Tiles with interactive buttons (e.g. doors, puzzles, signposts) */
-.tile:is(.item, .speech, .door, .puzzle) .button {
-  display: flex;
-  pointer-events: none;
-  z-index: var(--stacking-layer-overlay);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-/* Item tiles */
-.tile.item {
-  position: relative;
-
-  /* Hide control until on tile */
-  label,
-  .item-checkbox {
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  label {
-    cursor: pointer;
-  }
-
-  &:has(:checked) {
-    label,
-    .item-checkbox {
-      opacity: 0;
-    }
-  }
-}
-
-.tile:is(.item, .speech, .door, .puzzle) {
-  position: relative;
-
-  .speech-bubble,
-  .button {
-    position: absolute;
-    left: 50%;
-    bottom: var(--tile-height);
-    translate: -50% 5rem;
-    opacity: 0;
-    transition:
-      translate 0.5s steps(6),
-      opacity 0.5s steps(6);
-    pointer-events: none;
-  }
-}
-.tile.speech-left .speech-bubble {
-  translate: calc(-50% + var(--tile-width)) 5rem;
-}
-
-.tile.speech-right .speech-bubble {
-  translate: calc(-50% - var(--tile-width)) 5rem;
-}
-
-/* Special tile states when player is "on" that tile */
-@container scroll-state(snapped: x) or scroll-state(snapped: y) {
-  .tile:is(.item, .speech, .door, .puzzle) {
-    .speech-bubble,
-    .button {
-      translate: -50% 0;
-      opacity: 1;
-      pointer-events: auto;
-    }
-  }
-
-  .tile.speech-left .speech-bubble {
-    translate: calc(-50% + var(--tile-width)) 0;
-  }
-
-  .tile.speech-right .speech-bubble {
-    translate: calc(-50% - var(--tile-width)) 0;
-  }
 }
