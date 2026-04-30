@@ -27,15 +27,17 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    filter: brightness(0);
   }
 
-  .npc-sprite-yogaraptor {
+  .npc-wrapper-yogaraptor .npc-sprite {
     background-image: url("../assets/player/player-walk-up.png");
     animation: spritesheet 1s steps(3) infinite;
   }
   .npc-wrapper {
     width: 4rem;
     height: 4rem;
-    filter: brightness(0);
+    --npc-justify: center;
+    --npc-align: center;
   }
 }

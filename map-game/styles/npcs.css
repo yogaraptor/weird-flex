@@ -17,6 +17,7 @@
   width: 100%;
   height: 100%;
   justify-content: var(--npc-justify, center);
+  align-items: var(--npc-align, start);
   align-items: center;
 }
 
