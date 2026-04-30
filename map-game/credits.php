@@ -1,6 +1,8 @@
 <dialog id="credits">
   <ul>
-    <li>Programming: <a href="https://yogaraptor.dev">Yogaraptor</a></li>
+    <li>Main programming: <a href="https://yogaraptor.dev">Yogaraptor</a></li>
+    <li>Scroll direction detection: <a href="https://www.bram.us/2023/10/23/css-scroll-detection/" target="_blank">Bramus</a></li>
+    <li>Detecting slider values in CSS: <a href="https://css-tip.com/css-variables-range-slider/" target="_blank">Temani Afif</a></li>
     <li>Graphics:
       <ul>
         <li><a href="https://backterria.itch.io/the-overworld" target="_blank">The Overworld</a> and <a href="https://backterria.itch.io/the-interiors" target="_blank">The Interiors</a> tilesets by Backterria</li>
