@@ -67,7 +67,7 @@
 }
 .frame-inner {
   width: 100%;
-  background-color: #8f563b;
+  background-color: var(--riverbed-brown);
 }
 
 .button {
