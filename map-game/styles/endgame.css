@@ -256,7 +256,9 @@
     2. NPC movement and greeting
   */
     .tile.speech.endgame {
-      z-index: 20; /* We move these NPCs south on the map. Southerly tiles will be higher in stacking context, so we need to bump the speech bubbles above them */
+      --z-index: var(
+        --stacking-layer-action
+      ); /* We move these NPCs south on the map. Southerly tiles will be higher in stacking context, so we need to bump the speech bubbles above them */
     }
     .tile.endgame-crystal {
       --speech-offset-x: calc(-50% + calc(var(--tile-width) * 1.25));

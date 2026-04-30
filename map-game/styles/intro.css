@@ -1,7 +1,7 @@
 .cut-scene {
   position: absolute;
   inset: 0;
-  z-index: 100;
+  z-index: var(--stacking-layer-ui);
   background: black;
   display: flex;
   flex-direction: column;

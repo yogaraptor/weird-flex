@@ -539,7 +539,7 @@
 .tile:is(.item, .speech, .door, .puzzle) .button {
   display: flex;
   pointer-events: none;
-  z-index: 20;
+  z-index: var(--stacking-layer-overlay);
   text-decoration: none;
   cursor: pointer;
 }

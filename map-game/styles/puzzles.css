@@ -126,7 +126,7 @@
 */
 details.puzzle-wrapper {
   position: relative;
-  z-index: 20;
+  z-index: var(--stacking-layer-overlay);
   will-change: filter, opacity;
 }
 

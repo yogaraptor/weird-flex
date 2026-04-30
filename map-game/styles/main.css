@@ -6,6 +6,11 @@
 
   --scale-green: #9cbb29;
   --scale-green-dark: #7c9b09;
+
+  --stacking-layer-tiles: 10;
+  --stacking-layer-action: 20;
+  --stacking-layer-overlay: 30;
+  --stacking-layer-ui: 40;
 }
 
 * {
@@ -37,7 +42,7 @@ body {
 .map {
   left: 50%;
   top: 50%;
-  z-index: 1;
+  z-index: var(--stacking-layer-tiles);
   transform: translate(-50%, calc(-50% + var(--tile-height) / 2));
   overflow: hidden; /* Prevent any offscreen UI adding scrollbars */
   background-color: black;

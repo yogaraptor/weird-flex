@@ -145,7 +145,7 @@
   width: calc(var(--tile-width) / 2);
   height: calc(var(--tile-height) / 2);
   pointer-events: none;
-  z-index: 5;
+  --z-index: var(--stacking-layer-action);
   display: flex;
   justify-content: center;
   align-items: center;
