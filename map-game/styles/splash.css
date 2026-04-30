@@ -30,4 +30,12 @@
     display: flex;
     gap: 1rem;
   }
+
+  .splash-screen-tips {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: #888;
+  }
 }
