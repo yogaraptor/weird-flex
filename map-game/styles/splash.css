@@ -6,6 +6,14 @@
   gap: 1rem;
   text-align: center;
 
+  .npc-wrapper-yogaraptor {
+    .npc-sprite {
+      width: 6rem;
+      height: 6rem;
+      background-image: url("../assets/player/player-walk-right.png");
+    }
+  }
+
   h1 {
     font-size: 2rem;
     color: var(--scale-green);
@@ -16,5 +24,10 @@
       font-size: 2.5rem;
       line-height: 1;
     }
+  }
+
+  .splash-screen-actions {
+    display: flex;
+    gap: 1rem;
   }
 }
