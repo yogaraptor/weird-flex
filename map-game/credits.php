@@ -17,17 +17,17 @@
   <button class=" button" command="close" commandfor="credits"><span class="frame-inner">Close</span></button>
 
   <div class="sprites">
-    <div class="npc-wrapper">
-      <div class="npc-sprite npc-sprite-yogaraptor"></div>
+    <div class="npc-wrapper npc-wrapper-yogaraptor">
+      <div class="npc-sprite"></div>
     </div>
-    <div class="npc-wrapper">
-      <div class="npc-sprite npc-sprite-triceratops"></div>
+    <div class="npc-wrapper npc-wrapper-triceratops">
+      <div class="npc-sprite"></div>
     </div>
-    <div class="npc-wrapper">
-      <div class="npc-sprite npc-sprite-pterodactyl"></div>
+    <div class="npc-wrapper npc-wrapper-pterodactyl">
+      <div class="npc-sprite"></div>
     </div>
-    <div class="npc-wrapper">
-      <div class="npc-sprite npc-sprite-ankylosaurus"></div>
+    <div class="npc-wrapper npc-wrapper-ankylosaurus">
+      <div class="npc-sprite"></div>
     </div>
   </div>
 </dialog>
