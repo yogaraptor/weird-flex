@@ -68,21 +68,3 @@ body {
     height: 0;
   }
 }
-
-@keyframes gameOver {
-  0%,
-  90% {
-    opacity: 0;
-  }
-
-  91% {
-    pointer-events: auto;
-    background: red;
-  }
-
-  100% {
-    opacity: 1;
-    content: "GAME OVER!";
-    background: red;
-  }
-}
