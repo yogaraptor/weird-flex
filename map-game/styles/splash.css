@@ -1,6 +1,7 @@
 .splash-screen {
   width: var(--viewport-width);
   display: flex;
+  padding: 0 1rem;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
@@ -40,5 +41,16 @@
     flex-direction: column;
     gap: 0.5rem;
     color: #888;
+  }
+
+  .splash-screen-not-supported-message {
+    padding: 1rem;
+    color: var(--jaw-red-dark);
+    background: var(--jaw-red);
+
+    display: none;
+    @supports not (container-type: scroll-state) {
+      display: block;
+    }
   }
 }
