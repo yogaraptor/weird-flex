@@ -242,7 +242,7 @@
       black 180deg calc(180deg + var(--wipe-angle)),
       transparent calc(180deg + var(--wipe-angle)) 360deg
     );
-    animation: pokemon-wipe 0.6s steps(12) 1.3s forwards;
+    animation: pokemon-wipe 0.6s steps(8) 1.3s forwards;
   }
 }
 
