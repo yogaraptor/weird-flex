@@ -55,7 +55,7 @@ BEGIN LEGEND
 🔑 stone ITEM KEY
 🦖 grass2 ENCOUNTER stego A wild Stegosaurus appeared!
 🚪 doormat GOTO MAP 20 DOOR TEXT Step into the big wide world
-🧪 lab GOTO MAP 30 DOOR TEXT Enter the lab
+🧪 lab GOTO MAP 30 DOOR TEXT Enter ROCKET LAB
 ⏺️ floor EXIT DOOR TEXT Head back outside...
 ☀️ cave-floor1 EXIT DOOR TEXT Back to the sunlight...
 🧩 puzzle SHOW PUZZLE 1
@@ -73,7 +73,7 @@ BEGIN LEGEND
 🔄 rocket-misc4
 🪧 sign1
 🧭 sign2
-🛖 house1 EXIT DOOR TEXT Home sweet home
+🛖 house1 EXIT DOOR TEXT Enter YOGARAPTOR'S HOUSE
 🏚️ house2
 🏠️ house3
 🏪 shop1
@@ -113,8 +113,8 @@ BEGIN LEGEND
 🚵‍♂️ cliff-corner-nw2
 🧗‍♂️ cliff-corner-sw
 🚵‍♀️ cliff-corner-sw2
-🕳️ cliff-cave-w GOTO MAP 40 DOOR TEXT Enter the gloomy cave...
 🚵 cliff-cave-w2
+🕳️ cliff-cave-w GOTO MAP 40 DOOR TEXT Enter THE GLOOMY CAVE
 🕐 road-h-cap-w
 🕑 road-h-middle
 🕒 road-h-cap-e
@@ -138,7 +138,7 @@ BEGIN LEGEND
 🗯️ grass1 SPEECH right <p>Stay out of that long grass to the north-west if you've got food.</p><p>You might attract a big dino!</p>
 🔒️ grass1 SPEECH middle Locked...
 📅 road-bend-se SPEECH middle "CLOSED. Please come back tomorrow!"
-↔️ road-h-middle SPEECH middle "NORTH: the village.<br><br> EAST: the gloomy caves. <br><br>SOUTH: DinoMart!<br><br> WEST: Rocket Lab 
+↔️ road-h-middle SPEECH middle North: THE VILLAGE.<br><br> East: THE GLOOMY CAVE. <br><br>South: DINO-MART!<br><br> West: ROCKET LAB
 🥼 floor ENDGAME crystal
 🦺 floor ENDGAME back-plate
 🚀 grass1 ENDGAME rocket
