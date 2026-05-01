@@ -1,19 +1,15 @@
-# Map Game
+# CSS Quest - a retro RPG game built entirely in HTML/CSS, without JavaScript
 
-## Running with Docker
+A playable mini RPG in the style of gameboy-era Pokémon, Zelda, etc, built entirely with HTML and CSS - _no JavaScript_.
 
-### Prerequisites
+The basic game engine is powered by:
 
-- [Docker](https://docs.docker.com/get-docker/) with the Compose plugin (or Docker Desktop)
+- [CSS scroll-snap](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll_snap) and ["snapped" scroll-state container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Conditional_rules/Container_scroll-state_queries) to allow character movement across a 2D grid.
+- [`<dialog>` and `<button command="show-modal">`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog#modal_dialogs_using_invoker_commands) for entering buildings, switching maps, showing enemy encounters, etc, all while retaining keyboard focus.
+- [:has()](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/:has) and hidden checkboxes for global game state.
+- [CSS counters](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Counter_styles/Using_counters) for collecting XP.
 
-### Start the container
+Additional polish added by standing on the shoulders of giants:
 
-From the `map-game/` directory:
-
-```bash
-docker compose up
-```
-
-Then open [http://localhost:8080](http://localhost:8080) in your browser.
-
-Source files are mounted into the container so no rebuild required when editing files - just reload the browser.
+- Per-direction character walk animations using [Bramus's CSS scroll direction technique](https://www.bram.us/2023/10/23/css-scroll-detection/)
+- CSS-only slider puzzle built on [Temani Afif's trick for reading range input values in CSS](https://css-tip.com/css-variables-range-slider/)
