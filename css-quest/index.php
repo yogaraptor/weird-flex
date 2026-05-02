@@ -135,6 +135,16 @@ foreach ($lines as $i => $line) {
   <link rel="stylesheet" type="text/css" href="styles/encounter.css" />
   <link rel="stylesheet" type="text/css" href="styles/npcs.css" />
   <link rel="stylesheet" type="text/css" href="styles/endgame.css" />
+  <?php
+  $imageExts = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'];
+  $dir = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(__DIR__ . '/assets'));
+  foreach ($dir as $file) {
+    if ($file->isFile() && in_array(strtolower($file->getExtension()), $imageExts)) {
+      $relativePath = 'assets/' . substr($file->getPathname(), strlen(__DIR__ . '/assets/'));
+      echo '  <link rel="preload" as="image" href="' . $relativePath . '">' . "\n";
+    }
+  }
+  ?>
 </head>
 
 <body>
