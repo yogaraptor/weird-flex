@@ -119,7 +119,7 @@
     }
     .endgame-rocket .speech-bubble-1 {
       animation: endgame-npc-speech-reveal 4s steps(6)
-        calc(var(--time-show-overworld) + 10s) forwards;
+        calc(var(--time-show-overworld) + 9s) forwards;
     }
     .endgame-rocket .speech-bubble-2 {
       animation: endgame-npc-speech-reveal 4s steps(6)
@@ -129,17 +129,17 @@
     /* 6. It's happening - lift off! Tears and applause not included */
     .endgame-rocket .rocket-sprite {
       animation:
-        spritesheet 3s steps(7) calc(var(--time-show-overworld) + 13.5s),
+        spritesheet 3s steps(7) calc(var(--time-show-overworld) + 7s),
         endgame-rocket-liftoff 8s ease-in
-          calc(var(--time-show-overworld) + 14.5s);
+          calc(var(--time-show-overworld) + 15.5s);
       animation-iteration-count: infinite, 1;
     }
     .map-overworld .viewport {
       transform-origin: 60% 50%;
       animation:
-        endgame-whiteout 3s steps(12) calc(var(--time-show-overworld) + 20.5s)
+        endgame-whiteout 3s steps(12) calc(var(--time-show-overworld) + 21.5s)
           forwards,
-        endgame-zoom 6s linear calc(var(--time-show-overworld) + 17s) backwards;
+        endgame-zoom 6s linear calc(var(--time-show-overworld) + 18s) backwards;
 
       /* Hide NPCs from pervious gameplay - they are in the dino queue now! */
       .tile.npc .npc-wrapper {
