@@ -55,6 +55,6 @@
   }
 }
 
-&:has(.map:open) .splash-screen {
+:has(.map[open]) .splash-screen {
   display: none;
 }
