@@ -37,21 +37,6 @@
         foreach ($map['rows'] as $row):
           foreach ($row as $tileChar):
             $tileDef = $tileTypes[$tileChar];
-            $tileId = null;
-
-            // Player start tile on map 1 gets id="start" for splash screen link
-            if ($map['playerStart'] !== null && $index === $map['playerStart']) {
-              $tileId = $mapNum === 1 ? 'start' : "m{$mapNum}-start";
-            }
-
-            // First door tile per destination gets id="m{N}-door-m{M}"
-            if ($tileDef['gotoMap'] !== null) {
-              $doorId = "m{$mapNum}-door-m{$tileDef['gotoMap']}";
-              if (!isset($doorIdsUsed[$doorId])) {
-                if ($tileId === null) $tileId = $doorId;
-                $doorIdsUsed[$doorId] = true;
-              }
-            }
 
             $tileClasses = ['tile', $tileDef['name']];
             if ($tileDef['item'] !== null) {
@@ -91,7 +76,6 @@
         ?>
             <div
               class="<?php echo join(' ', $tileClasses); ?>"
-              <?php if ($tileId) echo "id=\"{$tileId}\""; ?>
               <?php if ($map['playerStart'] !== null && $index === $map['playerStart']): ?>tabindex="0" autofocus<?php endif; ?>>
 
               <?php if ($tileDef['gotoMap'] !== null): ?>
