@@ -11,7 +11,8 @@
   </div>
 
   <p class="splash-screen-not-supported-message">
-    Waaah - your browser doesn't support <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Conditional_rules/Container_scroll-state_queries" target="_blank">scroll-state container queries</a>, upon which much of this game's mechanics rely. To truly experience CSS Quest, try a desktop blink-based browser like Chrome.
+    Waaah - your browser doesn't support <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Conditional_rules/Container_scroll-state_queries" target="_blank">scroll-state container queries</a>, upon which much of this game's mechanics rely. You can try CSS Quest out, but won't be able to interact with objects or leave the first map.
+    Try desktop Chrome for the full experience.
   </p>
 
   <div class="splash-screen-tips">
@@ -19,5 +20,6 @@
     <p>Use arrow keys to move. Holding them down can be janky, try tapping them instead.</p>
     <p>Try not to press <b>tab</b> or <b>esc</b></p>
     <p>Works best in Chrome, sorry.<br>Edge kinda works, but just use Chrome.</p>
+    <p>Use touch to drag Yogaraptor around on mobile.</p>
   </div>
 </div>
