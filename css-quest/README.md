@@ -46,6 +46,16 @@ Then host the files below on your server/hosting platform:
 ./index.html
 ```
 
+## Editing the maps
+
+The maps are defined in `map.txt`:
+
+- Available tiles are set in the `LEGEND` section, each with an emoji, tile name and optional metadata
+- These are used in the maps below.
+- Door, speech, item and endgame tiles require metadata - see their entries for examples
+- Maps are read in `index.php` and rendered in `maps.php`.
+- Doors, items and speech tiles are generic and can be re-used anywhere, but for the purposes of this demo game, the puzzle and endgame tiles have hardcoded content.
+
 ## Tips for speeding up development
 
 The character's movement mechanism is scroll-based, so you can use your scroll-wheel/touchpad/home/end keys to get around faster.
