@@ -89,7 +89,7 @@
   Puzzle tile styles
 */
 .tile.puzzle {
-  background-image: url("../assets/stone-puzzle/tile.png");
+  background-image: url("../assets/stone-puzzle/tile.webp");
 }
 
 /*
@@ -157,7 +157,7 @@ details.puzzle-wrapper > summary {
   align-items: center;
   justify-content: space-around;
   padding-block: 6rem;
-  background-image: url("../assets/stone-puzzle/stone-bg.png");
+  background-image: url("../assets/stone-puzzle/stone-bg.webp");
 }
 
 /*
@@ -170,7 +170,7 @@ details.puzzle-wrapper > summary {
   display: flex;
   align-items: center;
   font-size: 0; /* Hide label text */
-  background: url("../assets/stone-puzzle/groove.png") center center no-repeat;
+  background: url("../assets/stone-puzzle/groove.webp") center center no-repeat;
 }
 
 .puzzle-wrapper input[type="range"] {
@@ -204,15 +204,15 @@ details.puzzle-wrapper > summary {
 /* Set slider thumb images and named view-timelines */
 input[name="sun"]::-webkit-slider-thumb {
   view-timeline: --_sun inline;
-  background-image: url("../assets/stone-puzzle/sun.png");
+  background-image: url("../assets/stone-puzzle/sun.webp");
 }
 input[name="moon"]::-webkit-slider-thumb {
   view-timeline: --_moon inline;
-  background-image: url("../assets/stone-puzzle/moon.png");
+  background-image: url("../assets/stone-puzzle/moon.webp");
 }
 input[name="earth"]::-webkit-slider-thumb {
   view-timeline: --_earth inline;
-  background-image: url("../assets/stone-puzzle/earth.png");
+  background-image: url("../assets/stone-puzzle/earth.webp");
 }
 
 /*
@@ -245,7 +245,7 @@ input[name="earth"]::-webkit-slider-thumb {
 @container game style(--puzzle-1-solved: 1) {
   /* Switch dias tile to rubble */
   .tile.puzzle {
-    background-image: url("../assets/stone-puzzle/tile-after.png");
+    background-image: url("../assets/stone-puzzle/tile-after.webp");
   }
 
   /* Shake all three inputs for DRAMA */

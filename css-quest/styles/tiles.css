@@ -562,10 +562,10 @@
 
 /* Cave map tiles */
 .tile.lava {
-  background-image: url("../assets/tiles/lava.gif");
+  background-image: url("../assets/tiles/lava.webp");
 }
 .tile.lava-wall-n1 {
-  background-image: url("../assets/tiles/lava-wall-n1.png");
+  background-image: url("../assets/tiles/lava-wall-n1.webp");
 }
 
 .tile.cave-wall-n1 {
