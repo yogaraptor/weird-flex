@@ -53,6 +53,9 @@ body {
   transform: translate(-50%, calc(-50% + var(--tile-height) / 2));
   overflow: hidden; /* Prevent any offscreen UI adding scrollbars */
   background-color: black;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
 
   > .frame-inner {
     background-color: black;
