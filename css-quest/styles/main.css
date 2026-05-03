@@ -1,8 +1,12 @@
 :root {
-  --tile-width: 64px;
-  --tile-height: 64px;
-  --viewport-width: 576px;
-  --viewport-height: 576px;
+  --scale-factor: 1;
+  @media (max-width: 600px) {
+    --scale-factor: 0.5;
+  }
+  --tile-width: calc(var(--scale-factor) * 64px);
+  --tile-height: calc(var(--scale-factor) * 64px);
+  --viewport-width: calc(var(--scale-factor) * 576px);
+  --viewport-height: calc(var(--scale-factor) * 576px);
 
   --scale-green: #9cbb29;
   --scale-green-dark: #7c9b09;
@@ -65,6 +69,7 @@ body {
   overflow: auto;
   scroll-snap-type: both mandatory;
   container-name: viewport;
+  overscroll-behavior: none;
 
   /* Hide scrollbars */
   scrollbar-width: none;
