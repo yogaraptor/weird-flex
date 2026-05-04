@@ -4,6 +4,8 @@
 
 A playable mini RPG in the style of gameboy-era Pokémon, Zelda, etc, built entirely with HTML and CSS - _no JavaScript_.
 
+🔗 https://yogaraptor.dev/css-quest
+
 The basic game engine is powered by:
 
 - [CSS scroll-snap](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Scroll_snap) and ["snapped" scroll-state container queries](https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Conditional_rules/Container_scroll-state_queries) to allow character movement across a 2D grid.
