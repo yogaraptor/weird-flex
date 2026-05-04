@@ -1,5 +1,7 @@
 # CSS Quest - a retro RPG game built entirely in HTML/CSS, without JavaScript
 
+<img width="377" height="428" alt="A retro top-down RPG scene. A green dinosaur stands on a road in front of three houses, surrounded by grass. Two triceratops NPCs are nearby." src="https://private-user-images.githubusercontent.com/1737376/587370349-8bb4b102-a599-4fcc-add4-14fd197b8b42.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Nzc5Mjk5NDUsIm5iZiI6MTc3NzkyOTY0NSwicGF0aCI6Ii8xNzM3Mzc2LzU4NzM3MDM0OS04YmI0YjEwMi1hNTk5LTRmY2MtYWRkNC0xNGZkMTk3YjhiNDIucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI2MDUwNCUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNjA1MDRUMjEyMDQ1WiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9NDk2YjRkNjJjYWE5ZTE4MGI4NGFhZmU1NDA5ZDg1ZGUwYmI4ZjU5MjE0YmEwYzI3NjNlYjA5Y2NlOTk2YjZjZCZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmcmVzcG9uc2UtY29udGVudC10eXBlPWltYWdlJTJGcG5nIn0.HmMzs_ffzHMdJaWWgY3ytX4i14G9muY61U253Oi76bk">
+
 A playable mini RPG in the style of gameboy-era Pokémon, Zelda, etc, built entirely with HTML and CSS - _no JavaScript_.
 
 The basic game engine is powered by:
