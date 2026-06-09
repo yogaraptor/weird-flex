@@ -1,7 +1,3 @@
-.xp-display::before {
-  content: "XP: " counter(xp);
-}
-
 .inventory {
   display: none;
   position: absolute;

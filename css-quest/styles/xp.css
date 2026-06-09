@@ -32,3 +32,56 @@ body {
 :has(#encounter-give:checked) .inventory li:nth-child(4) {
   counter-increment: xp 50;
 }
+
+.xp-display::before {
+  padding: 0.25rem 1rem;
+  border-radius: 0.5rem;
+  corner-shape: bevel;
+  content: "XP: " counter(xp);
+}
+
+/*
+  We want the user to know when they earn some XP, so we add a nice attention-grabbing
+  effect to the counter element every time they do so. To make the animation re-run
+  we need to use a unique keyframe each time, otherwise it will only run on the first
+  xp event.
+*/
+@keyframes xp-glow-1 {
+  0%,
+  100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: gold;
+  }
+}
+@keyframes xp-glow-2 {
+  0%,
+  100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: gold;
+  }
+}
+@keyframes xp-glow-3 {
+  0%,
+  100% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: gold;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  :has(#item-croissant:checked) .xp-display::before {
+    animation: xp-glow-1 1s steps(4) backwards;
+  }
+  :has(#item-crystal:checked) .xp-display::before {
+    animation: xp-glow-2 1s steps(4) backwards;
+  }
+  :has(#encounter-give:checked) .xp-display::before {
+    animation: xp-glow-3 1s steps(4) backwards;
+    animation-delay: 5s; /* Delay highlight until backplate received */
+  }
+}
