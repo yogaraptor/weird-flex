@@ -1,0 +1,86 @@
+body {
+  overflow: hidden;
+  timeline-scope: --scroller-z, --scroller-x;
+}
+
+#controller {
+  width: 100vw;
+  height: 100vh;
+  overflow: scroll;
+  position: relative;
+  scroll-timeline:
+    --scroller-z y,
+    --scroller-x x;
+}
+
+#stretcher {
+  width: 500vw;
+  height: 500vh;
+}
+
+body,
+#scene,
+#scene-z {
+  perspective: 800px;
+  perspective-origin: center center;
+}
+
+#scene {
+  pointer-events: none;
+}
+
+#scene {
+  position: absolute;
+  width: 50vw;
+  height: 50vh;
+  top: 25vh;
+  left: 25vw;
+  border: 10px solid black;
+  overflow: hidden;
+}
+
+#scene-z {
+  height: 100%;
+
+  animation-name: moveZ;
+  animation-fill-mode: forwards;
+  animation-timeline: --scroller-z;
+}
+#scene-inner {
+  height: 100%;
+
+  transform-style: preserve-3d;
+
+  animation-name: moveX;
+  animation-fill-mode: forwards;
+  animation-timeline: --scroller-x;
+  pointer-events: none;
+}
+
+#square {
+  background-color: deeppink;
+  width: 100px;
+  height: 100px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: rotateX(75deg) translateX(-50%) translateY(-50%);
+}
+
+@keyframes moveZ {
+  from {
+    transform: translateZ(0);
+  }
+  to {
+    transform: translateZ(1000px);
+  }
+}
+
+@keyframes moveX {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(1000px);
+  }
+}
