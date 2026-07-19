@@ -14,9 +14,18 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
   </head>
   <body>
-    <div id="controller">
-      <div id="stretcher"></div>
+    <!-- Joystick pad: a small scroll container. Scroll within it to steer. -->
+    <div id="joystick">
+      <div id="stretcher">
+        <!-- Marks the neutral (centre) zone. It's focusable + autofocus, so
+             on load the browser scrolls the pad to reveal it. Sized to the
+             pad, "reveal" == "centre", giving us a neutral resting position
+             on first paint without JS. -->
+        <div id="joy-neutral" tabindex="0" autofocus></div>
+      </div>
     </div>
+
+    <!-- The 3D world we look into. -->
     <div id="scene">
       <div id="scene-z">
         <div id="scene-inner">

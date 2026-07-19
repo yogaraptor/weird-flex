@@ -1,23 +1,55 @@
 body {
   overflow: hidden;
-  timeline-scope: --scroller-z, --scroller-x;
+  /* Hoist the joystick's timeline names so the sibling #scene can bind to
+     them via animation-timeline. */
+  timeline-scope: --joy-z, --joy-x;
 }
 
-#controller {
-  width: 100vw;
-  height: 100vh;
+/* ---- Joystick pad -------------------------------------------------------
+   A small scroll container. Scrolling within it in x/y steers the camera.
+   Its two scroll axes are published as named scroll timelines. */
+#joystick {
+  /* position: fixed; */
+  bottom: 20px;
+  left: 20px;
+  width: 200px;
+  height: 200px;
   overflow: scroll;
-  position: relative;
+  border: 4px solid black; /* ugly boundary marker */
+  z-index: 10;
+
   scroll-timeline:
-    --scroller-z y,
-    --scroller-x x;
+    --joy-z y,
+    --joy-x x;
 }
 
+/* Oversized child creates scroll range in both axes. 3x the pad => equal
+   travel on each side of centre. */
 #stretcher {
-  width: 500vw;
-  height: 500vh;
+  position: relative;
+  width: 600px;
+  height: 600px;
 }
 
+/* Neutral zone, centred in the stretcher and sized to the pad's scrollport
+   so autofocus-scroll lands us exactly at centre on load. */
+#joy-neutral {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  /* Sized to the pad's scrollport so autofocus-scroll lands at EXACT centre
+     on load, making "neutral" deterministic. (If you want a smaller visual
+     marker, keep this element pad-sized + invisible as the focus target and
+     add a separate smaller marker element.) */
+  width: 200px;
+  height: 200px;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  border: 2px dashed red; /* marks neutral zone */
+  pointer-events: none; /* never intercept touch-scrolling of the pad */
+}
+
+/* ---- 3D world ----------------------------------------------------------- */
 body,
 #scene,
 #scene-z {
@@ -27,9 +59,6 @@ body,
 
 #scene {
   pointer-events: none;
-}
-
-#scene {
   position: absolute;
   width: 50vw;
   height: 50vh;
@@ -44,7 +73,7 @@ body,
 
   animation-name: moveZ;
   animation-fill-mode: forwards;
-  animation-timeline: --scroller-z;
+  animation-timeline: --joy-z; /* vertical joystick = forward/back */
 }
 #scene-inner {
   height: 100%;
@@ -53,7 +82,7 @@ body,
 
   animation-name: moveX;
   animation-fill-mode: forwards;
-  animation-timeline: --scroller-x;
+  animation-timeline: --joy-x; /* horizontal joystick = strafe */
   pointer-events: none;
 }
 
@@ -64,12 +93,21 @@ body,
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: rotateX(75deg) translateX(-50%) translateY(-50%);
+  /* Resting offset: slides the tile's "sweet spot" onto the neutral (centred)
+     camera position in BOTH axes, otherwise neutral parks the camera off to
+     the side and short of the tile so it's out of frame. Lives here on the
+     non-animated tile because #scene-z / #scene-inner have their transforms
+     driven by the keyframes. Tune these two values to taste (flip a sign if
+     it moves the wrong way). */
+  transform: translateX(-610px) translateZ(-300px) rotateX(75deg)
+    translateX(-50%) translateY(-50%);
 }
 
+/* Centre of the pad (50% scroll) maps to identity => neutral. The two
+   extremes push the camera equally in each direction. */
 @keyframes moveZ {
   from {
-    transform: translateZ(0);
+    transform: translateZ(-1000px);
   }
   to {
     transform: translateZ(1000px);
@@ -78,7 +116,7 @@ body,
 
 @keyframes moveX {
   from {
-    transform: translateX(0);
+    transform: translateX(-1000px);
   }
   to {
     transform: translateX(1000px);
