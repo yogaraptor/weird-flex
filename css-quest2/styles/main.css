@@ -1,124 +1,178 @@
-body {
-  overflow: hidden;
-  /* Hoist the joystick's timeline names so the sibling #scene can bind to
-     them via animation-timeline. */
-  timeline-scope: --joy-z, --joy-x;
+:root {
+  /* ---- Joypad ----------------------------------------------------------- */
+  --pad-size: 200px; /* the visible scrollport */
+  --pad-travel: 200px; /* scroll range available either side of neutral */
+  --marker-size: 40px; /* the little "you are here" dot */
+
+  /* ---- Camera ----------------------------------------------------------- */
+  --camera-range: 1000px; /* how far the camera travels at full deflection */
+  --camera-height: 150px; /* how far the camera floats above the ground */
+  --perspective: 800px;
+
+  /* ---- World ------------------------------------------------------------ */
+  --tile-size: 100px;
+  --tile-distance: -300px; /* resting distance in front of the camera */
+  --ground-tilt: 75deg; /* 90deg would be a true flat ground plane */
 }
 
-/* ---- Joystick pad -------------------------------------------------------
+body {
+  margin: 0;
+  overflow: hidden;
+
+  /* Hoist the joypad's timeline names so the sibling #scene can bind to them
+     via animation-timeline. Without this, a timeline is only visible to the
+     scroller's own descendants. */
+  timeline-scope: --joy-z, --joy-x;
+
+  /* NB: deliberately NO perspective here. See #scene. */
+}
+
+/* ---- Joypad --------------------------------------------------------------
    A small scroll container. Scrolling within it in x/y steers the camera.
    Its two scroll axes are published as named scroll timelines. */
 #joystick {
-  /* position: fixed; */
+  position: fixed;
   bottom: 20px;
   left: 20px;
-  width: 200px;
-  height: 200px;
+  width: var(--pad-size);
+  height: var(--pad-size);
   overflow: scroll;
   border: 4px solid black; /* ugly boundary marker */
   z-index: 10;
+
+  /* Not cosmetic - load-bearing. Classic scrollbars shrink the scrollport by
+     ~15px, so a 200px focus target no longer fits inside it and "scroll into
+     view" stops meaning "centre". Removing them makes scrollport == --pad-size
+     exactly, on every platform, which is what the neutral trick relies on. */
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   scroll-timeline:
     --joy-z y,
     --joy-x x;
 }
 
-/* Oversized child creates scroll range in both axes. 3x the pad => equal
-   travel on each side of centre. */
+/* Oversized child creates scroll range in both axes: the scrollport itself
+   plus equal travel on each side of centre. */
 #stretcher {
   position: relative;
-  width: 600px;
-  height: 600px;
+  width: calc(var(--pad-size) + 2 * var(--pad-travel));
+  height: calc(var(--pad-size) + 2 * var(--pad-travel));
 }
 
-/* Neutral zone, centred in the stretcher and sized to the pad's scrollport
-   so autofocus-scroll lands us exactly at centre on load. */
-#joy-neutral {
+/* Invisible focus target, centred in the stretcher and sized to EXACTLY the
+   scrollport. On load the browser scrolls the pad to reveal the autofocused
+   element; because it's the same size as the scrollport, the only scroll
+   offset that fully reveals it is dead centre. That's our neutral position,
+   established without a line of JS. */
+#joy-focus {
   position: absolute;
   top: 50%;
   left: 50%;
-  /* Sized to the pad's scrollport so autofocus-scroll lands at EXACT centre
-     on load, making "neutral" deterministic. (If you want a smaller visual
-     marker, keep this element pad-sized + invisible as the focus target and
-     add a separate smaller marker element.) */
-  width: 200px;
-  height: 200px;
+  width: var(--pad-size);
+  height: var(--pad-size);
   transform: translate(-50%, -50%);
-  box-sizing: border-box;
-  border: 2px dashed red; /* marks neutral zone */
   pointer-events: none; /* never intercept touch-scrolling of the pad */
+  outline: none; /* #joy-marker is the visible affordance instead */
 }
 
-/* ---- 3D world ----------------------------------------------------------- */
-body,
-#scene,
-#scene-z {
-  perspective: 800px;
+/* Separate, smaller marker for the neutral zone, so the focus target above can
+   stay pad-sized (which is what makes the autofocus trick exact). */
+#joy-marker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  width: var(--marker-size);
+  height: var(--marker-size);
+  transform: translate(-50%, -50%);
+  border: 2px dashed red;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+/* ---- 3D world ------------------------------------------------------------
+   Exactly ONE element declares perspective. Declaring it again on a descendant
+   starts a second 3D rendering context, which flattens and re-projects
+   everything inside it, so depth cues stop composing the way you expect. */
+#scene {
+  position: absolute;
+  top: 25vh;
+  left: 25vw;
+  width: 50vw;
+  height: 50vh;
+  border: 10px solid black;
+  overflow: hidden;
+  pointer-events: none;
+
+  perspective: var(--perspective);
   perspective-origin: center center;
 }
 
-#scene {
-  pointer-events: none;
-  position: absolute;
-  width: 50vw;
-  height: 50vh;
-  top: 25vh;
-  left: 25vw;
-  border: 10px solid black;
-  overflow: hidden;
-}
-
+/* One element per axis: an element can only bind a single animation-timeline,
+   so forward/back and strafe need separate wrappers. Nesting them composes the
+   two transforms, which is what makes diagonal movement work for free.
+   Both need preserve-3d so the tile's depth survives up to #scene. */
+/* animation-timing-function: linear is NOT optional. Animations default to
+   `ease`, which is right for something playing out over time but wrong for
+   something scrubbed by scroll: cubic-bezier(.25,.1,.25,1) maps an input of
+   0.5 to an output of ~0.8024, so a pad resting at dead centre would park the
+   camera at 80% of its range - 604.8px off - rather than at neutral. */
 #scene-z {
   height: 100%;
+  transform-style: preserve-3d;
 
   animation-name: moveZ;
   animation-fill-mode: forwards;
-  animation-timeline: --joy-z; /* vertical joystick = forward/back */
+  animation-timing-function: linear;
+  animation-timeline: --joy-z; /* vertical joypad = forward/back */
 }
+
 #scene-inner {
   height: 100%;
-
   transform-style: preserve-3d;
 
   animation-name: moveX;
   animation-fill-mode: forwards;
-  animation-timeline: --joy-x; /* horizontal joystick = strafe */
-  pointer-events: none;
+  animation-timing-function: linear;
+  animation-timeline: --joy-x; /* horizontal joypad = strafe */
 }
 
+/* Transforms compose right-to-left: tilt the tile flat about its own centre,
+   push it away from the camera, drop it below eye level, then correct for
+   top/left 50% putting its corner - not its centre - on the anchor point. */
 #square {
-  background-color: deeppink;
-  width: 100px;
-  height: 100px;
   position: absolute;
   top: 50%;
   left: 50%;
-  /* Resting offset: slides the tile's "sweet spot" onto the neutral (centred)
-     camera position in BOTH axes, otherwise neutral parks the camera off to
-     the side and short of the tile so it's out of frame. Lives here on the
-     non-animated tile because #scene-z / #scene-inner have their transforms
-     driven by the keyframes. Tune these two values to taste (flip a sign if
-     it moves the wrong way). */
-  transform: translateX(-610px) translateZ(-300px) rotateX(75deg)
-    translateX(-50%) translateY(-50%);
+  width: var(--tile-size);
+  height: var(--tile-size);
+  background-color: deeppink;
+
+  transform: translate(-50%, -50%) translateY(var(--camera-height))
+    translateZ(var(--tile-distance)) rotateX(var(--ground-tilt));
 }
 
-/* Centre of the pad (50% scroll) maps to identity => neutral. The two
-   extremes push the camera equally in each direction. */
+/* Symmetric ranges, so the centre of the pad (50% scroll progress) maps to a
+   zero-length translation - i.e. neutral - and the two extremes push the
+   camera equally far in each direction. */
 @keyframes moveZ {
   from {
-    transform: translateZ(-1000px);
+    transform: translateZ(calc(-1 * var(--camera-range)));
   }
   to {
-    transform: translateZ(1000px);
+    transform: translateZ(var(--camera-range));
   }
 }
 
 @keyframes moveX {
   from {
-    transform: translateX(-1000px);
+    transform: translateX(calc(-1 * var(--camera-range)));
   }
   to {
-    transform: translateX(1000px);
+    transform: translateX(var(--camera-range));
   }
 }

@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CSS Quest!</title>
-    <link rel="icon" type="image/png" href="assets/favicon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -14,14 +13,16 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
   </head>
   <body>
-    <!-- Joystick pad: a small scroll container. Scroll within it to steer. -->
+    <!-- Joypad: a small scroll container. Scroll within it to steer. -->
     <div id="joystick">
       <div id="stretcher">
-        <!-- Marks the neutral (centre) zone. It's focusable + autofocus, so
-             on load the browser scrolls the pad to reveal it. Sized to the
-             pad, "reveal" == "centre", giving us a neutral resting position
-             on first paint without JS. -->
-        <div id="joy-neutral" tabindex="0" autofocus></div>
+        <!-- Pad-sized and invisible. It's focusable + autofocus, so on load the
+             browser scrolls the pad to reveal it; being exactly scrollport-sized,
+             the only offset that reveals it in full is dead centre. That gives us
+             a deterministic neutral resting position on first paint, no JS. -->
+        <div id="joy-focus" tabindex="0" autofocus></div>
+        <!-- The bit you can actually see. -->
+        <div id="joy-marker"></div>
       </div>
     </div>
 
