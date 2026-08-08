@@ -5,14 +5,57 @@
   --marker-size: 40px; /* the little "you are here" dot */
 
   /* ---- Camera ----------------------------------------------------------- */
-  --camera-range: 1000px; /* how far the camera travels at full deflection */
+  --camera-range: 1000px; /* distance to the edge of the traversable world */
   --camera-height: 150px; /* how far the camera floats above the ground */
+  --throttle: 1s; /* time to cross the remaining world at full deflection */
   --perspective: 800px;
 
   /* ---- World ------------------------------------------------------------ */
   --tile-size: 100px;
   --tile-distance: -300px; /* resting distance in front of the camera */
   --ground-tilt: 75deg; /* 90deg would be a true flat ground plane */
+}
+
+/* Deflection: how far the joypad is pushed off centre, per axis, -1..+1 with
+   0 = neutral. Registered so they can be animated by the scroll timelines
+   (unregistered custom properties don't interpolate). */
+@property --deflect-z {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --deflect-x {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+/* Camera position per axis. Registered as lengths because these are the values
+   we TRANSITION - see the velocity section for why the transition lives on a
+   custom property rather than on transform itself. */
+@property --cam-z {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --cam-x {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+/* Deflection quantised to integer steps -10..10. Integers because style()
+   queries compare computed values exactly, and fractional steps risk float
+   serialisation mismatches (0.30000000004 never matches 0.3). */
+@property --speed-step-z {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --speed-step-x {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
 }
 
 body {
@@ -24,7 +67,38 @@ body {
      scroller's own descendants. */
   timeline-scope: --joy-z, --joy-x;
 
+  /* Turn the joypad's scroll positions into the --deflect-* numbers. One
+     element CAN run several scroll-driven animations - the comma lists match
+     up pairwise. (What an element can't do is run two animations that both
+     write the same property, which is why the camera still needs its nested
+     wrappers below.)
+     NB: animation-timeline must come AFTER the animation shorthand, which
+     resets it. */
+  animation:
+    set-deflect-z linear both,
+    set-deflect-x linear both;
+  animation-timeline: --joy-z, --joy-x;
+
   /* NB: deliberately NO perspective here. See #scene. */
+}
+
+/* Symmetric, so pad centre = deflection 0 = not moving. */
+@keyframes set-deflect-z {
+  from {
+    --deflect-z: -1;
+  }
+  to {
+    --deflect-z: 1;
+  }
+}
+
+@keyframes set-deflect-x {
+  from {
+    --deflect-x: -1;
+  }
+  to {
+    --deflect-x: 1;
+  }
 }
 
 /* ---- Joypad --------------------------------------------------------------
@@ -112,33 +186,192 @@ body {
   perspective-origin: center center;
 }
 
-/* One element per axis: an element can only bind a single animation-timeline,
-   so forward/back and strafe need separate wrappers. Nesting them composes the
-   two transforms, which is what makes diagonal movement work for free.
-   Both need preserve-3d so the tile's depth survives up to #scene. */
-/* animation-timing-function: linear is NOT optional. Animations default to
-   `ease`, which is right for something playing out over time but wrong for
-   something scrubbed by scroll: cubic-bezier(.25,.1,.25,1) maps an input of
-   0.5 to an output of ~0.8024, so a pad resting at dead centre would park the
-   camera at 80% of its range - 604.8px off - rather than at neutral. */
+/* ---- Velocity movement ----------------------------------------------------
+   The pad no longer maps to camera POSITION; it maps to camera VELOCITY.
+
+   Each wrapper's transform aims at whichever edge of the world the pad is
+   deflected towards (sign() picks the end, 0 at neutral), and a transition
+   carries it there with a duration inversely proportional to deflection.
+   Neutral => duration 1s/0 = infinity => frozen in place.
+
+   The sneaky part is the `* 1px` epsilon folded into the destination.
+   Transition parameters are sampled ONCE, when a transition starts, and a
+   transition only starts when the transitioned property's VALUE changes -
+   changing transition-duration alone retimes nothing. The epsilon makes any
+   change of deflection nudge the destination by a sub-pixel amount, which
+   retargets the transition: it restarts from the current animated value (so
+   it's always smooth) with a freshly computed duration.
+
+   Known compromise: with linear timing, rate = remaining distance / duration,
+   so the same deflection moves slower the closer you are to the target edge.
+   It's "cover this fraction of the remaining world per second", not true
+   constant velocity.
+
+   Why transition --cam-* rather than transform directly: a change that reaches
+   an element via an ancestor's ANIMATION of an inherited custom property does
+   not appear to start a transition on a dependent standard property like
+   transform - it just snaps. Transitioning a registered custom property whose
+   declared value references the animated one is the shape that provably works:
+   it's exactly v1's delayed-scroll trick (player.css / Bramus), with transform
+   reduced to a passive var() readout.
+
+   And why the duration is NOT simply calc(--throttle / abs(--deflect-z)):
+   --deflect-* are set by an animation, which makes them ANIMATION-TAINTED,
+   and substituting a tainted custom property (or anything derived from one)
+   into a transition-* longhand is invalid at computed-value time - an
+   anti-circularity rule: animations must not compute their own timing.
+   Confirmed by probe: `calc(var(--deflect-z) * 4s)` => 0s while
+   `var(--throttle)` => 1s.
+
+   The loophole: taint blocks tainted values from being SUBSTITUTED into
+   timing properties, but not from SELECTING between them. Style query
+   conditions are cascade machinery, not substitution. So we quantise
+   deflection into integer steps and let each step choose a literal duration:
+   CSS won't let an animation compute a duration, but it will let one choose
+   a duration. The price is a stepped throttle (10 speeds per direction) and
+   a free deadzone at step 0. */
+
+/* The steps live on #scene - the wrappers' ancestor - because a style query
+   targets the element's nearest ancestor container. They inherit, so
+   #scene-inner (whose nearest container is #scene-z) can query them too. */
+#scene {
+  --speed-step-z: round(nearest, calc(var(--deflect-z) * 10), 1);
+  --speed-step-x: round(nearest, calc(var(--deflect-x) * 10), 1);
+}
+
 #scene-z {
   height: 100%;
   transform-style: preserve-3d;
 
-  animation-name: moveZ;
-  animation-fill-mode: forwards;
-  animation-timing-function: linear;
-  animation-timeline: --joy-z; /* vertical joypad = forward/back */
+  /* vertical joypad = forward/back */
+  --cam-z: calc(
+    sign(var(--deflect-z)) * var(--camera-range) + var(--deflect-z) * 1px
+  );
+  /* Step-0 base case: a literal stand-in for "infinitely slow". Residual
+     drift is ~1px per 1000s - invisible. The step blocks below override the
+     duration whenever the pad is deflected past half a step. */
+  transition: --cam-z 999999s linear;
+  transform: translateZ(var(--cam-z));
 }
 
 #scene-inner {
   height: 100%;
   transform-style: preserve-3d;
 
-  animation-name: moveX;
-  animation-fill-mode: forwards;
-  animation-timing-function: linear;
-  animation-timeline: --joy-x; /* horizontal joypad = strafe */
+  /* horizontal joypad = strafe */
+  --cam-x: calc(
+    sign(var(--deflect-x)) * var(--camera-range) + var(--deflect-x) * 1px
+  );
+  transition: --cam-x 999999s linear;
+  transform: translateX(var(--cam-x));
+}
+
+/* The throttle ladder: step N ~= deflection N/10, so duration
+   10 * --throttle / N preserves the intended feel (full deflection crosses
+   the remaining world in --throttle). Durations only reference untainted
+   vars and literals, so the taint rule never engages; the tainted value only
+   picks which rung applies. Signs fold together because duration cares about
+   magnitude - direction lives in the destination's sign(). */
+@container style(--speed-step-z: -1) or style(--speed-step-z: 1) {
+  #scene-z {
+    transition-duration: calc(10 * var(--throttle) / 1);
+  }
+}
+@container style(--speed-step-z: -2) or style(--speed-step-z: 2) {
+  #scene-z {
+    transition-duration: calc(10 * var(--throttle) / 2);
+  }
+}
+@container style(--speed-step-z: -3) or style(--speed-step-z: 3) {
+  #scene-z {
+    transition-duration: calc(10 * var(--throttle) / 3);
+  }
+}
+@container style(--speed-step-z: -4) or style(--speed-step-z: 4) {
+  #scene-z {
+    transition-duration: calc(10 * var(--throttle) / 4);
+  }
+}
+@container style(--speed-step-z: -5) or style(--speed-step-z: 5) {
+  #scene-z {
+    transition-duration: calc(10 * var(--throttle) / 5);
+  }
+}
+@container style(--speed-step-z: -6) or style(--speed-step-z: 6) {
+  #scene-z {
+    transition-duration: calc(10 * var(--throttle) / 6);
+  }
+}
+@container style(--speed-step-z: -7) or style(--speed-step-z: 7) {
+  #scene-z {
+    transition-duration: calc(10 * var(--throttle) / 7);
+  }
+}
+@container style(--speed-step-z: -8) or style(--speed-step-z: 8) {
+  #scene-z {
+    transition-duration: calc(10 * var(--throttle) / 8);
+  }
+}
+@container style(--speed-step-z: -9) or style(--speed-step-z: 9) {
+  #scene-z {
+    transition-duration: calc(10 * var(--throttle) / 9);
+  }
+}
+@container style(--speed-step-z: -10) or style(--speed-step-z: 10) {
+  #scene-z {
+    transition-duration: calc(10 * var(--throttle) / 10);
+  }
+}
+
+@container style(--speed-step-x: -1) or style(--speed-step-x: 1) {
+  #scene-inner {
+    transition-duration: calc(10 * var(--throttle) / 1);
+  }
+}
+@container style(--speed-step-x: -2) or style(--speed-step-x: 2) {
+  #scene-inner {
+    transition-duration: calc(10 * var(--throttle) / 2);
+  }
+}
+@container style(--speed-step-x: -3) or style(--speed-step-x: 3) {
+  #scene-inner {
+    transition-duration: calc(10 * var(--throttle) / 3);
+  }
+}
+@container style(--speed-step-x: -4) or style(--speed-step-x: 4) {
+  #scene-inner {
+    transition-duration: calc(10 * var(--throttle) / 4);
+  }
+}
+@container style(--speed-step-x: -5) or style(--speed-step-x: 5) {
+  #scene-inner {
+    transition-duration: calc(10 * var(--throttle) / 5);
+  }
+}
+@container style(--speed-step-x: -6) or style(--speed-step-x: 6) {
+  #scene-inner {
+    transition-duration: calc(10 * var(--throttle) / 6);
+  }
+}
+@container style(--speed-step-x: -7) or style(--speed-step-x: 7) {
+  #scene-inner {
+    transition-duration: calc(10 * var(--throttle) / 7);
+  }
+}
+@container style(--speed-step-x: -8) or style(--speed-step-x: 8) {
+  #scene-inner {
+    transition-duration: calc(10 * var(--throttle) / 8);
+  }
+}
+@container style(--speed-step-x: -9) or style(--speed-step-x: 9) {
+  #scene-inner {
+    transition-duration: calc(10 * var(--throttle) / 9);
+  }
+}
+@container style(--speed-step-x: -10) or style(--speed-step-x: 10) {
+  #scene-inner {
+    transition-duration: calc(10 * var(--throttle) / 10);
+  }
 }
 
 /* Transforms compose right-to-left: tilt the tile flat about its own centre,
@@ -154,25 +387,4 @@ body {
 
   transform: translate(-50%, -50%) translateY(var(--camera-height))
     translateZ(var(--tile-distance)) rotateX(var(--ground-tilt));
-}
-
-/* Symmetric ranges, so the centre of the pad (50% scroll progress) maps to a
-   zero-length translation - i.e. neutral - and the two extremes push the
-   camera equally far in each direction. */
-@keyframes moveZ {
-  from {
-    transform: translateZ(calc(-1 * var(--camera-range)));
-  }
-  to {
-    transform: translateZ(var(--camera-range));
-  }
-}
-
-@keyframes moveX {
-  from {
-    transform: translateX(calc(-1 * var(--camera-range)));
-  }
-  to {
-    transform: translateX(var(--camera-range));
-  }
 }
