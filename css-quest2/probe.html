@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Quest probe</title>
+
+    <!-- The real stylesheet, unmodified. Everything below only ADDS a readout
+         and two control tiles, so what you're looking at is the actual scene
+         and the actual numbers driving it - not a reimplementation that might
+         diverge from the thing we're debugging. -->
+    <link rel="stylesheet" type="text/css" href="styles/main.css" />
+
+    <style>
+      /* ---- Turning custom properties into on-screen text ------------------
+         There's no JS, so the only way to render a number is the counter
+         system: counter-reset takes an <integer>, and content: counter()
+         prints it. Registering the display properties as <integer> means the
+         calc result is rounded to an integer for us - which deliberately does
+         NOT depend on round(), so a broken round() shows up as a wrong
+         --step-* row rather than blanking every row on the page. */
+
+      @property --d-z-milli {
+        syntax: "<integer>";
+        inherits: true;
+        initial-value: 0;
+      }
+      @property --d-x-milli {
+        syntax: "<integer>";
+        inherits: true;
+        initial-value: 0;
+      }
+      @property --cam-z-num {
+        syntax: "<integer>";
+        inherits: true;
+        initial-value: 0;
+      }
+      @property --cam-x-num {
+        syntax: "<integer>";
+        inherits: true;
+        initial-value: 0;
+      }
+
+      /* Never assigned anywhere. If @property registration works this shows 7
+         (the initial value); if it doesn't, the property is unregistered, the
+         var() is invalid, counter-reset is dropped and it shows 0. */
+      @property --reg-test {
+        syntax: "<integer>";
+        inherits: true;
+        initial-value: 7;
+      }
+
+      /* For the live transition check further down. */
+      @property --tap-w {
+        syntax: "<number>";
+        inherits: false;
+        initial-value: 15;
+      }
+
+      /* ---- The camera's ACTUAL position -----------------------------------
+         Everything in the top panel is a transition TARGET. What we've never
+         been able to see is the animated value - where the camera really is
+         right now - and that's the number that's been lying to us.
+
+         Two obstacles. --cam-* is `inherits: false`, so no descendant can
+         read it; and it's a <length>, which counters can't print. Both are
+         solved by echoing it into an inheriting <integer> on the same
+         element that owns it. A dependent custom property on the same
+         element sees the ANIMATED value, exactly as transform does - that's
+         the property of the design the whole velocity trick rests on.
+
+         The unit-strip is tan(atan2(len, ref)), which yields len/ref as a
+         plain number. Referenced against 100px rather than 1px on purpose:
+         atan2(1000px, 1px) sits at 89.94deg where tan is near-vertical and
+         loses most of its precision, whereas atan2(1000px, 100px) is 84.3deg
+         and stays well conditioned across the whole +/-1000 range. */
+      @property --cam-z-live {
+        syntax: "<integer>";
+        inherits: true;
+        initial-value: 0;
+      }
+      @property --cam-x-live {
+        syntax: "<integer>";
+        inherits: true;
+        initial-value: 0;
+      }
+
+      #scene-z {
+        --cam-z-live: calc(tan(atan2(var(--cam-z), 100px)) * 100);
+      }
+      #scene-inner {
+        --cam-x-live: calc(tan(atan2(var(--cam-x), 100px)) * 100);
+      }
+
+      /* Lives inside #scene-inner, so it's subject to both camera
+         transforms - then cancels them with their own negated values. That
+         keeps it pinned to the centre of the scene and legible no matter how
+         far the camera has run off, which a plain marker can't do. */
+      #cam-readout {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 190px;
+        margin: -14px 0 0 -95px;
+        padding: 3px 5px;
+        background: #000;
+        color: #ff0;
+        border: 1px solid #ff0;
+        text-align: center;
+        transform: translateZ(calc(var(--cam-z-live) * -1px))
+          translateX(calc(var(--cam-x-live) * -1px));
+      }
+      #cam-readout::after {
+        counter-reset: cz var(--cam-z-live) cx var(--cam-x-live);
+        content: "live camZ " counter(cz) "  camX " counter(cx);
+      }
+
+      body {
+        font:
+          12px/1.35 ui-monospace,
+          Menlo,
+          Consolas,
+          monospace;
+        background: #111;
+        color: #eee;
+      }
+
+      #readout {
+        position: fixed;
+        inset: 0 0 auto 0;
+        z-index: 20;
+        padding: 6px 8px;
+        background: #000;
+        border-bottom: 2px solid #555;
+
+        /* Scaled copies of the live values. x1000 because deflection is
+           -1..+1 and we need integers - milli-units keep three decimals of
+           resolution, which is the whole question: is neutral 0 or 0.002? */
+        --d-z-milli: calc(var(--deflect-z) * 1000);
+        --d-x-milli: calc(var(--deflect-x) * 1000);
+
+        /* Mirrors the real --cam-* formula so we can see where the camera is
+           being TOLD to go (the transition decides how fast it gets there). */
+        --cam-z-num: calc(sign(var(--speed-step-z)) * 1000 + var(--deflect-z));
+        --cam-x-num: calc(sign(var(--speed-step-x)) * 1000 + var(--deflect-x));
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2px 6px;
+      }
+
+      .cell {
+        padding: 2px 4px;
+        background: #222;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+      .cell b {
+        color: #8cf;
+        font-weight: normal;
+      }
+
+      /* Each readout prints its own counter. */
+      #r-dz::after {
+        counter-reset: v var(--d-z-milli);
+        content: counter(v);
+      }
+      #r-dx::after {
+        counter-reset: v var(--d-x-milli);
+        content: counter(v);
+      }
+      #r-sz::after {
+        counter-reset: v var(--speed-step-z);
+        content: counter(v);
+      }
+      #r-sx::after {
+        counter-reset: v var(--speed-step-x);
+        content: counter(v);
+      }
+      #r-cz::after {
+        counter-reset: v var(--cam-z-num);
+        content: counter(v);
+      }
+      #r-cx::after {
+        counter-reset: v var(--cam-x-num);
+        content: counter(v);
+      }
+      #r-reg::after {
+        counter-reset: v var(--reg-test);
+        content: counter(v);
+      }
+
+      /* --speed-step-* is declared on #scene in main.css, which is NOT an
+         ancestor of the readout, so re-derive it here from the inherited
+         deflection. Same expression, so it exercises round() the same way. */
+      #readout {
+        --speed-step-z: round(nearest, calc(var(--deflect-z) * 10), 1);
+        --speed-step-x: round(nearest, calc(var(--deflect-x) * 10), 1);
+      }
+
+      /* ---- Feature flags --------------------------------------------------
+         Red = this browser can't do it. Green = it can. @supports tests
+         whether the declaration PARSES, which is what we want for the maths
+         functions and the timeline properties. */
+      #flags {
+        --probe: 1; /* queried by the style-query flag below */
+        margin-top: 4px;
+      }
+      .flag {
+        background: #700;
+        color: #fdd;
+      }
+      .flag::before {
+        content: "✗ ";
+      }
+
+      @supports (width: calc(sign(1) * 1px)) {
+        #f-sign {
+          background: #060;
+          color: #dfd;
+        }
+        #f-sign::before {
+          content: "✓ ";
+        }
+      }
+      @supports (width: round(nearest, 3px, 2px)) {
+        #f-round {
+          background: #060;
+          color: #dfd;
+        }
+        #f-round::before {
+          content: "✓ ";
+        }
+      }
+      @supports (scroll-timeline: --a y) {
+        #f-stl {
+          background: #060;
+          color: #dfd;
+        }
+        #f-stl::before {
+          content: "✓ ";
+        }
+      }
+      @supports (timeline-scope: --a) {
+        #f-tscope {
+          background: #060;
+          color: #dfd;
+        }
+        #f-tscope::before {
+          content: "✓ ";
+        }
+      }
+      @supports (transition-property: --a) {
+        #f-cptrans {
+          background: #060;
+          color: #dfd;
+        }
+        #f-cptrans::before {
+          content: "✓ ";
+        }
+      }
+      /* Style queries can't be feature-detected with @supports, so just try
+         one: #flags sets --probe, this flag is inside it. */
+      @container style(--probe: 1) {
+        #f-styleq {
+          background: #060;
+          color: #dfd;
+        }
+        #f-styleq::before {
+          content: "✓ ";
+        }
+      }
+
+      /* Live check that a custom-property transition actually animates.
+         Press and HOLD: smooth growth = works, instant jump = doesn't. */
+      #tap {
+        margin-top: 4px;
+        height: 18px;
+        background: #06c;
+        width: calc(var(--tap-w) * 1%);
+        transition: --tap-w 1s linear;
+        pointer-events: auto;
+      }
+      #tap:active {
+        --tap-w: 100;
+      }
+      #tap-label {
+        color: #888;
+      }
+
+      /* ---- Scene ----------------------------------------------------------
+         Repositioned to clear the readout. Everything else about it - the
+         perspective, the wrappers, the transforms - is main.css untouched. */
+      #scene {
+        top: 40vh;
+        left: 5vw;
+        width: 90vw;
+        height: 30vh;
+        border-color: #555;
+      }
+
+      /* Control tiles, both OUTSIDE the camera wrappers, so they can't be
+         moved by --cam-*. This is the discriminator:
+
+           green + blue visible, pink missing  -> camera position problem
+           blue visible, green + pink missing  -> 3D / perspective problem
+           nothing visible                     -> layout problem, not either
+
+         Green sits at exactly where the pink tile should be at neutral. */
+      #control-tile {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: var(--tile-size);
+        height: var(--tile-size);
+        background-color: limegreen;
+        transform: translate(-50%, -50%) translateY(var(--camera-height))
+          translateZ(var(--tile-distance)) rotateX(var(--ground-tilt));
+      }
+
+      /* No transform at all - pure 2D. If this is missing, the problem is
+         nothing to do with 3D. */
+      #flat-control {
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 24px;
+        height: 24px;
+        background-color: dodgerblue;
+      }
+
+      /* ---- Where is the camera REALLY? ------------------------------------
+         The readout can only show --cam-*'s transition TARGET. These two live
+         INSIDE #scene-inner, so they're subject to the camera's actual
+         current transform, and they're big enough to stay on screen even if
+         it's a long way off.
+
+         A 4000px ground plane. Huge on purpose: at 1000px of camera offset
+         the pink tile leaves the clip entirely, but this can't. Read it as:
+
+           grid visible, converging to a vanishing point, pink tile off to
+           one side          -> camera is displaced. Transition target says 0
+                                but the current value isn't 0.
+
+           grid visible but PARALLEL lines, no vanishing point
+                             -> preserve-3d is being flattened in the wrapper
+                                chain; nothing to do with the camera.
+
+           grid centred on the green tile
+                             -> camera is genuinely at 0 and the problem is
+                                somewhere else entirely. */
+      #ground-grid {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 4000px;
+        height: 4000px;
+        transform: translate(-50%, -50%) translateY(var(--camera-height))
+          translateZ(var(--tile-distance)) rotateX(var(--ground-tilt));
+        background-image:
+          repeating-linear-gradient(
+            to right,
+            #0ff 0 2px,
+            transparent 2px 200px
+          ),
+          repeating-linear-gradient(
+            to bottom,
+            #0ff 0 2px,
+            transparent 2px 200px
+          );
+        opacity: 0.45;
+      }
+
+      /* #scene-inner's own centre, with NO 3D transform of its own, so it
+         reports the camera's 2D displacement directly. Camera at rest = this
+         sits dead centre of the scene box. If it's missing, the camera has
+         moved it out of the clip - which is the whole hypothesis. */
+      #origin-marker {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        margin: -10px 0 0 -10px;
+        background-color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="readout">
+      <div class="grid">
+        <div class="cell"><b>dz‰ </b><span id="r-dz"></span></div>
+        <div class="cell"><b>dx‰ </b><span id="r-dx"></span></div>
+        <div class="cell"><b>stepZ </b><span id="r-sz"></span></div>
+        <div class="cell"><b>stepX </b><span id="r-sx"></span></div>
+        <div class="cell"><b>camZ→ </b><span id="r-cz"></span></div>
+        <div class="cell"><b>camX→ </b><span id="r-cx"></span></div>
+        <div class="cell"><b>@prop </b><span id="r-reg"></span>/7</div>
+        <div class="cell"><b>tiles </b>G+B+P?</div>
+      </div>
+
+      <div id="flags" class="grid">
+        <div class="cell flag" id="f-sign">sign()</div>
+        <div class="cell flag" id="f-round">round()</div>
+        <div class="cell flag" id="f-stl">scroll-tl</div>
+        <div class="cell flag" id="f-tscope">tl-scope</div>
+        <div class="cell flag" id="f-cptrans">--transition</div>
+        <div class="cell flag" id="f-styleq">style()</div>
+        <div class="cell" id="tap-label">hold bar →</div>
+        <div class="cell" style="padding: 0"><div id="tap"></div></div>
+      </div>
+    </div>
+
+    <!-- Joypad: identical markup to index.html. -->
+    <div id="joystick">
+      <div id="stretcher">
+        <div id="joy-focus" tabindex="0" autofocus></div>
+        <div id="joy-marker"></div>
+      </div>
+    </div>
+
+    <div id="scene">
+      <!-- Controls first: outside the camera wrappers, so they never move. -->
+      <div id="flat-control"></div>
+      <div id="control-tile"></div>
+
+      <div id="scene-z">
+        <div id="scene-inner">
+          <!-- Inside the camera wrappers: these move with --cam-*. -->
+          <div id="ground-grid"></div>
+          <div id="origin-marker"></div>
+          <div id="square"></div>
+          <!-- Inside too, but cancels the camera so it stays readable. -->
+          <div id="cam-readout"></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
