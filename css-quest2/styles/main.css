@@ -8,6 +8,14 @@
   --camera-range: 1000px; /* distance to the edge of the traversable world */
   --camera-height: 150px; /* how far the camera floats above the ground */
   --throttle: 1s; /* time to cross the remaining world at full deflection */
+  /* CAUTION: --camera-range currently EXCEEDS this. Positive --cam-z pulls
+     the world towards the viewer, so at full forward deflection world
+     geometry crosses the z = --perspective eye plane and is dropped - the
+     near half of anything with depth vanishes, and objects just short of the
+     plane blow up towards infinite scale. Anything spanning z (a ground
+     plane) breaks well before the tile does. Keeping --camera-range below
+     --perspective (with headroom for --tile-distance) would make forward
+     travel safe at any offset. */
   --perspective: 800px;
 
   /* ---- World ------------------------------------------------------------ */
@@ -243,13 +251,31 @@ body {
   height: 100%;
   transform-style: preserve-3d;
 
-  /* vertical joypad = forward/back */
+  /* vertical joypad = forward/back.
+
+     Direction comes from the QUANTISED step, not from raw deflection. sign()
+     is a step function at 0, so reading it off --deflect-z means a resting
+     pad that is off-centre by 0.0001 doesn't aim 0.1px away - it aims at the
+     full edge of the world. The 999999s transition is supposed to make that
+     harmless, but transitions don't run on an element's FIRST style
+     resolution (no before-change style), so that first computed value lands
+     instantly: a 1000px teleport on frame one, tile clipped out of #scene.
+
+     Chrome gets away with it because autofocus lands the pad on an exact
+     integer offset and sign(0) is 0. iOS Safari resolves scroll offsets
+     fractionally, inside a visual viewport scaled by a non-integer factor,
+     so neutral is 99.998% of centre - zero for every purpose except sign().
+
+     Reading sign() off --speed-step-z instead gives direction the same
+     deadzone the duration ladder already has: below half a step, step is 0,
+     sign is 0, target is 0px, and the camera genuinely holds still. */
   --cam-z: calc(
-    sign(var(--deflect-z)) * var(--camera-range) + var(--deflect-z) * 1px
+    sign(var(--speed-step-z)) * var(--camera-range) + var(--deflect-z) * 1px
   );
-  /* Step-0 base case: a literal stand-in for "infinitely slow". Residual
-     drift is ~1px per 1000s - invisible. The step blocks below override the
-     duration whenever the pad is deflected past half a step. */
+  /* Step-0 base case: a literal stand-in for "infinitely slow". With
+     direction now quantised too, step 0 also targets 0px, so this is
+     belt-and-braces rather than the only thing holding neutral still. The
+     step blocks below override the duration past half a step. */
   transition: --cam-z 999999s linear;
   transform: translateZ(var(--cam-z));
 }
@@ -258,12 +284,39 @@ body {
   height: 100%;
   transform-style: preserve-3d;
 
-  /* horizontal joypad = strafe */
+  /* horizontal joypad = strafe. Same quantised-direction fix as --cam-z. */
   --cam-x: calc(
-    sign(var(--deflect-x)) * var(--camera-range) + var(--deflect-x) * 1px
+    sign(var(--speed-step-x)) * var(--camera-range) + var(--deflect-x) * 1px
   );
   transition: --cam-x 999999s linear;
   transform: translateX(var(--cam-x));
+}
+
+/* ---- The load-time teleport ----------------------------------------------
+   Transitions need a before-change style, and an element's FIRST style
+   resolution hasn't got one - so the first computed --cam-* is applied
+   instantly, at whatever deflection the pad happens to report on that frame.
+
+   The pad doesn't reach its centred resting position until autofocus scrolls
+   it there, and on iOS Safari that lands AFTER first style rather than
+   before (Chrome's ordering is the other way round, which is the whole
+   reason this reproduced on one and not the other). So Safari gets one frame
+   at full deflection, teleports the camera to the edge of the world, and
+   then - once the pad settles and the step drops to 0 - the 999999s throttle
+   strands it there. Every number on screen reads a perfectly innocent zero
+   while the world sits 1000px behind your eye.
+
+   @starting-style supplies the missing before-change style, so that first
+   frame becomes a transition FROM neutral rather than a snap TO the edge.
+   The pad centres a frame or two later, which retargets to 0px at 999999s,
+   so the camera ends up a few tens of pixels out instead of a thousand. */
+@starting-style {
+  #scene-z {
+    --cam-z: 0px;
+  }
+  #scene-inner {
+    --cam-x: 0px;
+  }
 }
 
 /* The throttle ladder: step N ~= deflection N/10, so duration
