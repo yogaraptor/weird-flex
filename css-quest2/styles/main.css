@@ -135,6 +135,22 @@ body {
   scroll-timeline:
     --joy-z y,
     --joy-x x;
+
+  /* Spring return. There is exactly ONE snap target in the pad (#joy-focus,
+     dead centre), so "mandatory" means: scroll freely while your finger is
+     down, and the moment the gesture ends the browser animates the scroll
+     offset back to centre. That IS the stick returning to neutral - the
+     centring spring of a joypad, expressed as a scroll constraint.
+
+     It composes for free with everything downstream: the snap-back is a real
+     scroll animation, so --joy-z/--joy-x keep advancing through it, deflection
+     eases back to 0, the step ladder walks down through the rungs, and the
+     camera decelerates to a stop instead of cutting out. Release feels like
+     letting go, not like hitting pause.
+
+     Deliberately `mandatory` rather than `proximity`: proximity only snaps
+     when you happen to release near centre, which would let the stick stick. */
+  scroll-snap-type: both mandatory;
 }
 
 /* Oversized child creates scroll range in both axes: the scrollport itself
@@ -159,6 +175,17 @@ body {
   transform: translate(-50%, -50%);
   pointer-events: none; /* never intercept touch-scrolling of the pad */
   outline: none; /* #joy-marker is the visible affordance instead */
+
+  /* The one and only snap point, and so the only offset the pad can come to
+     rest at. `center` aligns this box's centre with the scrollport's centre,
+     which is neutral by construction - it doesn't depend on the element still
+     being exactly scrollport-sized the way the autofocus trick does.
+
+     Note this element now earns its keep twice over: autofocus puts us at
+     neutral on first paint, snap keeps us returning there. Belt and braces -
+     initial snap positioning would likely land here on its own, but autofocus
+     is the mechanism we know behaves on the target browser. */
+  scroll-snap-align: center;
 }
 
 /* Separate, smaller marker for the neutral zone, so the focus target above can
