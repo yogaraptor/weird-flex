@@ -214,12 +214,10 @@ body {
    starts a second 3D rendering context, which flattens and re-projects
    everything inside it, so depth cues stop composing the way you expect. */
 #scene {
-  position: absolute;
-  top: 25vh;
-  left: 25vw;
-  width: 50vw;
-  height: 50vh;
-  border: 10px solid black;
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  border: 10px solid red;
   overflow: hidden;
   pointer-events: none;
 
