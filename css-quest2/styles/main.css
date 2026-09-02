@@ -8,15 +8,21 @@
   --camera-range: 1000px; /* distance to the edge of the traversable world */
   --camera-height: 150px; /* how far the camera floats above the ground */
   --throttle: 1s; /* time to cross the remaining world at full deflection */
-  /* CAUTION: --camera-range currently EXCEEDS this. Positive --cam-z pulls
-     the world towards the viewer, so at full forward deflection world
-     geometry crosses the z = --perspective eye plane and is dropped - the
-     near half of anything with depth vanishes, and objects just short of the
-     plane blow up towards infinite scale. Anything spanning z (a ground
-     plane) breaks well before the tile does. Keeping --camera-range below
-     --perspective (with headroom for --tile-distance) would make forward
-     travel safe at any offset. */
-  --perspective: 800px;
+  /* Positive --cam-z pulls the world towards the viewer, so at full forward
+     deflection world geometry approaches the z = --perspective eye plane;
+     anything that reaches it is dropped (the near half of anything with
+     depth vanishes) and objects just short of it blow up towards infinite
+     scale. Safe requires --perspective > --camera-range + |--tile-distance|
+     + however far any object's own geometry can reach past its resting
+     z (here, the tile's 75deg tilt adds ~half its size). 1400px gives
+     1000 + 300 + ~100px of slack for the current single tile.
+
+     When more objects land at other positions/depths, re-check this against
+     whichever one sits closest to the camera at full forward travel: its
+     resting --tile-distance-equivalent minus its own near-edge depth is the
+     new worst case, and --perspective needs to clear camera-range plus that
+     by a healthy margin, not just the tile's. */
+  --perspective: 1400px;
 
   /* ---- World ------------------------------------------------------------ */
   --tile-size: 100px;
