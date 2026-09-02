@@ -193,6 +193,50 @@ body {
   scroll-snap-type: both mandatory;
 }
 
+/* Self-centring toggle. Unticking it drops scroll snapping, which is the whole
+   mechanism behind the spring - with no snap target to return to, the pad just
+   stays wherever the gesture (and any momentum fling) left it, deflection holds
+   its value, and the camera keeps moving at that rate. That's the real
+   distinction the label is borrowing: a stick self-centres, a throttle holds
+   position.
+
+   Ticking it back on re-snaps the pads to centre, because changing
+   scroll-snap-type re-evaluates snap position on an already-scrolled
+   container - so the toggle doubles as "level off".
+
+   The :has() lives on body so one checkbox governs both pads. Specificity
+   works out at (1,2,1), which is what lets it beat #joystick-roll's own
+   scroll-snap-type below.
+
+   The box defaults to CHECKED, and wants to stay that way. Snapping is quietly
+   doing two jobs - the spring, and centring the pads on load - and the roll pad
+   leans entirely on the second, having no autofocus of its own (only one
+   element per page gets that, and the left pad has it). Ship this unticked by
+   default and the roll pad has no route to neutral: a scroll container's
+   initial offset is its start edge, which on that pad reads as full deflection,
+   so the world comes up banked ~45deg.
+
+   Tried and rejected: @starting-style supplying `both mandatory` with a
+   `transition: scroll-snap-type 1ms 300ms allow-discrete` to hold the snap
+   through first layout and then let go. The theory is sound - scroll-snap-type
+   is a discrete-animated property, so it does transition if you ask with
+   allow-discrete - but in the browser it left the pads completely unresponsive.
+   Not diagnosed. If you want unticked-by-default, that's the thread to pull,
+   and probe.html is the place to pull it. */
+body:has(#self-centring:not(:checked)) .pad {
+  scroll-snap-type: none;
+}
+
+#controls {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 #joystick {
   left: 20px;
 
