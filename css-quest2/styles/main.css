@@ -6,7 +6,8 @@
 
   /* ---- Camera ----------------------------------------------------------- */
   --camera-range: 1000px; /* distance to the edge of the traversable world */
-  --roll-range: 45deg; /* bank angle at the end of the roll pad's travel */
+  --roll-range: 45deg; /* bank angle at the end of the right pad's x travel */
+  --pitch-range: 45deg; /* nose angle at the end of its y travel */
   --camera-height: 150px; /* how far the camera floats above the ground */
   --throttle: 1s; /* time to cross the remaining world at full deflection */
   /* Positive --cam-z pulls the world towards the viewer, so at full forward
@@ -22,7 +23,14 @@
      whichever one sits closest to the camera at full forward travel: its
      resting --tile-distance-equivalent minus its own near-edge depth is the
      new worst case, and --perspective needs to clear camera-range plus that
-     by a healthy margin, not just the tile's. */
+     by a healthy margin, not just the tile's.
+
+     Pitch spends from this budget too. Roll is a rotateZ and preserves every z
+     coordinate, but pitch is a rotateX about the scene centre, which swings
+     geometry through z. For the current tile the worst case over ANY pitch
+     angle is ~766px (and ~644px at the +/-45deg the pad can actually reach),
+     so 1400px is comfortable - but that sum is worth redoing alongside the one
+     above whenever the world grows. */
   --perspective: 1400px;
 
   /* ---- World ------------------------------------------------------------ */
@@ -49,6 +57,11 @@
   inherits: true;
   initial-value: 0;
 }
+@property --deflect-pitch {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 
 /* Camera position per axis. Registered as lengths because these are the values
    we TRANSITION - see the velocity section for why the transition lives on a
@@ -66,6 +79,11 @@
 /* An angle rather than a length, but transitioned for exactly the same reason
    as the two above. */
 @property --cam-roll {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --cam-pitch {
   syntax: "<angle>";
   inherits: false;
   initial-value: 0deg;
@@ -89,6 +107,11 @@
   inherits: true;
   initial-value: 0;
 }
+@property --speed-step-pitch {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 
 body {
   margin: 0;
@@ -99,7 +122,7 @@ body {
      scroller's own descendants - and --joy-roll comes from a different
      scroller than the other two, which makes the hoist load-bearing twice
      over. */
-  timeline-scope: --joy-z, --joy-x, --joy-roll;
+  timeline-scope: --joy-z, --joy-x, --joy-roll, --joy-pitch;
 
   /* Turn the joypads' scroll positions into the --deflect-* numbers. One
      element CAN run several scroll-driven animations - the comma lists match
@@ -111,8 +134,9 @@ body {
   animation:
     set-deflect-z linear both,
     set-deflect-x linear both,
-    set-deflect-roll linear both;
-  animation-timeline: --joy-z, --joy-x, --joy-roll;
+    set-deflect-roll linear both,
+    set-deflect-pitch linear both;
+  animation-timeline: --joy-z, --joy-x, --joy-roll, --joy-pitch;
 
   /* NB: deliberately NO perspective here. See #scene. */
 }
@@ -145,13 +169,24 @@ body {
   }
 }
 
+/* Progress 1 is the bottom of the pad's scroll range, which a thumb reaches by
+   dragging UP - so push up to raise the nose. Flip these two to invert it. */
+@keyframes set-deflect-pitch {
+  from {
+    --deflect-pitch: -1;
+  }
+  to {
+    --deflect-pitch: 1;
+  }
+}
+
 /* ---- Joypads -------------------------------------------------------------
    Two small scroll containers, one per thumb. Scrolling inside one steers the
    camera; each publishes the axes it uses as named scroll timelines, which
    body binds to the --deflect-* numbers.
 
    Left pad translates (vertical = forward/back, horizontal = strafe).
-   Right pad rolls, on its horizontal axis only.
+   Right pad orients (horizontal = roll, vertical = pitch).
 
    Everything structural lives on .pad because there are two of them now; the
    per-pad rules below carry only what actually differs - which side of the
@@ -204,9 +239,7 @@ body {
    scroll-snap-type re-evaluates snap position on an already-scrolled
    container - so the toggle doubles as "level off".
 
-   The :has() lives on body so one checkbox governs both pads. Specificity
-   works out at (1,2,1), which is what lets it beat #joystick-roll's own
-   scroll-snap-type below.
+   The :has() lives on body so one checkbox governs both pads.
 
    The box defaults to CHECKED, and wants to stay that way. Snapping is quietly
    doing two jobs - the spring, and centring the pads on load - and the roll pad
@@ -245,18 +278,15 @@ body:has(#self-centring:not(:checked)) .pad {
     --joy-x x;
 }
 
-/* Roll pad. Only the horizontal axis is wired up, so the vertical one is shut
-   off rather than left as a squishy axis that does nothing: zero vertical
-   travel gives the stretcher no vertical range at all, and snapping drops to
-   the one axis that has any. Give this back its --pad-travel-y and publish a
-   second timeline here when something wants pitch. */
-#joystick-roll {
+/* Attitude pad: roll across, pitch up and down. Both axes are live now, so
+   this needs none of the overrides that kept it horizontal-only - it's a
+   plain .pad that happens to publish two differently-named timelines. */
+#joystick-attitude {
   right: 20px;
-  --pad-travel-y: 0px;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
 
-  scroll-timeline: --joy-roll x;
+  scroll-timeline:
+    --joy-roll x,
+    --joy-pitch y;
 }
 
 /* Oversized child creates the scroll range: the scrollport itself plus equal
@@ -385,6 +415,7 @@ body:has(#self-centring:not(:checked)) .pad {
   --speed-step-z: round(nearest, calc(var(--deflect-z) * 10), 1);
   --speed-step-x: round(nearest, calc(var(--deflect-x) * 10), 1);
   --speed-step-roll: round(nearest, calc(var(--deflect-roll) * 10), 1);
+  --speed-step-pitch: round(nearest, calc(var(--deflect-pitch) * 10), 1);
 }
 
 /* Roll sits OUTSIDE the camera translations - nearest the perspective - so it
@@ -412,6 +443,30 @@ body:has(#self-centring:not(:checked)) .pad {
   );
   transition: --cam-roll 999999s linear;
   transform: rotateZ(calc(-1 * var(--cam-roll)));
+}
+
+/* Pitch nests INSIDE roll and outside the translations, which is the standard
+   camera decomposition: a view transform is roll * pitch * yaw * translate,
+   and the outermost element here is the one applied last. Swapping the two
+   would still look plausible at small angles - the difference only shows when
+   you pitch while already banked - but this way round is the conventional one,
+   and it leaves roll nearest the perspective where its comment claims it is.
+
+   No negation on this one, unlike roll, which looks inconsistent and isn't.
+   CSS y points DOWN, so a positive rotateX already swings world geometry
+   towards the bottom of the screen - which is what the view does when the nose
+   comes up. Roll needs the -1 because a camera banking right shows a world
+   turning left; pitch gets the sign it wants for free. */
+#scene-pitch {
+  height: 100%;
+  transform-style: preserve-3d;
+
+  --cam-pitch: calc(
+    sign(var(--speed-step-pitch)) * var(--pitch-range) + var(--deflect-pitch) *
+      0.1deg
+  );
+  transition: --cam-pitch 999999s linear;
+  transform: rotateX(var(--cam-pitch));
 }
 
 #scene-z {
@@ -488,6 +543,9 @@ body:has(#self-centring:not(:checked)) .pad {
      on - see .pad-focus. */
   #scene-roll {
     --cam-roll: 0deg;
+  }
+  #scene-pitch {
+    --cam-pitch: 0deg;
   }
 }
 
@@ -647,6 +705,58 @@ body:has(#self-centring:not(:checked)) .pad {
 }
 @container style(--speed-step-roll: -10) or style(--speed-step-roll: 10) {
   #scene-roll {
+    transition-duration: calc(10 * var(--throttle) / 10);
+  }
+}
+
+/* And pitch runs it against its own. */
+@container style(--speed-step-pitch: -1) or style(--speed-step-pitch: 1) {
+  #scene-pitch {
+    transition-duration: calc(10 * var(--throttle) / 1);
+  }
+}
+@container style(--speed-step-pitch: -2) or style(--speed-step-pitch: 2) {
+  #scene-pitch {
+    transition-duration: calc(10 * var(--throttle) / 2);
+  }
+}
+@container style(--speed-step-pitch: -3) or style(--speed-step-pitch: 3) {
+  #scene-pitch {
+    transition-duration: calc(10 * var(--throttle) / 3);
+  }
+}
+@container style(--speed-step-pitch: -4) or style(--speed-step-pitch: 4) {
+  #scene-pitch {
+    transition-duration: calc(10 * var(--throttle) / 4);
+  }
+}
+@container style(--speed-step-pitch: -5) or style(--speed-step-pitch: 5) {
+  #scene-pitch {
+    transition-duration: calc(10 * var(--throttle) / 5);
+  }
+}
+@container style(--speed-step-pitch: -6) or style(--speed-step-pitch: 6) {
+  #scene-pitch {
+    transition-duration: calc(10 * var(--throttle) / 6);
+  }
+}
+@container style(--speed-step-pitch: -7) or style(--speed-step-pitch: 7) {
+  #scene-pitch {
+    transition-duration: calc(10 * var(--throttle) / 7);
+  }
+}
+@container style(--speed-step-pitch: -8) or style(--speed-step-pitch: 8) {
+  #scene-pitch {
+    transition-duration: calc(10 * var(--throttle) / 8);
+  }
+}
+@container style(--speed-step-pitch: -9) or style(--speed-step-pitch: 9) {
+  #scene-pitch {
+    transition-duration: calc(10 * var(--throttle) / 9);
+  }
+}
+@container style(--speed-step-pitch: -10) or style(--speed-step-pitch: 10) {
+  #scene-pitch {
     transition-duration: calc(10 * var(--throttle) / 10);
   }
 }

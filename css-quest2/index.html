@@ -39,9 +39,8 @@
       </div>
     </div>
 
-    <!-- Right joypad: roll. Horizontal axis only - the stretcher has no
-         vertical travel, so there's nothing to scroll up or down. -->
-    <div id="joystick-roll" class="pad">
+    <!-- Right joypad: attitude. Horizontal rolls, vertical pitches. -->
+    <div id="joystick-attitude" class="pad">
       <div class="pad-stretcher">
         <div class="pad-focus" tabindex="0"></div>
         <div class="pad-marker"></div>
@@ -49,13 +48,15 @@
     </div>
 
     <!-- The 3D world we look into. One wrapper per degree of freedom, since an
-         element can only carry one transform: roll outermost (it banks the
-         whole positioned world about the eye axis), then the translations. -->
+         element can only carry one transform, nested in the order a view
+         transform composes: roll, then pitch, then the translations. -->
     <div id="scene">
       <div id="scene-roll">
-        <div id="scene-z">
-          <div id="scene-inner">
-            <div id="square"></div>
+        <div id="scene-pitch">
+          <div id="scene-z">
+            <div id="scene-inner">
+              <div id="square"></div>
+            </div>
           </div>
         </div>
       </div>
