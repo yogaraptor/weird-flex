@@ -413,11 +413,13 @@
       </div>
     </div>
 
-    <!-- Joypad: identical markup to index.html. -->
-    <div id="joystick">
-      <div id="stretcher">
-        <div id="joy-focus" tabindex="0" autofocus></div>
-        <div id="joy-marker"></div>
+    <!-- Joypad: identical markup to index.html's left pad. The roll pad isn't
+         reproduced here - nothing in the probe reads --joy-roll, and #scene
+         below has no #scene-roll wrapper for it to drive. -->
+    <div id="joystick" class="pad">
+      <div class="pad-stretcher">
+        <div class="pad-focus" tabindex="0" autofocus></div>
+        <div class="pad-marker"></div>
       </div>
     </div>
 

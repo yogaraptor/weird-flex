@@ -1,11 +1,12 @@
 :root {
-  /* ---- Joypad ----------------------------------------------------------- */
-  --pad-size: 200px; /* the visible scrollport */
+  /* ---- Joypads ---------------------------------------------------------- */
+  --pad-size: 33vw; /* the visible scrollport - both pads are square and equal */
   --pad-travel: 200px; /* scroll range available either side of neutral */
   --marker-size: 40px; /* the little "you are here" dot */
 
   /* ---- Camera ----------------------------------------------------------- */
   --camera-range: 1000px; /* distance to the edge of the traversable world */
+  --roll-range: 45deg; /* bank angle at the end of the roll pad's travel */
   --camera-height: 150px; /* how far the camera floats above the ground */
   --throttle: 1s; /* time to cross the remaining world at full deflection */
   /* Positive --cam-z pulls the world towards the viewer, so at full forward
@@ -43,6 +44,11 @@
   inherits: true;
   initial-value: 0;
 }
+@property --deflect-roll {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 
 /* Camera position per axis. Registered as lengths because these are the values
    we TRANSITION - see the velocity section for why the transition lives on a
@@ -56,6 +62,13 @@
   syntax: "<length>";
   inherits: false;
   initial-value: 0px;
+}
+/* An angle rather than a length, but transitioned for exactly the same reason
+   as the two above. */
+@property --cam-roll {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
 }
 
 /* Deflection quantised to integer steps -10..10. Integers because style()
@@ -71,27 +84,35 @@
   inherits: true;
   initial-value: 0;
 }
+@property --speed-step-roll {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
 
 body {
   margin: 0;
   overflow: hidden;
 
-  /* Hoist the joypad's timeline names so the sibling #scene can bind to them
+  /* Hoist the joypads' timeline names so the sibling #scene can bind to them
      via animation-timeline. Without this, a timeline is only visible to the
-     scroller's own descendants. */
-  timeline-scope: --joy-z, --joy-x;
+     scroller's own descendants - and --joy-roll comes from a different
+     scroller than the other two, which makes the hoist load-bearing twice
+     over. */
+  timeline-scope: --joy-z, --joy-x, --joy-roll;
 
-  /* Turn the joypad's scroll positions into the --deflect-* numbers. One
+  /* Turn the joypads' scroll positions into the --deflect-* numbers. One
      element CAN run several scroll-driven animations - the comma lists match
-     up pairwise. (What an element can't do is run two animations that both
-     write the same property, which is why the camera still needs its nested
-     wrappers below.)
+     up pairwise, and they don't all have to come from the same scroller.
+     (What an element can't do is run two animations that both write the same
+     property, which is why the camera still needs its nested wrappers below.)
      NB: animation-timeline must come AFTER the animation shorthand, which
      resets it. */
   animation:
     set-deflect-z linear both,
-    set-deflect-x linear both;
-  animation-timeline: --joy-z, --joy-x;
+    set-deflect-x linear both,
+    set-deflect-roll linear both;
+  animation-timeline: --joy-z, --joy-x, --joy-roll;
 
   /* NB: deliberately NO perspective here. See #scene. */
 }
@@ -115,13 +136,29 @@ body {
   }
 }
 
-/* ---- Joypad --------------------------------------------------------------
-   A small scroll container. Scrolling within it in x/y steers the camera.
-   Its two scroll axes are published as named scroll timelines. */
-#joystick {
+@keyframes set-deflect-roll {
+  from {
+    --deflect-roll: -1;
+  }
+  to {
+    --deflect-roll: 1;
+  }
+}
+
+/* ---- Joypads -------------------------------------------------------------
+   Two small scroll containers, one per thumb. Scrolling inside one steers the
+   camera; each publishes the axes it uses as named scroll timelines, which
+   body binds to the --deflect-* numbers.
+
+   Left pad translates (vertical = forward/back, horizontal = strafe).
+   Right pad rolls, on its horizontal axis only.
+
+   Everything structural lives on .pad because there are two of them now; the
+   per-pad rules below carry only what actually differs - which side of the
+   screen, and which timelines come out. */
+.pad {
   position: fixed;
   bottom: 20px;
-  left: 20px;
   width: var(--pad-size);
   height: var(--pad-size);
   overflow: scroll;
@@ -129,27 +166,24 @@ body {
   z-index: 10;
 
   /* Not cosmetic - load-bearing. Classic scrollbars shrink the scrollport by
-     ~15px, so a 200px focus target no longer fits inside it and "scroll into
-     view" stops meaning "centre". Removing them makes scrollport == --pad-size
-     exactly, on every platform, which is what the neutral trick relies on. */
+     ~15px, so a pad-sized focus target no longer fits inside it and "scroll
+     into view" stops meaning "centre". Removing them makes scrollport ==
+     --pad-size exactly, on every platform, which is what the neutral trick
+     relies on. */
   scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none;
   }
 
-  scroll-timeline:
-    --joy-z y,
-    --joy-x x;
-
-  /* Spring return. There is exactly ONE snap target in the pad (#joy-focus,
+  /* Spring return. There is exactly ONE snap target in a pad (.pad-focus,
      dead centre), so "mandatory" means: scroll freely while your finger is
      down, and the moment the gesture ends the browser animates the scroll
      offset back to centre. That IS the stick returning to neutral - the
      centring spring of a joypad, expressed as a scroll constraint.
 
      It composes for free with everything downstream: the snap-back is a real
-     scroll animation, so --joy-z/--joy-x keep advancing through it, deflection
+     scroll animation, so the timelines keep advancing through it, deflection
      eases back to 0, the step ladder walks down through the rungs, and the
      camera decelerates to a stop instead of cutting out. Release feels like
      letting go, not like hitting pause.
@@ -159,20 +193,50 @@ body {
   scroll-snap-type: both mandatory;
 }
 
-/* Oversized child creates scroll range in both axes: the scrollport itself
-   plus equal travel on each side of centre. */
-#stretcher {
+#joystick {
+  left: 20px;
+
+  scroll-timeline:
+    --joy-z y,
+    --joy-x x;
+}
+
+/* Roll pad. Only the horizontal axis is wired up, so the vertical one is shut
+   off rather than left as a squishy axis that does nothing: zero vertical
+   travel gives the stretcher no vertical range at all, and snapping drops to
+   the one axis that has any. Give this back its --pad-travel-y and publish a
+   second timeline here when something wants pitch. */
+#joystick-roll {
+  right: 20px;
+  --pad-travel-y: 0px;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+
+  scroll-timeline: --joy-roll x;
+}
+
+/* Oversized child creates the scroll range: the scrollport itself plus equal
+   travel on each side of centre. Per-axis travel falls back to --pad-travel,
+   so a pad only has to name the axis it wants to differ. */
+.pad-stretcher {
   position: relative;
-  width: calc(var(--pad-size) + 2 * var(--pad-travel));
-  height: calc(var(--pad-size) + 2 * var(--pad-travel));
+  width: calc(var(--pad-size) + 2 * var(--pad-travel-x, var(--pad-travel)));
+  height: calc(var(--pad-size) + 2 * var(--pad-travel-y, var(--pad-travel)));
 }
 
 /* Invisible focus target, centred in the stretcher and sized to EXACTLY the
    scrollport. On load the browser scrolls the pad to reveal the autofocused
    element; because it's the same size as the scrollport, the only scroll
    offset that fully reveals it is dead centre. That's our neutral position,
-   established without a line of JS. */
-#joy-focus {
+   established without a line of JS.
+
+   Caveat now there are two pads: only ONE element per page can autofocus, so
+   the left pad keeps it and the right pad is left standing on initial snap
+   positioning alone. That should land it dead centre by itself, but it's the
+   weaker of the two mechanisms - if the roll pad ever comes up off-neutral on
+   first paint, this asymmetry is the first place to look. @starting-style
+   keeps the blast radius down to a slow drift rather than a teleport. */
+.pad-focus {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -180,7 +244,7 @@ body {
   height: var(--pad-size);
   transform: translate(-50%, -50%);
   pointer-events: none; /* never intercept touch-scrolling of the pad */
-  outline: none; /* #joy-marker is the visible affordance instead */
+  outline: none; /* .pad-marker is the visible affordance instead */
 
   /* The one and only snap point, and so the only offset the pad can come to
      rest at. `center` aligns this box's centre with the scrollport's centre,
@@ -196,7 +260,7 @@ body {
 
 /* Separate, smaller marker for the neutral zone, so the focus target above can
    stay pad-sized (which is what makes the autofocus trick exact). */
-#joy-marker {
+.pad-marker {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -276,6 +340,34 @@ body {
 #scene {
   --speed-step-z: round(nearest, calc(var(--deflect-z) * 10), 1);
   --speed-step-x: round(nearest, calc(var(--deflect-x) * 10), 1);
+  --speed-step-roll: round(nearest, calc(var(--deflect-roll) * 10), 1);
+}
+
+/* Roll sits OUTSIDE the camera translations - nearest the perspective - so it
+   turns the already-positioned world about the eye axis. That's a camera
+   bank: the horizon tilts and nothing changes distance. Nested the other way
+   round it would swing the world about the world origin instead, which reads
+   as the scenery orbiting you rather than you rolling.
+
+   Free of charge: rotateZ preserves every z coordinate, so roll costs nothing
+   against the --perspective clipping budget at the top of this file.
+
+   Note the transform negates --cam-roll. The var is the CAMERA's bank angle,
+   and this element is the WORLD - bank right and the world has to turn left
+   underneath you. */
+#scene-roll {
+  height: 100%;
+  transform-style: preserve-3d;
+
+  /* Same shape as --cam-z below, including the retargeting epsilon - scaled
+     down to 0.1deg because a whole degree of unearned tilt is visible against
+     a 45deg range in a way that 1px against 1000px never was. */
+  --cam-roll: calc(
+    sign(var(--speed-step-roll)) * var(--roll-range) + var(--deflect-roll) *
+      0.1deg
+  );
+  transition: --cam-roll 999999s linear;
+  transform: rotateZ(calc(-1 * var(--cam-roll)));
 }
 
 #scene-z {
@@ -347,6 +439,11 @@ body {
   }
   #scene-inner {
     --cam-x: 0px;
+  }
+  /* Doubly worth having on the roll pad, which has no autofocus to fall back
+     on - see .pad-focus. */
+  #scene-roll {
+    --cam-roll: 0deg;
   }
 }
 
@@ -454,6 +551,58 @@ body {
 }
 @container style(--speed-step-x: -10) or style(--speed-step-x: 10) {
   #scene-inner {
+    transition-duration: calc(10 * var(--throttle) / 10);
+  }
+}
+
+/* Roll runs the same ladder against its own step. */
+@container style(--speed-step-roll: -1) or style(--speed-step-roll: 1) {
+  #scene-roll {
+    transition-duration: calc(10 * var(--throttle) / 1);
+  }
+}
+@container style(--speed-step-roll: -2) or style(--speed-step-roll: 2) {
+  #scene-roll {
+    transition-duration: calc(10 * var(--throttle) / 2);
+  }
+}
+@container style(--speed-step-roll: -3) or style(--speed-step-roll: 3) {
+  #scene-roll {
+    transition-duration: calc(10 * var(--throttle) / 3);
+  }
+}
+@container style(--speed-step-roll: -4) or style(--speed-step-roll: 4) {
+  #scene-roll {
+    transition-duration: calc(10 * var(--throttle) / 4);
+  }
+}
+@container style(--speed-step-roll: -5) or style(--speed-step-roll: 5) {
+  #scene-roll {
+    transition-duration: calc(10 * var(--throttle) / 5);
+  }
+}
+@container style(--speed-step-roll: -6) or style(--speed-step-roll: 6) {
+  #scene-roll {
+    transition-duration: calc(10 * var(--throttle) / 6);
+  }
+}
+@container style(--speed-step-roll: -7) or style(--speed-step-roll: 7) {
+  #scene-roll {
+    transition-duration: calc(10 * var(--throttle) / 7);
+  }
+}
+@container style(--speed-step-roll: -8) or style(--speed-step-roll: 8) {
+  #scene-roll {
+    transition-duration: calc(10 * var(--throttle) / 8);
+  }
+}
+@container style(--speed-step-roll: -9) or style(--speed-step-roll: 9) {
+  #scene-roll {
+    transition-duration: calc(10 * var(--throttle) / 9);
+  }
+}
+@container style(--speed-step-roll: -10) or style(--speed-step-roll: 10) {
+  #scene-roll {
     transition-duration: calc(10 * var(--throttle) / 10);
   }
 }

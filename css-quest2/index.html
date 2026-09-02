@@ -13,24 +13,40 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
   </head>
   <body>
-    <!-- Joypad: a small scroll container. Scroll within it to steer. -->
-    <div id="joystick">
-      <div id="stretcher">
+    <!-- Left joypad: a small scroll container. Scroll within it to move -
+         vertically to go forward/back, horizontally to strafe. -->
+    <div id="joystick" class="pad">
+      <div class="pad-stretcher">
         <!-- Pad-sized and invisible. It's focusable + autofocus, so on load the
              browser scrolls the pad to reveal it; being exactly scrollport-sized,
              the only offset that reveals it in full is dead centre. That gives us
-             a deterministic neutral resting position on first paint, no JS. -->
-        <div id="joy-focus" tabindex="0" autofocus></div>
+             a deterministic neutral resting position on first paint, no JS.
+             Only one element per page can autofocus, so this pad gets it and the
+             roll pad relies on scroll-snap alone. -->
+        <div class="pad-focus" tabindex="0" autofocus></div>
         <!-- The bit you can actually see. -->
-        <div id="joy-marker"></div>
+        <div class="pad-marker"></div>
       </div>
     </div>
 
-    <!-- The 3D world we look into. -->
+    <!-- Right joypad: roll. Horizontal axis only - the stretcher has no
+         vertical travel, so there's nothing to scroll up or down. -->
+    <div id="joystick-roll" class="pad">
+      <div class="pad-stretcher">
+        <div class="pad-focus" tabindex="0"></div>
+        <div class="pad-marker"></div>
+      </div>
+    </div>
+
+    <!-- The 3D world we look into. One wrapper per degree of freedom, since an
+         element can only carry one transform: roll outermost (it banks the
+         whole positioned world about the eye axis), then the translations. -->
     <div id="scene">
-      <div id="scene-z">
-        <div id="scene-inner">
-          <div id="square"></div>
+      <div id="scene-roll">
+        <div id="scene-z">
+          <div id="scene-inner">
+            <div id="square"></div>
+          </div>
         </div>
       </div>
     </div>
