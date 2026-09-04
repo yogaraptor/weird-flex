@@ -162,14 +162,24 @@ body {
   }
 }
 
-/* Progress 1 is the bottom of the pad's scroll range, which a thumb reaches by
-   dragging UP - so push up to raise the nose. Flip these two to invert it. */
+/* Inverted, on purpose: this is a control column, and pushing one forward drops
+   the nose while pulling back raises it. Progress 1 is the bottom of the pad's
+   scroll range, which a thumb reaches by dragging UP, so mapping it to -1 is
+   what makes "push up" pitch down.
+
+   Inverting HERE rather than in #scene-pitch's transform keeps the two
+   concerns apart: this rule is pad-to-control, where an invert-Y preference
+   belongs, and the transform stays purely about geometry - which is why it
+   still carries no negation while roll does. The cost is that --deflect-pitch
+   is the one deflection var whose sign isn't the pad's direction of travel.
+   Swap these two values back for non-inverted pitch; neutral is unaffected
+   either way, since 0 falls at half progress regardless. */
 @keyframes set-deflect-pitch {
   from {
-    --deflect-pitch: -1;
+    --deflect-pitch: 1;
   }
   to {
-    --deflect-pitch: 1;
+    --deflect-pitch: -1;
   }
 }
 
