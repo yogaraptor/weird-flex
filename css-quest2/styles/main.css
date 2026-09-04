@@ -11,7 +11,11 @@
      Costs nothing against the perspective budget - roll is a rotateZ and
      preserves z at any angle. 360deg would instead put a whole revolution
      in each half-stroke, which makes full deflection look like neutral. */
-  --pitch-range: 45deg; /* nose angle at the end of its y travel */
+  --pitch-range: 90deg; /* the conventional flight-sim clamp: straight up to
+     straight down, and never inverted. Deliberately NOT symmetrical with
+     --roll-range - a full +/-180deg loop is reachable and costs nothing (see
+     the perspective note below), it just isn't what you want from a pitch
+     axis, where past vertical the manoeuvre you actually want is a roll. */
   --camera-height: 150px; /* how far the camera floats above the ground */
   --throttle: 1s; /* time to cross the remaining world at full deflection */
   /* Positive --cam-z pulls the world towards the viewer, so at full forward
@@ -31,10 +35,17 @@
 
      Pitch spends from this budget too. Roll is a rotateZ and preserves every z
      coordinate, but pitch is a rotateX about the scene centre, which swings
-     geometry through z. For the current tile the worst case over ANY pitch
-     angle is ~766px (and ~644px at the +/-45deg the pad can actually reach),
-     so 1400px is comfortable - but that sum is worth redoing alongside the one
-     above whenever the world grows. */
+     geometry through z: a tile corner at (y, z) reaches y*sin(t) + z*cos(t).
+
+     For the current tile that peaks at ~766px, and the peak is at t = +12deg -
+     NOT at the extremes, where the cosine term has fallen away again. Since
+     that's inside any --pitch-range worth having, widening or narrowing the
+     range doesn't change the exposure at all: 45, 90 and 180 all bottom out at
+     the same 766px, against a 1400px perspective.
+
+     Careful if you redo this sum as the world grows: scan the range, don't just
+     evaluate its endpoints. Checking only +/-45deg here reports a reassuring
+     644px and misses the real peak by 120px. */
   --perspective: 1400px;
 
   /* ---- World ------------------------------------------------------------ */
