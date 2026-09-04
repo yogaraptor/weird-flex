@@ -5,7 +5,9 @@
   --marker-size: 40px; /* the little "you are here" dot */
 
   /* ---- Camera ----------------------------------------------------------- */
-  --camera-range: 1000px; /* distance to the edge of the traversable world */
+  --camera-range: 15000px; /* distance to the edge of the traversable world, in
+     z and in x alike. Deliberately an order of magnitude past --perspective
+     now - see the note below for what that buys and what it costs. */
   --roll-range: 180deg; /* full roll: the pad spans -180..+180, so every
      bank angle is reachable and both ends of the travel are inverted.
      Costs nothing against the perspective budget - roll is a rotateZ and
@@ -17,35 +19,55 @@
      the perspective note below), it just isn't what you want from a pitch
      axis, where past vertical the manoeuvre you actually want is a roll. */
   --camera-height: 150px; /* how far the camera floats above the ground */
-  --throttle: 1s; /* time to cross the remaining world at full deflection */
-  /* Positive --cam-z pulls the world towards the viewer, so at full forward
-     deflection world geometry approaches the z = --perspective eye plane;
-     anything that reaches it is dropped (the near half of anything with
-     depth vanishes) and objects just short of it blow up towards infinite
-     scale. Safe requires --perspective > --camera-range + |--tile-distance|
-     + however far any object's own geometry can reach past its resting
-     z (here, the tile's 75deg tilt adds ~half its size). 1400px gives
-     1000 + 300 + ~100px of slack for the current single tile.
+  --throttle: 5s; /* time to cross the remaining world at full deflection.
+     Scales WITH --camera-range, because the transition aims at the world's
+     edge: widen the world and everything gets proportionally faster unless
+     this widens too. 15000px/5s is 3000px/s, against the old 1000px/1s. Drop
+     it to speed the whole rig up. */
+  /* Positive --cam-z pulls the world towards the viewer, so forward travel
+     walks world geometry towards the z = --perspective eye plane. Anything
+     reaching that plane is dropped, and anything just short of it blows up
+     towards infinite scale.
 
-     When more objects land at other positions/depths, re-check this against
-     whichever one sits closest to the camera at full forward travel: its
-     resting --tile-distance-equivalent minus its own near-edge depth is the
-     new worst case, and --perspective needs to clear camera-range plus that
-     by a healthy margin, not just the tile's.
+     This USED to be treated as a hard constraint: keep --camera-range below
+     --perspective, with headroom for --tile-distance and for whatever depth an
+     object's own geometry reaches, and forward travel stays artifact-free at
+     any offset. That is deliberately no longer the deal. Getting PAST the tile
+     is the point, and passing something means putting it behind your eye, so
+     --camera-range now exceeds --perspective many times over on purpose.
 
-     Pitch spends from this budget too. Roll is a rotateZ and preserves every z
-     coordinate, but pitch is a rotateX about the scene centre, which swings
-     geometry through z: a tile corner at (y, z) reaches y*sin(t) + z*cos(t).
+     In practice you never see the crossing, and the reason generalises well
+     enough to plan around. The artifact only shows on geometry near the view
+     AXIS. Anything at a perpendicular offset d from that axis has a projected
+     offset of d * P/(P - z), which diverges as z approaches P - so it races
+     off the edge of the frame faster than it swells, and is long gone by the
+     time it clips. For a frame of half-height h it leaves once
+     z > P * (1 - d/h), which for any d > 0 is always before z = P.
 
-     For the current tile that peaks at ~766px, and the peak is at t = +12deg -
-     NOT at the extremes, where the cosine term has fallen away again. Since
-     that's inside any --pitch-range worth having, widening or narrowing the
-     range doesn't change the exposure at all: 45, 90 and 180 all bottom out at
-     the same 766px, against a 1400px perspective.
+     The tile is a case in point: --camera-height puts it 150px BELOW eye
+     level, so you fly over it rather than through it. On an 800px-tall
+     viewport it is entirely off the bottom of the screen by --cam-z ~1270,
+     while the eye plane isn't until +1700 - roughly 430px of travel where it
+     has already gone. That margin holds from 700px to 2000px of viewport
+     height, so it isn't a fluke of one window size.
 
-     Careful if you redo this sum as the world grows: scan the range, don't just
-     evaluate its endpoints. Checking only +/-45deg here reports a reassuring
-     644px and misses the real peak by 120px. */
+     Which means the old budget rule was guarding a case this geometry mostly
+     rules out. Fly over, under or past a thing and it hides itself; only
+     something you fly exactly THROUGH - dead on the axis, staying centred all
+     the way in - balloons and clips visibly. Worth remembering when the world
+     gains objects at eye level, because those are the ones that would show it.
+
+     Backwards has no such limit. Scale goes as perspective/(perspective - z),
+     which simply falls towards zero, so that's the direction that shrinks the
+     tile to a dot - and the direction to widen further if it isn't small
+     enough yet.
+
+     Pitch still moves geometry through z where roll doesn't - a tile corner at
+     (y, z) reaches y*sin(t) + z*cos(t) - so it shifts WHERE the crossing
+     happens by up to ~165px of camera travel. Immaterial at this range, but
+     the lesson from working it out is worth keeping: scan a range, don't just
+     evaluate its endpoints. Sampling only +/-45deg once reported a reassuring
+     644px when the real peak, at t = +12deg well inside the range, was 766px. */
   --perspective: 1400px;
 
   /* ---- World ------------------------------------------------------------ */
