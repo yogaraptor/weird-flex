@@ -694,17 +694,88 @@ body:has(#centre-move:not(:checked)) #joystick {
   }
 }
 
-/* Transforms compose right-to-left: tilt the tile flat about its own centre,
-   push it away from the camera, drop it below eye level, then correct for
-   top/left 50% putting its corner - not its centre - on the anchor point. */
-#square {
+/* ---- Tiles ----------------------------------------------------------------
+   Transforms compose right-to-left: turn the tile about its own centre, push it
+   out to where it lives, then correct for top/left 50% putting its corner - not
+   its centre - on the anchor point.
+
+   One rule for every tile, placed by per-tile custom properties, all of which
+   default to "dead ahead, facing you, default size":
+
+     --at-x / --at-y / --at-z   where it sits (+x right, +y DOWN, -z away)
+     --turn-x / --turn-y        rotateX pitches it into a floor or ceiling,
+                                rotateY swings it into a wall
+     --size                     overrides --tile-size, for distant landmarks
+
+   Placement rule of thumb, from the --perspective note at the top of the file:
+   keep tiles OFF the view axis. Anything with a decent x or y offset sails out
+   of frame before it reaches the eye plane, so flying past it looks fine.
+   Something parked at (0, 0) would balloon and clip instead. Every tile below
+   has at least one healthy offset for that reason. */
+.tile {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: var(--tile-size);
-  height: var(--tile-size);
-  background-color: deeppink;
+  width: var(--size, var(--tile-size));
+  height: var(--size, var(--tile-size));
 
-  transform: translate(-50%, -50%) translateY(var(--camera-height))
-    translateZ(var(--tile-distance)) rotateX(var(--ground-tilt));
+  transform: translate(-50%, -50%)
+    translate3d(var(--at-x, 0px), var(--at-y, 0px), var(--at-z, 0px))
+    rotateY(var(--turn-y, 0deg)) rotateX(var(--turn-x, 0deg));
+}
+
+/* The original ground tile, and still the one nearest the camera - so it's the
+   first thing you sweep over when you push forward. */
+#square {
+  --at-y: var(--camera-height);
+  --at-z: var(--tile-distance);
+  --turn-x: var(--ground-tilt);
+  background-color: deeppink;
+}
+
+/* Second patch of ground, further out and off to the left. Two floor tiles at
+   different depths is what actually sells forward motion - one alone gives you
+   nothing to judge speed against. */
+#tile-floor {
+  --at-x: -450px;
+  --at-y: var(--camera-height);
+  --at-z: -1800px;
+  --turn-x: var(--ground-tilt);
+  --size: 200px;
+  background-color: darkorange;
+}
+
+/* A wall off to the right, swung round to sit at an angle to your path. Not a
+   full 90deg: edge-on it would be invisible until you were level with it. The
+   angle is what gives you lateral parallax as you pass, and makes strafing
+   read as strafing. */
+#tile-wall {
+  --at-x: 700px;
+  --at-y: -60px;
+  --at-z: -3500px;
+  --turn-y: 60deg;
+  --size: 300px;
+  background-color: deepskyblue;
+}
+
+/* Overhead, tilted the opposite way to the floor, so you fly underneath it.
+   Gives the world a ceiling and makes pitching up worth doing. */
+#tile-ceiling {
+  --at-x: -250px;
+  --at-y: -520px;
+  --at-z: -6000px;
+  --turn-x: calc(-1 * var(--ground-tilt));
+  --size: 350px;
+  background-color: gold;
+}
+
+/* Distant landmark, square on to the camera and deliberately large, since at
+   this range it projects to a fraction of its size. It barely moves until you
+   have covered real ground, which is what makes the nearer tiles feel quick. */
+#tile-far {
+  --at-x: 300px;
+  --at-y: -120px;
+  --at-z: -9000px;
+  --size: 450px;
+  background-color: mediumspringgreen;
 }

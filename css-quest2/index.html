@@ -56,7 +56,14 @@
         <div id="scene-pitch">
           <div id="scene-z">
             <div id="scene-inner">
-              <div id="square"></div>
+              <!-- Spread through the world at different depths, planes and
+                   angles, so there's something to judge motion against. Each
+                   is placed by custom properties on .tile - see main.css. -->
+              <div id="square" class="tile"></div>
+              <div id="tile-floor" class="tile"></div>
+              <div id="tile-wall" class="tile"></div>
+              <div id="tile-ceiling" class="tile"></div>
+              <div id="tile-far" class="tile"></div>
             </div>
           </div>
         </div>
