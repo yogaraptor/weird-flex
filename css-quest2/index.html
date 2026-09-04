@@ -13,27 +13,22 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
   </head>
   <body>
-    <!-- Checked (the default) = the pads spring back to neutral on release,
-         like a stick. Unchecked = they hold wherever you let go, which makes
-         each one a throttle: set a rate and take your thumb off.
-         Keep the default checked - snapping is also what centres the roll pad
-         on load. See main.css. -->
+    <!-- Ticked, the move pad stops the camera when you let go; unticked it's
+         cruise control. Must load ticked - snapping is also what centres this
+         pad, and the page's one autofocus went to the attitude pad. The
+         attitude pad has no equivalent box: it never snaps, so it holds the
+         attitude you set instead of levelling off. See main.css. -->
     <div id="controls">
-      <input type="checkbox" id="self-centring" checked />
-      <label for="self-centring">Pads self-centre</label>
+      <input type="checkbox" id="centre-move" checked />
+      <label for="centre-move">Move pad self-centres</label>
     </div>
 
     <!-- Left joypad: a small scroll container. Scroll within it to move -
-         vertically to go forward/back, horizontally to strafe. -->
+         vertically to go forward/back, horizontally to strafe.
+         Centred on load by scroll-snap, not autofocus. -->
     <div id="joystick" class="pad">
       <div class="pad-stretcher">
-        <!-- Pad-sized and invisible. It's focusable + autofocus, so on load the
-             browser scrolls the pad to reveal it; being exactly scrollport-sized,
-             the only offset that reveals it in full is dead centre. That gives us
-             a deterministic neutral resting position on first paint, no JS.
-             Only one element per page can autofocus, so this pad gets it and the
-             roll pad relies on scroll-snap alone. -->
-        <div class="pad-focus" tabindex="0" autofocus></div>
+        <div class="pad-focus" tabindex="0"></div>
         <!-- The bit you can actually see. -->
         <div class="pad-marker"></div>
       </div>
@@ -42,7 +37,13 @@
     <!-- Right joypad: attitude. Horizontal rolls, vertical pitches. -->
     <div id="joystick-attitude" class="pad">
       <div class="pad-stretcher">
-        <div class="pad-focus" tabindex="0"></div>
+        <!-- Pad-sized and invisible. It's focusable + autofocus, so on load the
+             browser scrolls the pad to reveal it; being exactly scrollport-sized,
+             the only offset that reveals it in full is dead centre. That gives us
+             a deterministic neutral resting position on first paint, no JS.
+             This pad gets the page's one autofocus because it's the pad that
+             never snaps - without it, it would load at full deflection. -->
+        <div class="pad-focus" tabindex="0" autofocus></div>
         <div class="pad-marker"></div>
       </div>
     </div>

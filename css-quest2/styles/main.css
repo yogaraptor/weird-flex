@@ -6,7 +6,11 @@
 
   /* ---- Camera ----------------------------------------------------------- */
   --camera-range: 1000px; /* distance to the edge of the traversable world */
-  --roll-range: 45deg; /* bank angle at the end of the right pad's x travel */
+  --roll-range: 180deg; /* full roll: the pad spans -180..+180, so every
+     bank angle is reachable and both ends of the travel are inverted.
+     Costs nothing against the perspective budget - roll is a rotateZ and
+     preserves z at any angle. 360deg would instead put a whole revolution
+     in each half-stroke, which makes full deflection look like neutral. */
   --pitch-range: 45deg; /* nose angle at the end of its y travel */
   --camera-height: 150px; /* how far the camera floats above the ground */
   --throttle: 1s; /* time to cross the remaining world at full deflection */
@@ -76,18 +80,6 @@
   inherits: false;
   initial-value: 0px;
 }
-/* An angle rather than a length, but transitioned for exactly the same reason
-   as the two above. */
-@property --cam-roll {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-@property --cam-pitch {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
 
 /* Deflection quantised to integer steps -10..10. Integers because style()
    queries compare computed values exactly, and fractional steps risk float
@@ -98,16 +90,6 @@
   initial-value: 0;
 }
 @property --speed-step-x {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0;
-}
-@property --speed-step-roll {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 0;
-}
-@property --speed-step-pitch {
   syntax: "<number>";
   inherits: true;
   initial-value: 0;
@@ -228,35 +210,41 @@ body {
   scroll-snap-type: both mandatory;
 }
 
-/* Self-centring toggle. Unticking it drops scroll snapping, which is the whole
-   mechanism behind the spring - with no snap target to return to, the pad just
-   stays wherever the gesture (and any momentum fling) left it, deflection holds
-   its value, and the camera keeps moving at that rate. That's the real
-   distinction the label is borrowing: a stick self-centres, a throttle holds
-   position.
+/* ---- Self-centring toggle -------------------------------------------------
+   Unticking it drops scroll snapping on the move pad, which is the whole
+   mechanism behind the spring: with no snap target to return to, the pad stays
+   wherever the gesture (and any momentum fling) left it, its deflection holds,
+   and the camera carries on at that rate. Ticked it stops when you let go;
+   unticked it's cruise control.
 
-   Ticking it back on re-snaps the pads to centre, because changing
-   scroll-snap-type re-evaluates snap position on an already-scrolled
-   container - so the toggle doubles as "level off".
+   There is deliberately no equivalent for the attitude pad. It NEVER snaps -
+   auto-levelling the moment you lift your thumb turned out to be exactly what
+   you don't want from an attitude stick, so it holds whatever you set. The
+   consequence to be aware of is that nothing returns you to level any more:
+   dead level is deflection 0, which means hitting the exact centre of the pad's
+   travel by thumb. Focusing the pad still scroll-into-views its .pad-focus and
+   so re-centres it, which is a level-off gesture of sorts, but an obscure one.
+   A dedicated "level" control would be the honest fix if it starts to grate.
 
-   The :has() lives on body so one checkbox governs both pads.
+   Which pad carries `autofocus` follows directly from that. Snapping quietly
+   does two jobs - the spring, and centring a pad on load - and only one element
+   per page can autofocus, so it belongs to whichever pad ISN'T snapping. That's
+   now the attitude pad: without autofocus its initial scroll offset would be
+   the start edge, i.e. full deflection, and the world would come up inverted
+   and pitched over. The move pad doesn't need it, because its box always loads
+   ticked (checkbox state doesn't survive a reload) and snapping centres it.
 
-   The box defaults to CHECKED, and wants to stay that way. Snapping is quietly
-   doing two jobs - the spring, and centring the pads on load - and the roll pad
-   leans entirely on the second, having no autofocus of its own (only one
-   element per page gets that, and the left pad has it). Ship this unticked by
-   default and the roll pad has no route to neutral: a scroll container's
-   initial offset is its start edge, which on that pad reads as full deflection,
-   so the world comes up banked ~45deg.
+   That last point is load-bearing: if the move box ever defaults to unticked,
+   neither pad has a route to neutral and both come up at full deflection.
 
-   Tried and rejected: @starting-style supplying `both mandatory` with a
-   `transition: scroll-snap-type 1ms 300ms allow-discrete` to hold the snap
-   through first layout and then let go. The theory is sound - scroll-snap-type
-   is a discrete-animated property, so it does transition if you ask with
-   allow-discrete - but in the browser it left the pads completely unresponsive.
-   Not diagnosed. If you want unticked-by-default, that's the thread to pull,
-   and probe.html is the place to pull it. */
-body:has(#self-centring:not(:checked)) .pad {
+   Tried and rejected for lifting that constraint: @starting-style supplying
+   `both mandatory` with a `transition: scroll-snap-type 1ms 300ms
+   allow-discrete` to hold the snap through first layout and then let go. The
+   theory is sound - scroll-snap-type is a discrete-animated property, so it
+   does transition if you ask with allow-discrete - but in the browser it left
+   the pads completely unresponsive. Not diagnosed. probe.html is the place to
+   pull that thread. */
+body:has(#centre-move:not(:checked)) #joystick {
   scroll-snap-type: none;
 }
 
@@ -278,11 +266,16 @@ body:has(#self-centring:not(:checked)) .pad {
     --joy-x x;
 }
 
-/* Attitude pad: roll across, pitch up and down. Both axes are live now, so
-   this needs none of the overrides that kept it horizontal-only - it's a
-   plain .pad that happens to publish two differently-named timelines. */
+/* Attitude pad: roll across, pitch up and down.
+
+   Never snaps, which is the one thing that really distinguishes it from the
+   move pad. An attitude stick that springs level the instant you lift your
+   thumb is useless, so this one holds what you set - and, being the pad
+   without a spring, it's also the pad that has to carry the page's autofocus
+   to reach neutral on load. Overrides .pad's `both mandatory`. */
 #joystick-attitude {
   right: 20px;
+  scroll-snap-type: none;
 
   scroll-timeline:
     --joy-roll x,
@@ -304,12 +297,11 @@ body:has(#self-centring:not(:checked)) .pad {
    offset that fully reveals it is dead centre. That's our neutral position,
    established without a line of JS.
 
-   Caveat now there are two pads: only ONE element per page can autofocus, so
-   the left pad keeps it and the right pad is left standing on initial snap
-   positioning alone. That should land it dead centre by itself, but it's the
-   weaker of the two mechanisms - if the roll pad ever comes up off-neutral on
-   first paint, this asymmetry is the first place to look. @starting-style
-   keeps the blast radius down to a slow drift rather than a teleport. */
+   With two pads and only ONE autofocus per page, the two pads reach neutral by
+   different routes: the attitude pad by autofocus (it never snaps, so nothing
+   else would get it there), the move pad by initial snap positioning. Both land
+   dead centre. If either ever comes up off-neutral on first paint, that split is
+   the first place to look. */
 .pad-focus {
   position: absolute;
   top: 50%;
@@ -325,10 +317,8 @@ body:has(#self-centring:not(:checked)) .pad {
      which is neutral by construction - it doesn't depend on the element still
      being exactly scrollport-sized the way the autofocus trick does.
 
-     Note this element now earns its keep twice over: autofocus puts us at
-     neutral on first paint, snap keeps us returning there. Belt and braces -
-     initial snap positioning would likely land here on its own, but autofocus
-     is the mechanism we know behaves on the target browser. */
+     Inert on the attitude pad, which has no snap type for it to act on - there
+     it's only the autofocus target. */
   scroll-snap-align: center;
 }
 
@@ -364,7 +354,10 @@ body:has(#self-centring:not(:checked)) .pad {
 }
 
 /* ---- Velocity movement ----------------------------------------------------
-   The pad no longer maps to camera POSITION; it maps to camera VELOCITY.
+   Everything from here down is about the MOVE pad only. It doesn't map to
+   camera position; it maps to camera VELOCITY. (The attitude pad went the
+   other way - straight position mapping - for the reasons in its own section
+   below, so none of this machinery applies to roll or pitch.)
 
    Each wrapper's transform aims at whichever edge of the world the pad is
    deflected towards (sign() picks the end, 0 at neutral), and a transition
@@ -414,35 +407,49 @@ body:has(#self-centring:not(:checked)) .pad {
 #scene {
   --speed-step-z: round(nearest, calc(var(--deflect-z) * 10), 1);
   --speed-step-x: round(nearest, calc(var(--deflect-x) * 10), 1);
-  --speed-step-roll: round(nearest, calc(var(--deflect-roll) * 10), 1);
-  --speed-step-pitch: round(nearest, calc(var(--deflect-pitch) * 10), 1);
 }
 
-/* Roll sits OUTSIDE the camera translations - nearest the perspective - so it
-   turns the already-positioned world about the eye axis. That's a camera
-   bank: the horizon tilts and nothing changes distance. Nested the other way
-   round it would swing the world about the world origin instead, which reads
-   as the scenery orbiting you rather than you rolling.
+/* ---- Attitude: position, not velocity ------------------------------------
+   These two are mapped DIRECTLY - deflection is the angle, full stop. No
+   registered --cam-* to transition, no step ladder, no @starting-style. The
+   horizon tracks your thumb exactly, and the whole range is reachable, which
+   the velocity model never quite managed: it aimed at the endpoint and moved
+   at remaining-distance/duration, so the last few degrees crawled and the cap
+   felt like a wall well before you reached it.
+
+   The trade is that attitude can't exceed --roll-range / --pitch-range, since
+   the pad's travel IS the range. Velocity could at least have spun further
+   given a bigger range. Neither can rotate continuously - that needs momentum,
+   i.e. integration over time, which is the one thing this architecture has no
+   way to express.
+
+   So the two pads now work on different principles, deliberately: the left one
+   is a throttle (velocity, holds its rate), the right one is a stick (position,
+   springs back). That's the same split real vehicles have, and it's a lot
+   easier to explain than "everything is velocity except the parts that
+   asymptote".
+
+   Note --deflect-* being animation-tainted doesn't bite here. Taint only
+   blocks tainted values from being substituted into transition/animation
+   TIMING properties; feeding one straight into a transform is fine, and is
+   exactly what this project did before velocity arrived.
+
+   Roll sits OUTSIDE the camera translations - nearest the perspective - so it
+   turns the already-positioned world about the eye axis. That's a camera bank:
+   the horizon tilts and nothing changes distance. Nested the other way round it
+   would swing the world about the world origin instead, which reads as the
+   scenery orbiting you rather than you rolling.
 
    Free of charge: rotateZ preserves every z coordinate, so roll costs nothing
    against the --perspective clipping budget at the top of this file.
 
-   Note the transform negates --cam-roll. The var is the CAMERA's bank angle,
-   and this element is the WORLD - bank right and the world has to turn left
-   underneath you. */
+   The negation is because the var is the CAMERA's bank angle and this element
+   is the WORLD - bank right and the world has to turn left underneath you. */
 #scene-roll {
   height: 100%;
   transform-style: preserve-3d;
 
-  /* Same shape as --cam-z below, including the retargeting epsilon - scaled
-     down to 0.1deg because a whole degree of unearned tilt is visible against
-     a 45deg range in a way that 1px against 1000px never was. */
-  --cam-roll: calc(
-    sign(var(--speed-step-roll)) * var(--roll-range) + var(--deflect-roll) *
-      0.1deg
-  );
-  transition: --cam-roll 999999s linear;
-  transform: rotateZ(calc(-1 * var(--cam-roll)));
+  transform: rotateZ(calc(-1 * var(--deflect-roll) * var(--roll-range)));
 }
 
 /* Pitch nests INSIDE roll and outside the translations, which is the standard
@@ -461,12 +468,7 @@ body:has(#self-centring:not(:checked)) .pad {
   height: 100%;
   transform-style: preserve-3d;
 
-  --cam-pitch: calc(
-    sign(var(--speed-step-pitch)) * var(--pitch-range) + var(--deflect-pitch) *
-      0.1deg
-  );
-  transition: --cam-pitch 999999s linear;
-  transform: rotateX(var(--cam-pitch));
+  transform: rotateX(calc(var(--deflect-pitch) * var(--pitch-range)));
 }
 
 #scene-z {
@@ -538,14 +540,6 @@ body:has(#self-centring:not(:checked)) .pad {
   }
   #scene-inner {
     --cam-x: 0px;
-  }
-  /* Doubly worth having on the roll pad, which has no autofocus to fall back
-     on - see .pad-focus. */
-  #scene-roll {
-    --cam-roll: 0deg;
-  }
-  #scene-pitch {
-    --cam-pitch: 0deg;
   }
 }
 
@@ -653,110 +647,6 @@ body:has(#self-centring:not(:checked)) .pad {
 }
 @container style(--speed-step-x: -10) or style(--speed-step-x: 10) {
   #scene-inner {
-    transition-duration: calc(10 * var(--throttle) / 10);
-  }
-}
-
-/* Roll runs the same ladder against its own step. */
-@container style(--speed-step-roll: -1) or style(--speed-step-roll: 1) {
-  #scene-roll {
-    transition-duration: calc(10 * var(--throttle) / 1);
-  }
-}
-@container style(--speed-step-roll: -2) or style(--speed-step-roll: 2) {
-  #scene-roll {
-    transition-duration: calc(10 * var(--throttle) / 2);
-  }
-}
-@container style(--speed-step-roll: -3) or style(--speed-step-roll: 3) {
-  #scene-roll {
-    transition-duration: calc(10 * var(--throttle) / 3);
-  }
-}
-@container style(--speed-step-roll: -4) or style(--speed-step-roll: 4) {
-  #scene-roll {
-    transition-duration: calc(10 * var(--throttle) / 4);
-  }
-}
-@container style(--speed-step-roll: -5) or style(--speed-step-roll: 5) {
-  #scene-roll {
-    transition-duration: calc(10 * var(--throttle) / 5);
-  }
-}
-@container style(--speed-step-roll: -6) or style(--speed-step-roll: 6) {
-  #scene-roll {
-    transition-duration: calc(10 * var(--throttle) / 6);
-  }
-}
-@container style(--speed-step-roll: -7) or style(--speed-step-roll: 7) {
-  #scene-roll {
-    transition-duration: calc(10 * var(--throttle) / 7);
-  }
-}
-@container style(--speed-step-roll: -8) or style(--speed-step-roll: 8) {
-  #scene-roll {
-    transition-duration: calc(10 * var(--throttle) / 8);
-  }
-}
-@container style(--speed-step-roll: -9) or style(--speed-step-roll: 9) {
-  #scene-roll {
-    transition-duration: calc(10 * var(--throttle) / 9);
-  }
-}
-@container style(--speed-step-roll: -10) or style(--speed-step-roll: 10) {
-  #scene-roll {
-    transition-duration: calc(10 * var(--throttle) / 10);
-  }
-}
-
-/* And pitch runs it against its own. */
-@container style(--speed-step-pitch: -1) or style(--speed-step-pitch: 1) {
-  #scene-pitch {
-    transition-duration: calc(10 * var(--throttle) / 1);
-  }
-}
-@container style(--speed-step-pitch: -2) or style(--speed-step-pitch: 2) {
-  #scene-pitch {
-    transition-duration: calc(10 * var(--throttle) / 2);
-  }
-}
-@container style(--speed-step-pitch: -3) or style(--speed-step-pitch: 3) {
-  #scene-pitch {
-    transition-duration: calc(10 * var(--throttle) / 3);
-  }
-}
-@container style(--speed-step-pitch: -4) or style(--speed-step-pitch: 4) {
-  #scene-pitch {
-    transition-duration: calc(10 * var(--throttle) / 4);
-  }
-}
-@container style(--speed-step-pitch: -5) or style(--speed-step-pitch: 5) {
-  #scene-pitch {
-    transition-duration: calc(10 * var(--throttle) / 5);
-  }
-}
-@container style(--speed-step-pitch: -6) or style(--speed-step-pitch: 6) {
-  #scene-pitch {
-    transition-duration: calc(10 * var(--throttle) / 6);
-  }
-}
-@container style(--speed-step-pitch: -7) or style(--speed-step-pitch: 7) {
-  #scene-pitch {
-    transition-duration: calc(10 * var(--throttle) / 7);
-  }
-}
-@container style(--speed-step-pitch: -8) or style(--speed-step-pitch: 8) {
-  #scene-pitch {
-    transition-duration: calc(10 * var(--throttle) / 8);
-  }
-}
-@container style(--speed-step-pitch: -9) or style(--speed-step-pitch: 9) {
-  #scene-pitch {
-    transition-duration: calc(10 * var(--throttle) / 9);
-  }
-}
-@container style(--speed-step-pitch: -10) or style(--speed-step-pitch: 10) {
-  #scene-pitch {
     transition-duration: calc(10 * var(--throttle) / 10);
   }
 }
