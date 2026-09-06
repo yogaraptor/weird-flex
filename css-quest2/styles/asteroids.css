@@ -1,0 +1,89 @@
+/* ---- Asteroids minigame ---------------------------------------------------
+   Everything for the asteroids lives in this file. main.css owns the camera,
+   the pads and the .tile placement primitive; this file owns nothing but the
+   asteroids and the machinery for shooting them.
+
+   Placement reuses .tile - the asteroids are world objects like any other, so
+   they get --at-x/y/z and --size from it. What's asteroid-specific is the spin
+   and, later, the lock and kill wiring.
+
+   STAGE 1: scenery only. No interaction yet. */
+
+/* Spin angle, animated. Registered so it interpolates - an unregistered custom
+   property can't be animated. It's fed into .tile's --turn-z slot rather than
+   being a transform of its own, because the element already carries a transform
+   for placement and can only have one. A dependent custom property on the same
+   element sees the ANIMATED value, which is the same property of the design the
+   camera's velocity trick rests on. */
+@property --spin {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+/* Face-on to the default pitch: no --turn-x, no --turn-y, so an asteroid sits
+   square to the camera at rest and is easy to see and line up. The spin is
+   therefore in the screen plane, which reads as tumbling without ever hiding
+   the face you're aiming at. */
+.asteroid {
+  --size: 300px;
+  --turn-z: var(--spin);
+  background-color: #4a4a52;
+  animation: asteroid-spin 7s linear infinite;
+}
+
+@keyframes asteroid-spin {
+  from {
+    --spin: 0deg;
+  }
+  to {
+    --spin: 360deg;
+  }
+}
+
+/* ---- Placement ------------------------------------------------------------
+   Verified by sweeping cam-x and cam-z across +/-15000 in 250px steps against
+   pitch across +/-90deg in 5deg steps: at an 8deg cone and 6000px lock range,
+   the maximum number lockable at once is 1, and all five are reachable.
+   Re-run that sweep if any of these move.
+
+   None sits on the view axis - hence the -150px y offsets - so none shows the
+   eye-plane clipping artifact described at the top of main.css.
+
+   A1 is found straight ahead, A2/A3/A5 by strafing, A4 by pitching up, so each
+   control has something to do.
+
+   Spin durations are staggered only so the five don't tumble in lockstep. */
+#roid-1 {
+  --at-x: 0px;
+  --at-y: -150px;
+  --at-z: -2200px;
+}
+
+#roid-2 {
+  --at-x: 5200px;
+  --at-y: -150px;
+  --at-z: -3800px;
+  animation-duration: 9s;
+}
+
+#roid-3 {
+  --at-x: -5200px;
+  --at-y: -150px;
+  --at-z: -5600px;
+  animation-duration: 5s;
+}
+
+#roid-4 {
+  --at-x: 0px;
+  --at-y: -3400px;
+  --at-z: -7600px;
+  animation-duration: 11s;
+}
+
+#roid-5 {
+  --at-x: 10500px;
+  --at-y: -150px;
+  --at-z: -10000px;
+  animation-duration: 8s;
+}

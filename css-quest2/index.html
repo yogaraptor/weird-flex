@@ -11,6 +11,8 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
+    <!-- One stylesheet per minigame, kept separate from the engine. -->
+    <link rel="stylesheet" type="text/css" href="styles/asteroids.css" />
   </head>
   <body>
     <!-- Camera position lives here, above the scene, so that anything outside
@@ -72,6 +74,14 @@
                   <div id="tile-wall" class="tile"></div>
                   <div id="tile-ceiling" class="tile"></div>
                   <div id="tile-far" class="tile"></div>
+
+                  <!-- Asteroids. Scenery for now - no interaction wired up.
+                       Placement and spin are in asteroids.css. -->
+                  <div id="roid-1" class="tile asteroid"></div>
+                  <div id="roid-2" class="tile asteroid"></div>
+                  <div id="roid-3" class="tile asteroid"></div>
+                  <div id="roid-4" class="tile asteroid"></div>
+                  <div id="roid-5" class="tile asteroid"></div>
                 </div>
               </div>
             </div>
