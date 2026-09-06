@@ -85,6 +85,7 @@
    and it keeps the two transforms from fighting over one property: the parent
    is placed by .tile, the child spins inside it. */
 .asteroid-face {
+  position: relative;
   width: 100%;
   height: 100%;
   background-color: #4a4a52;
@@ -192,7 +193,7 @@ body:has(#kill-5:checked) #roid-5 {
    own wrapper's value. */
 @property --lock {
   syntax: "<number>";
-  inherits: false;
+  inherits: true;
   initial-value: 0;
 }
 @property --view-pitch {
@@ -247,7 +248,14 @@ body:has(#kill-5:checked) #roid-5 {
    sign() is the comparator, collapsing to exactly 0 or 1. The range test uses
    dot rather than dist so hypot() is needed only once; the two agree to within
    1% inside the cone, differing on 5 camera states out of 77,531. */
-.lock-target {
+/* Computed on BOTH the lock wrapper and the asteroid itself. The wrapper is
+   outside #scene and gates the trigger; the asteroid is inside it and shows the
+   brackets. Neither can see the other's custom properties, but the inputs -
+   --at-* on the element, camera and pitch inherited from above - are available
+   in both places, so one rule serves both rather than the maths being written
+   twice. */
+.lock-target,
+.asteroid {
   --rel-x: calc(var(--at-x) + var(--cam-x));
   --rel-z: calc(var(--at-z) + var(--cam-z));
   --dist: hypot(var(--rel-x), var(--at-y), var(--rel-z));
@@ -288,14 +296,11 @@ body:has(#kill-5:checked) #roid-5 {
 
 /* Armed. pointer-events resolves the stacking for free: whichever label is
    locked receives the press regardless of z-order, because the other four
-   aren't hit-testable at all.
-
-   The tint is temporary scaffolding so the armed state is visible until the
-   crosshair exists. */
+   aren't hit-testable at all. The label itself stays invisible - the brackets
+   round the asteroid are the indicator. */
 @container style(--lock: 1) {
   .lock-target > label {
     pointer-events: auto;
-    background: rgb(255 0 0 / 15%);
   }
 }
 
@@ -303,18 +308,15 @@ body:has(#kill-5:checked) #roid-5 {
    pointer-events, the label stays live and a second press TOGGLES its checkbox
    back off - which un-destroys the asteroid.
 
-   The background matters just as much: the lock test knows nothing about kill
-   state, so a destroyed asteroid still satisfies it and still primes the
-   trigger. Clearing the tint keeps the armed indicator honest - it should only
-   show when pressing would actually do something. Wins over the @container
-   rule above on specificity. */
+   The stale-indicator problem this used to have is gone: the lock test knows
+   nothing about kill state, so a destroyed asteroid still satisfies it, but its
+   brackets are children of the asteroid and vanish with it. */
 body:has(#kill-1:checked) #lock-1 > label,
 body:has(#kill-2:checked) #lock-2 > label,
 body:has(#kill-3:checked) #lock-3 > label,
 body:has(#kill-4:checked) #lock-4 > label,
 body:has(#kill-5:checked) #lock-5 > label {
   pointer-events: none;
-  background: none;
 }
 
 /* Each wrapper carries only its asteroid's position. */
@@ -342,4 +344,50 @@ body:has(#kill-5:checked) #lock-5 > label {
   --at-x: var(--a5-x);
   --at-y: var(--a5-y);
   --at-z: var(--a5-z);
+}
+
+/* ---- Lock brackets --------------------------------------------------------
+   [ ] flanking the asteroid, shown only while it's locked.
+
+   They live INSIDE .asteroid-face, which is the element carrying the spin, so
+   they tumble with the asteroid for free rather than needing an animation of
+   their own that could drift out of step.
+
+   Being in the scene rather than pinned to the viewport, they take the camera
+   and perspective transforms with everything else - so they shrink with
+   distance. Constant-size brackets would arguably read better as a HUD, but
+   holding a fixed screen size while sitting in a perspective transform means
+   counter-scaling by distance, and that isn't worth the machinery to prove the
+   mechanic works. Noted, deferred.
+
+   Positioned outside the face's box on both sides; overflow is visible by
+   default, so no clipping to work around. Drawn with borders: three sides
+   makes a bracket, and dropping the fourth is what turns a box into a [ .
+
+   Gated by a style query on --lock, which is why that property inherits - the
+   nearest ancestor container for a bracket is .asteroid-face, not .asteroid. */
+.bracket {
+  position: absolute;
+  box-sizing: border-box;
+  top: -10%;
+  height: 120%;
+  width: 18%;
+  border: 12px solid red;
+  opacity: 0;
+}
+
+.bracket-l {
+  left: -28%;
+  border-right: none;
+}
+
+.bracket-r {
+  right: -28%;
+  border-left: none;
+}
+
+@container style(--lock: 1) {
+  .bracket {
+    opacity: 1;
+  }
 }
