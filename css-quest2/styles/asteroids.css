@@ -43,6 +43,9 @@
      --lock-range keeps distant asteroids unlockable, which is also what makes
      retreating harmless - back off far enough and everything is in frame at
      once, but nothing is in range. */
+  /* One shot per asteroid. */
+  --max-ammo: 5;
+
   --cone: 8deg;
   --lock-range: 6000px;
 }
@@ -144,7 +147,53 @@
   width: 0;
   height: 0;
   overflow: hidden;
+
+  /* Two counters from one number: `ammo` is decremented per kill, `shots`
+     never is, so the readout can print both halves of "n/5" without either
+     being hardcoded.
+
+     A counter's scope covers the resetting element's descendants AND its
+     following siblings, which is exactly the shape here - the checkboxes are
+     inside, the readout comes after. */
+  counter-reset: ammo var(--max-ammo) shots var(--max-ammo);
 }
+
+/* Counters are the only way to get a number on screen without JS, and the only
+   way to do arithmetic on one without a rule per possible value: a negative
+   increment counts down, so no subtraction is needed anywhere.
+
+   The cost is that a counter is a string living in `content` and can never
+   reach calc(). If ammo ever has to DRIVE something rather than be read, it
+   needs a :has() ladder instead - one rule per shot setting a real number. */
+#kills input:checked {
+  counter-increment: ammo -1;
+}
+
+/* Placed after #kills in the DOM so it sees every increment; positioned here,
+   above the trigger, which has nothing to do with document order. */
+#ammo {
+  position: fixed;
+  bottom: calc(28px + var(--pad-size));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  font:
+    bold 12px system-ui,
+    sans-serif;
+  color: #333;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+#ammo::after {
+  content: "AMMO " counter(ammo) "/" counter(shots);
+}
+
+/* No zero-ammo gate, deliberately. With one shot per asteroid, ammo reaches 0
+   exactly when the last asteroid dies - and every label is already dead by
+   then via the rule below. A gate would be a rule that can never fire. It
+   becomes worth writing the moment ammo and kills stop being the same event,
+   which is what a reload would do. */
 
 /* Destroyed. No debris, no fade - the asteroid is simply gone. */
 body:has(#kill-1:checked) #roid-1,
