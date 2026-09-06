@@ -3,16 +3,60 @@
    the pads and the .tile placement primitive; this file owns nothing but the
    asteroids and the machinery for shooting them.
 
-   Placement reuses .tile - the asteroids are world objects like any other, so
-   they get --at-x/y/z and --size from it. What's asteroid-specific is the spin
-   and, later, the lock and kill wiring.
+   STAGE 3: the click path, with the lock hardcoded. The maths comes next. */
 
-   STAGE 1: scenery only. No interaction yet. */
+:root {
+  /* One source of truth for where each asteroid is. Both the scenery inside
+     the scene and the lock wrapper outside it read these, so there's no chance
+     of the visible asteroid and the thing you're aiming at drifting apart. */
+  --a1-x: 0px;
+  --a1-y: -150px;
+  --a1-z: -2200px;
 
-/* Face-on to the default pitch: no --turn-x, no --turn-y, so an asteroid sits
+  --a2-x: 5200px;
+  --a2-y: -150px;
+  --a2-z: -3800px;
+
+  --a3-x: -5200px;
+  --a3-y: -150px;
+  --a3-z: -5600px;
+
+  --a4-x: 0px;
+  --a4-y: -3400px;
+  --a4-z: -7600px;
+
+  --a5-x: 0px;
+  --a5-y: 1700px;
+  --a5-z: -3800px;
+
+  /* The trigger, and the labels stacked over it, share this geometry. It sits
+     in the gap between the two pads, which is only 34vw wide minus their
+     margins and borders - narrow on a phone, hence the calc rather than a
+     round number. Overflowing it would put a label on top of a pad and eat
+     the scroll gesture that steers the camera. */
+  --trigger-w: calc(34vw - 76px);
+}
+
+/* ---- The asteroids themselves --------------------------------------------
+   Face-on to the default pitch: no --turn-x, no --turn-y, so an asteroid sits
    square to the camera at rest and is easy to see and line up. The spin is
    therefore in the screen plane, which reads as tumbling without ever hiding
-   the face you're aiming at. */
+   the face you're aiming at.
+
+   One per direction, all findable from the spawn point by looking around: A1
+   ahead, A2 right, A3 left, A4 up, A5 down. Nothing needs hunting for, which
+   matters more than realism here - it's a demo, and the last one shouldn't be
+   a scavenger hunt. Strafing reaches A2 and A3; pitch reaches A4 and A5, one
+   per direction of the axis (and pitch is inverted, so A4 is found by pulling
+   the pad down and A5 by pushing it up).
+
+   Positions verified by sweeping cam-x and cam-z across +/-15000 in 250px
+   steps against pitch across +/-90deg in 5deg steps: at an 8deg cone and
+   6000px lock range, the maximum number lockable at once is 1, and all five
+   are reachable. Re-run that sweep if any of them move.
+
+   None sits on the view axis - hence the -150px y offsets - so none shows the
+   eye-plane clipping artifact described at the top of main.css. */
 .asteroid {
   --size: 300px;
 }
@@ -50,58 +94,138 @@
   }
 }
 
-/* ---- Placement ------------------------------------------------------------
-   Verified by sweeping cam-x and cam-z across +/-15000 in 250px steps against
-   pitch across +/-90deg in 5deg steps: at an 8deg cone and 6000px lock range,
-   the maximum number lockable at once is 1, and all five are reachable.
-   Re-run that sweep if any of these move.
-
-   None sits on the view axis - hence the -150px y offsets - so none shows the
-   eye-plane clipping artifact described at the top of main.css.
-
-   One per direction, all findable from the spawn point by looking around: A1
-   ahead, A2 right, A3 left, A4 up, A5 down. Nothing needs hunting for, which
-   matters more than realism here - it's a demo, and the last one shouldn't be
-   a scavenger hunt. Strafing reaches A2 and A3; pitch reaches A4 and A5, one
-   per direction of the axis (and pitch is inverted, so A4 is found by pulling
-   the pad down and A5 by pushing it up).
-
-   Spin durations are staggered only so the five don't tumble in lockstep. */
 #roid-1 {
-  --at-x: 0px;
-  --at-y: -150px;
-  --at-z: -2200px;
+  --at-x: var(--a1-x);
+  --at-y: var(--a1-y);
+  --at-z: var(--a1-z);
 }
-
 #roid-2 {
-  --at-x: 5200px;
-  --at-y: -150px;
-  --at-z: -3800px;
+  --at-x: var(--a2-x);
+  --at-y: var(--a2-y);
+  --at-z: var(--a2-z);
   --spin-time: 9s;
 }
-
 #roid-3 {
-  --at-x: -5200px;
-  --at-y: -150px;
-  --at-z: -5600px;
+  --at-x: var(--a3-x);
+  --at-y: var(--a3-y);
+  --at-z: var(--a3-z);
   --spin-time: 5s;
 }
-
 #roid-4 {
-  --at-x: 0px;
-  --at-y: -3400px;
-  --at-z: -7600px;
+  --at-x: var(--a4-x);
+  --at-y: var(--a4-y);
+  --at-z: var(--a4-z);
   --spin-time: 11s;
 }
-
-/* Below, mirroring A4 above. It used to sit far out to the right at x 10500,
-   which put it beyond A2 on the same side and rendered it as a 37px dot - so
-   you'd find A2, assume that was the right-hand one, and never go looking. It
-   needs no travel at all now: 458px below centre at spawn, which is just off
-   the bottom edge, so a small pitch down brings it in. */
 #roid-5 {
-  --at-x: 0px;
-  --at-y: 1700px;
-  --at-z: -3800px;
+  --at-x: var(--a5-x);
+  --at-y: var(--a5-y);
+  --at-z: var(--a5-z);
   --spin-time: 8s;
+}
+
+/* ---- Kill state -----------------------------------------------------------
+   One checkbox per asteroid. Checking one destroys that asteroid, and it stays
+   checked - that persistence IS the latch, and it's the only kind of state CSS
+   can be made to remember. Nothing computed can check these; only a click can,
+   which is what the whole trigger design exists to arrange.
+
+   Hidden by clipping rather than `display: none`, so they stay real form
+   controls that a label can activate. The player never sees them. */
+#kills {
+  position: fixed;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+/* Destroyed. No debris, no fade - the asteroid is simply gone. */
+body:has(#kill-1:checked) #roid-1,
+body:has(#kill-2:checked) #roid-2,
+body:has(#kill-3:checked) #roid-3,
+body:has(#kill-4:checked) #roid-4,
+body:has(#kill-5:checked) #roid-5 {
+  display: none;
+}
+
+/* ---- The trigger ----------------------------------------------------------
+   Decorative, and never clicked. It exists to be a thing you can see and aim
+   your thumb at; the five labels stacked invisibly over it are what actually
+   receive the press. pointer-events: none makes sure it can't intercept one.
+
+   Sized and placed to sit in the gap between the two joypads, matching their
+   height so the three controls read as a row. */
+#trigger {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  width: var(--trigger-w);
+  height: var(--pad-size);
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  border: 4px solid #333;
+  display: grid;
+  place-items: center;
+  font:
+    bold 12px system-ui,
+    sans-serif;
+  color: #333;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* ---- Lock targets ---------------------------------------------------------
+   One wrapper per asteroid, OUTSIDE #scene. They have to be out here: a
+   positioned descendant of a transformed ancestor is containing-blocked by it
+   and could never sit over the trigger in screen space.
+
+   --lock lives on the wrapper rather than the label because a style query
+   reads the element's nearest ancestor CONTAINER, never the element itself.
+   All five wrappers use the same property name, which is what lets one rule
+   below serve all five: the wrappers are siblings, so each label only ever
+   sees its own wrapper's value. */
+@property --lock {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+/* Exactly overlaying #trigger. Transparent, so the player sees the trigger
+   and never suspects there are five of these. */
+.lock-target > label {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  width: var(--trigger-w);
+  height: var(--pad-size);
+  transform: translateX(-50%);
+  z-index: 11;
+
+  /* The default, and the whole mechanism: not lockable means not clickable.
+     "You can't miss" is structural - there's nothing to press - rather than a
+     rule enforced anywhere. */
+  pointer-events: none;
+}
+
+/* Armed. pointer-events resolves the stacking for free: whichever label is
+   locked receives the press regardless of z-order, because the other four
+   aren't hit-testable at all.
+
+   The tint is temporary scaffolding so the armed state is visible while
+   there's no crosshair yet. */
+@container style(--lock: 1) {
+  .lock-target > label {
+    pointer-events: auto;
+    background: rgb(255 0 0 / 15%);
+  }
+}
+
+/* ---- STAGE 3 SCAFFOLDING --------------------------------------------------
+   The lock is hardcoded on A1 and nowhere else, to test the click path in
+   isolation: press the trigger and A1 alone should vanish, whatever the camera
+   is doing. If that works, labels-over-trigger and the pointer-events gate are
+   both sound, and stage 4 is only a matter of replacing this literal with the
+   real angle test. Delete this rule then. */
+#lock-1 {
+  --lock: 1;
 }
