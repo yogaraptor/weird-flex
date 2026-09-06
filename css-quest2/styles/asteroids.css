@@ -3,7 +3,7 @@
    the pads and the .tile placement primitive; this file owns nothing but the
    asteroids and the machinery for shooting them.
 
-   STAGE 3: the click path, with the lock hardcoded. The maths comes next. */
+   STAGE 4: the real lock test. Crosshairs and ammo still to come. */
 
 :root {
   /* One source of truth for where each asteroid is. Both the scenery inside
@@ -35,6 +35,16 @@
      round number. Overflowing it would put a label on top of a pad and eat
      the scroll gesture that steers the camera. */
   --trigger-w: calc(34vw - 76px);
+
+  /* ---- Lock envelope ------------------------------------------------------
+     --cone is the half-angle you have to get within. It's what guarantees only
+     one asteroid is ever lockable: the placement sweep is run against this
+     number, so widening it means re-running that sweep.
+     --lock-range keeps distant asteroids unlockable, which is also what makes
+     retreating harmless - back off far enough and everything is in frame at
+     once, but nothing is in range. */
+  --cone: 8deg;
+  --lock-range: 6000px;
 }
 
 /* ---- The asteroids themselves --------------------------------------------
@@ -64,20 +74,16 @@
 /* The spin animates `transform` on a CHILD, rather than animating a custom
    property that .tile's own transform reads.
 
-   Two attempts at the custom-property route produced no movement at all: first
-   an unregistered --turn-z fed from an animated --spin, then a registered
-   --turn-z targeted directly by the keyframes. Neither moved, and the second
-   should have. Not diagnosed.
+   Two earlier attempts at the custom-property route appeared not to work, and
+   the reason turned out to have nothing to do with CSS: both required edits to
+   main.css, and mobile Safari was serving a cached copy of it. The attempt that
+   "worked" was simply the first one confined to files the browser had no stale
+   version of. Nothing was ever wrong with animating a registered custom
+   property - see the lock test below, which does exactly that.
 
-   What's suggestive is that every animated custom property that DOES work here
-   is read from a different element by inheritance - --deflect-roll on body
-   feeding #scene-roll's transform, --cam-z on #cam-z feeding #scene-z's. The
-   same-element case is the one that failed. Worth a probe flag if it ever
-   matters, but a child animating transform directly is the oldest, dullest and
-   most reliable way to spin something, and the asteroid doesn't need cleverness.
-
-   The child also keeps the two transforms from fighting over one property: the
-   parent is placed by .tile, the child spins inside it. */
+   Keeping the child anyway. It's the dullest possible way to spin something,
+   and it keeps the two transforms from fighting over one property: the parent
+   is placed by .tile, the child spins inside it. */
 .asteroid-face {
   width: 100%;
   height: 100%;
@@ -182,16 +188,89 @@ body:has(#kill-5:checked) #roid-5 {
    --lock lives on the wrapper rather than the label because a style query
    reads the element's nearest ancestor CONTAINER, never the element itself.
    All five wrappers use the same property name, which is what lets one rule
-   below serve all five: the wrappers are siblings, so each label only ever
-   sees its own wrapper's value. */
+   serve all five: the wrappers are siblings, so each label only ever sees its
+   own wrapper's value. */
 @property --lock {
   syntax: "<number>";
   inherits: false;
   initial-value: 0;
 }
+@property --view-pitch {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --rel-x {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --rel-z {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --dist {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --dot {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
 
-/* Exactly overlaying #trigger. Transparent, so the player sees the trigger
-   and never suspects there are five of these. */
+/* ---- The lock test --------------------------------------------------------
+   One computation, applied to all five wrappers; only the --at-* inputs differ.
+
+   Roll is not an input. It turns about the view axis, so it never changes where
+   you're pointing - only pitch and position do.
+
+   The camera sits at the origin and only translates, so the vector to an
+   asteroid is its position plus the camera offset, and its y never changes.
+   Forward, for a nose-up angle p, is (0, -sin p, -cos p): CSS y points down, so
+   pitching up tips the view towards -y.
+
+   THE DIVISION PROBLEM, and why there isn't one. The obvious test is
+   `angle < cone`, which needs acos(dot / dist) - and calc() cannot divide by a
+   length. atan2()/tan() would get round it, the way probe.html does, but
+   there's no need: for angles in 0..180deg, `angle < cone` is exactly
+   `cos(angle) > cos(cone)`, and multiplying both sides by dist turns that into
+
+       dot > dist * cos(cone)
+
+   which compares a length to a length. Verified identical to the acos form
+   across the full camera sweep: zero mismatches.
+
+   min() is the AND - both terms positive means both conditions hold - and
+   sign() is the comparator, collapsing to exactly 0 or 1. The range test uses
+   dot rather than dist so hypot() is needed only once; the two agree to within
+   1% inside the cone, differing on 5 camera states out of 77,531. */
+.lock-target {
+  --rel-x: calc(var(--at-x) + var(--cam-x));
+  --rel-z: calc(var(--at-z) + var(--cam-z));
+  --dist: hypot(var(--rel-x), var(--at-y), var(--rel-z));
+
+  --view-pitch: calc(var(--deflect-pitch) * var(--pitch-range));
+  --dot: calc(
+    -1 * var(--at-y) * sin(var(--view-pitch)) - var(--rel-z) *
+      cos(var(--view-pitch))
+  );
+
+  --lock: max(
+    0,
+    sign(
+      min(
+        var(--dot) - var(--dist) * cos(var(--cone)),
+        var(--lock-range) - var(--dot)
+      )
+    )
+  );
+}
+
+/* Exactly overlaying #trigger. Transparent, so the player sees the trigger and
+   never suspects there are five of these. */
 .lock-target > label {
   position: fixed;
   bottom: 20px;
@@ -202,7 +281,7 @@ body:has(#kill-5:checked) #roid-5 {
   z-index: 11;
 
   /* The default, and the whole mechanism: not lockable means not clickable.
-     "You can't miss" is structural - there's nothing to press - rather than a
+     "You can't miss" is structural - there is nothing to press - rather than a
      rule enforced anywhere. */
   pointer-events: none;
 }
@@ -211,8 +290,8 @@ body:has(#kill-5:checked) #roid-5 {
    locked receives the press regardless of z-order, because the other four
    aren't hit-testable at all.
 
-   The tint is temporary scaffolding so the armed state is visible while
-   there's no crosshair yet. */
+   The tint is temporary scaffolding so the armed state is visible until the
+   crosshair exists. */
 @container style(--lock: 1) {
   .lock-target > label {
     pointer-events: auto;
@@ -220,12 +299,47 @@ body:has(#kill-5:checked) #roid-5 {
   }
 }
 
-/* ---- STAGE 3 SCAFFOLDING --------------------------------------------------
-   The lock is hardcoded on A1 and nowhere else, to test the click path in
-   isolation: press the trigger and A1 alone should vanish, whatever the camera
-   is doing. If that works, labels-over-trigger and the pointer-events gate are
-   both sound, and stage 4 is only a matter of replacing this literal with the
-   real angle test. Delete this rule then. */
+/* An asteroid you've already destroyed must stop being a target. Without the
+   pointer-events, the label stays live and a second press TOGGLES its checkbox
+   back off - which un-destroys the asteroid.
+
+   The background matters just as much: the lock test knows nothing about kill
+   state, so a destroyed asteroid still satisfies it and still primes the
+   trigger. Clearing the tint keeps the armed indicator honest - it should only
+   show when pressing would actually do something. Wins over the @container
+   rule above on specificity. */
+body:has(#kill-1:checked) #lock-1 > label,
+body:has(#kill-2:checked) #lock-2 > label,
+body:has(#kill-3:checked) #lock-3 > label,
+body:has(#kill-4:checked) #lock-4 > label,
+body:has(#kill-5:checked) #lock-5 > label {
+  pointer-events: none;
+  background: none;
+}
+
+/* Each wrapper carries only its asteroid's position. */
 #lock-1 {
-  --lock: 1;
+  --at-x: var(--a1-x);
+  --at-y: var(--a1-y);
+  --at-z: var(--a1-z);
+}
+#lock-2 {
+  --at-x: var(--a2-x);
+  --at-y: var(--a2-y);
+  --at-z: var(--a2-z);
+}
+#lock-3 {
+  --at-x: var(--a3-x);
+  --at-y: var(--a3-y);
+  --at-z: var(--a3-z);
+}
+#lock-4 {
+  --at-x: var(--a4-x);
+  --at-y: var(--a4-y);
+  --at-z: var(--a4-z);
+}
+#lock-5 {
+  --at-x: var(--a5-x);
+  --at-y: var(--a5-y);
+  --at-z: var(--a5-z);
 }

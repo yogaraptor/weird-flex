@@ -36,6 +36,7 @@
         <!-- Kill state: one checkbox per asteroid, hidden. Checking one
              destroys that asteroid permanently. Nothing computed can check
              them - only a press on a lock label can, which is the point. -->
+
         <div id="kills">
           <input type="checkbox" id="kill-1" />
           <input type="checkbox" id="kill-2" />
@@ -51,7 +52,9 @@
         <!-- One per asteroid, each carrying its own --lock and a transparent
              label pinned over the trigger. Only the locked one is clickable,
              so the press lands on whatever you have a lock on. -->
-        <div class="lock-target" id="lock-1"><label for="kill-1"></label></div>
+        <div class="lock-target" id="lock-1">
+          <label for="kill-1"></label>
+        </div>
         <div class="lock-target" id="lock-2"><label for="kill-2"></label></div>
         <div class="lock-target" id="lock-3"><label for="kill-3"></label></div>
         <div class="lock-target" id="lock-4"><label for="kill-4"></label></div>
