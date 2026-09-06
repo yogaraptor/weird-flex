@@ -9,35 +9,44 @@
 
    STAGE 1: scenery only. No interaction yet. */
 
-/* Spin angle, animated. Registered so it interpolates - an unregistered custom
-   property can't be animated. It's fed into .tile's --turn-z slot rather than
-   being a transform of its own, because the element already carries a transform
-   for placement and can only have one. A dependent custom property on the same
-   element sees the ANIMATED value, which is the same property of the design the
-   camera's velocity trick rests on. */
-@property --spin {
-  syntax: "<angle>";
-  inherits: false;
-  initial-value: 0deg;
-}
-
 /* Face-on to the default pitch: no --turn-x, no --turn-y, so an asteroid sits
    square to the camera at rest and is easy to see and line up. The spin is
    therefore in the screen plane, which reads as tumbling without ever hiding
    the face you're aiming at. */
 .asteroid {
   --size: 300px;
-  --turn-z: var(--spin);
+}
+
+/* The spin animates `transform` on a CHILD, rather than animating a custom
+   property that .tile's own transform reads.
+
+   Two attempts at the custom-property route produced no movement at all: first
+   an unregistered --turn-z fed from an animated --spin, then a registered
+   --turn-z targeted directly by the keyframes. Neither moved, and the second
+   should have. Not diagnosed.
+
+   What's suggestive is that every animated custom property that DOES work here
+   is read from a different element by inheritance - --deflect-roll on body
+   feeding #scene-roll's transform, --cam-z on #cam-z feeding #scene-z's. The
+   same-element case is the one that failed. Worth a probe flag if it ever
+   matters, but a child animating transform directly is the oldest, dullest and
+   most reliable way to spin something, and the asteroid doesn't need cleverness.
+
+   The child also keeps the two transforms from fighting over one property: the
+   parent is placed by .tile, the child spins inside it. */
+.asteroid-face {
+  width: 100%;
+  height: 100%;
   background-color: #4a4a52;
-  animation: asteroid-spin 7s linear infinite;
+  animation: asteroid-spin var(--spin-time, 7s) linear infinite;
 }
 
 @keyframes asteroid-spin {
   from {
-    --spin: 0deg;
+    transform: rotate(0deg);
   }
   to {
-    --spin: 360deg;
+    transform: rotate(360deg);
   }
 }
 
@@ -50,8 +59,12 @@
    None sits on the view axis - hence the -150px y offsets - so none shows the
    eye-plane clipping artifact described at the top of main.css.
 
-   A1 is found straight ahead, A2/A3/A5 by strafing, A4 by pitching up, so each
-   control has something to do.
+   One per direction, all findable from the spawn point by looking around: A1
+   ahead, A2 right, A3 left, A4 up, A5 down. Nothing needs hunting for, which
+   matters more than realism here - it's a demo, and the last one shouldn't be
+   a scavenger hunt. Strafing reaches A2 and A3; pitch reaches A4 and A5, one
+   per direction of the axis (and pitch is inverted, so A4 is found by pulling
+   the pad down and A5 by pushing it up).
 
    Spin durations are staggered only so the five don't tumble in lockstep. */
 #roid-1 {
@@ -64,26 +77,31 @@
   --at-x: 5200px;
   --at-y: -150px;
   --at-z: -3800px;
-  animation-duration: 9s;
+  --spin-time: 9s;
 }
 
 #roid-3 {
   --at-x: -5200px;
   --at-y: -150px;
   --at-z: -5600px;
-  animation-duration: 5s;
+  --spin-time: 5s;
 }
 
 #roid-4 {
   --at-x: 0px;
   --at-y: -3400px;
   --at-z: -7600px;
-  animation-duration: 11s;
+  --spin-time: 11s;
 }
 
+/* Below, mirroring A4 above. It used to sit far out to the right at x 10500,
+   which put it beyond A2 on the same side and rendered it as a 37px dot - so
+   you'd find A2, assume that was the right-hand one, and never go looking. It
+   needs no travel at all now: 458px below centre at spawn, which is just off
+   the bottom edge, so a small pitch down brings it in. */
 #roid-5 {
-  --at-x: 10500px;
-  --at-y: -150px;
-  --at-z: -10000px;
-  animation-duration: 8s;
+  --at-x: 0px;
+  --at-y: 1700px;
+  --at-z: -3800px;
+  --spin-time: 8s;
 }

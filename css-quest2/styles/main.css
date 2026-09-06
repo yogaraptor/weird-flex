@@ -729,8 +729,6 @@ body {
      --at-x / --at-y / --at-z   where it sits (+x right, +y DOWN, -z away)
      --turn-x / --turn-y        rotateX pitches it into a floor or ceiling,
                                 rotateY swings it into a wall
-     --turn-z                   spins it in its own plane; applied first, so
-                                it's a spin about the face rather than a tilt
      --size                     overrides --tile-size, for distant landmarks
 
    Placement rule of thumb, from the --perspective note at the top of the file:
@@ -747,8 +745,7 @@ body {
 
   transform: translate(-50%, -50%)
     translate3d(var(--at-x, 0px), var(--at-y, 0px), var(--at-z, 0px))
-    rotateY(var(--turn-y, 0deg)) rotateX(var(--turn-x, 0deg))
-    rotateZ(var(--turn-z, 0deg));
+    rotateY(var(--turn-y, 0deg)) rotateX(var(--turn-x, 0deg));
 }
 
 /* The original ground tile, and still the one nearest the camera - so it's the
