@@ -62,12 +62,16 @@
          been able to see is the animated value - where the camera really is
          right now - and that's the number that's been lying to us.
 
-         Two obstacles. --cam-* is `inherits: false`, so no descendant can
-         read it; and it's a <length>, which counters can't print. Both are
-         solved by echoing it into an inheriting <integer> on the same
-         element that owns it. A dependent custom property on the same
-         element sees the ANIMATED value, exactly as transform does - that's
-         the property of the design the whole velocity trick rests on.
+         --cam-* now inherits (it's declared on the holders above #scene), so
+         the only remaining obstacle is that it's a <length>, which counters
+         can't print. Echoing it into an inheriting <integer> solves that.
+
+         What this row actually tests, post-hoist: whether an INHERITED
+         transitioning property carries the animated value rather than the
+         target. It must, or the camera would teleport instead of gliding -
+         #scene-z's transform reads --cam-z across an element boundary now
+         too. If this row jumps straight to +/-15000 while the scene glides,
+         that assumption is wrong and the hoist is unsound.
 
          The unit-strip is tan(atan2(len, ref)), which yields len/ref as a
          plain number. Referenced against 100px rather than 1px on purpose:
@@ -192,9 +196,9 @@
         content: counter(v);
       }
 
-      /* --speed-step-* is declared on #scene in main.css, which is NOT an
-         ancestor of the readout, so re-derive it here from the inherited
-         deflection. Same expression, so it exercises round() the same way. */
+      /* main.css declares --speed-step-* on body now, so the readout would
+         inherit them anyway. Re-derived here regardless: the point of a probe
+         is to exercise round() itself rather than trust a value handed down. */
       #readout {
         --speed-step-z: round(nearest, calc(var(--deflect-z) * 10), 1);
         --speed-step-x: round(nearest, calc(var(--deflect-x) * 10), 1);
@@ -389,54 +393,61 @@
     </style>
   </head>
   <body>
-    <div id="readout">
-      <div class="grid">
-        <div class="cell"><b>dz‰ </b><span id="r-dz"></span></div>
-        <div class="cell"><b>dx‰ </b><span id="r-dx"></span></div>
-        <div class="cell"><b>stepZ </b><span id="r-sz"></span></div>
-        <div class="cell"><b>stepX </b><span id="r-sx"></span></div>
-        <div class="cell"><b>camZ→ </b><span id="r-cz"></span></div>
-        <div class="cell"><b>camX→ </b><span id="r-cx"></span></div>
-        <div class="cell"><b>@prop </b><span id="r-reg"></span>/7</div>
-        <div class="cell"><b>tiles </b>G+B+P?</div>
-      </div>
+    <!-- Camera holders, matching index.html: --cam-* are declared and
+         transitioned here and inherit down, so #scene-z / #scene-inner below
+         are pure consumers. Without these the probe's camera never moves. -->
+    <div id="cam-z">
+      <div id="cam-x">
+        <div id="readout">
+          <div class="grid">
+            <div class="cell"><b>dz‰ </b><span id="r-dz"></span></div>
+            <div class="cell"><b>dx‰ </b><span id="r-dx"></span></div>
+            <div class="cell"><b>stepZ </b><span id="r-sz"></span></div>
+            <div class="cell"><b>stepX </b><span id="r-sx"></span></div>
+            <div class="cell"><b>camZ→ </b><span id="r-cz"></span></div>
+            <div class="cell"><b>camX→ </b><span id="r-cx"></span></div>
+            <div class="cell"><b>@prop </b><span id="r-reg"></span>/7</div>
+            <div class="cell"><b>tiles </b>G+B+P?</div>
+          </div>
 
-      <div id="flags" class="grid">
-        <div class="cell flag" id="f-sign">sign()</div>
-        <div class="cell flag" id="f-round">round()</div>
-        <div class="cell flag" id="f-stl">scroll-tl</div>
-        <div class="cell flag" id="f-tscope">tl-scope</div>
-        <div class="cell flag" id="f-cptrans">--transition</div>
-        <div class="cell flag" id="f-styleq">style()</div>
-        <div class="cell" id="tap-label">hold bar →</div>
-        <div class="cell" style="padding: 0"><div id="tap"></div></div>
-      </div>
-    </div>
+          <div id="flags" class="grid">
+            <div class="cell flag" id="f-sign">sign()</div>
+            <div class="cell flag" id="f-round">round()</div>
+            <div class="cell flag" id="f-stl">scroll-tl</div>
+            <div class="cell flag" id="f-tscope">tl-scope</div>
+            <div class="cell flag" id="f-cptrans">--transition</div>
+            <div class="cell flag" id="f-styleq">style()</div>
+            <div class="cell" id="tap-label">hold bar →</div>
+            <div class="cell" style="padding: 0"><div id="tap"></div></div>
+          </div>
+        </div>
 
-    <!-- Joypad: identical markup to index.html's left pad. The roll pad isn't
-         reproduced here - nothing in the probe reads --joy-roll, and #scene
-         below has no #scene-roll wrapper for it to drive. -->
-    <div id="joystick" class="pad">
-      <div class="pad-stretcher">
-        <div class="pad-focus" tabindex="0" autofocus></div>
-        <div class="pad-marker"></div>
-      </div>
-    </div>
+        <!-- Joypad: identical markup to index.html's left pad. The roll pad isn't
+             reproduced here - nothing in the probe reads --joy-roll, and #scene
+             below has no #scene-roll wrapper for it to drive. -->
+        <div id="joystick" class="pad">
+          <div class="pad-stretcher">
+            <div class="pad-focus" tabindex="0" autofocus></div>
+            <div class="pad-marker"></div>
+          </div>
+        </div>
 
-    <div id="scene">
-      <!-- Controls first: outside the camera wrappers, so they never move. -->
-      <div id="flat-control"></div>
-      <div id="control-tile"></div>
+        <div id="scene">
+          <!-- Controls first: outside the camera wrappers, so they never move. -->
+          <div id="flat-control"></div>
+          <div id="control-tile"></div>
 
-      <div id="scene-z">
-        <div id="scene-inner">
-          <!-- Inside the camera wrappers: these move with --cam-*. -->
-          <div id="ground-grid"></div>
-          <div id="origin-marker"></div>
-          <!-- .tile now carries the structure; #square only sets placement. -->
-          <div id="square" class="tile"></div>
-          <!-- Inside too, but cancels the camera so it stays readable. -->
-          <div id="cam-readout"></div>
+          <div id="scene-z">
+            <div id="scene-inner">
+              <!-- Inside the camera wrappers: these move with --cam-*. -->
+              <div id="ground-grid"></div>
+              <div id="origin-marker"></div>
+              <!-- .tile now carries the structure; #square only sets placement. -->
+              <div id="square" class="tile"></div>
+              <!-- Inside too, but cancels the camera so it stays readable. -->
+              <div id="cam-readout"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

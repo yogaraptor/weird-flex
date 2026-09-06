@@ -13,57 +13,67 @@
     <link rel="stylesheet" type="text/css" href="styles/main.css" />
   </head>
   <body>
-    <!-- Ticked, the move pad stops the camera when you let go; unticked it's
-         cruise control. Must load ticked - snapping is also what centres this
-         pad, and the page's one autofocus went to the attitude pad. The
-         attitude pad has no equivalent box: it never snaps, so it holds the
-         attitude you set instead of levelling off. See main.css. -->
-    <div id="controls">
-      <input type="checkbox" id="centre-move" checked />
-      <label for="centre-move">Move pad self-centres</label>
-    </div>
+    <!-- Camera position lives here, above the scene, so that anything outside
+         the 3D transform chain can still read where the camera is. Two nested
+         elements because the throttle ladder sets transition-duration per
+         element and the two axes need independent durations. Neither may ever
+         take a transform: they'd break position: fixed for everything inside.
+         See main.css. -->
+    <div id="cam-z">
+      <div id="cam-x">
+        <!-- Ticked, the move pad stops the camera when you let go; unticked it's
+             cruise control. Must load ticked - snapping is also what centres this
+             pad, and the page's one autofocus went to the attitude pad. The
+             attitude pad has no equivalent box: it never snaps, so it holds the
+             attitude you set instead of levelling off. See main.css. -->
+        <div id="controls">
+          <input type="checkbox" id="centre-move" checked />
+          <label for="centre-move">Move pad self-centres</label>
+        </div>
 
-    <!-- Left joypad: a small scroll container. Scroll within it to move -
-         vertically to go forward/back, horizontally to strafe.
-         Centred on load by scroll-snap, not autofocus. -->
-    <div id="joystick" class="pad">
-      <div class="pad-stretcher">
-        <div class="pad-focus" tabindex="0"></div>
-        <!-- The bit you can actually see. -->
-        <div class="pad-marker"></div>
-      </div>
-    </div>
+        <!-- Left joypad: a small scroll container. Scroll within it to move -
+             vertically to go forward/back, horizontally to strafe.
+             Centred on load by scroll-snap, not autofocus. -->
+        <div id="joystick" class="pad">
+          <div class="pad-stretcher">
+            <div class="pad-focus" tabindex="0"></div>
+            <!-- The bit you can actually see. -->
+            <div class="pad-marker"></div>
+          </div>
+        </div>
 
-    <!-- Right joypad: attitude. Horizontal rolls, vertical pitches. -->
-    <div id="joystick-attitude" class="pad">
-      <div class="pad-stretcher">
-        <!-- Pad-sized and invisible. It's focusable + autofocus, so on load the
-             browser scrolls the pad to reveal it; being exactly scrollport-sized,
-             the only offset that reveals it in full is dead centre. That gives us
-             a deterministic neutral resting position on first paint, no JS.
-             This pad gets the page's one autofocus because it's the pad that
-             never snaps - without it, it would load at full deflection. -->
-        <div class="pad-focus" tabindex="0" autofocus></div>
-        <div class="pad-marker"></div>
-      </div>
-    </div>
+        <!-- Right joypad: attitude. Horizontal rolls, vertical pitches. -->
+        <div id="joystick-attitude" class="pad">
+          <div class="pad-stretcher">
+            <!-- Pad-sized and invisible. It's focusable + autofocus, so on load the
+                 browser scrolls the pad to reveal it; being exactly scrollport-sized,
+                 the only offset that reveals it in full is dead centre. That gives us
+                 a deterministic neutral resting position on first paint, no JS.
+                 This pad gets the page's one autofocus because it's the pad that
+                 never snaps - without it, it would load at full deflection. -->
+            <div class="pad-focus" tabindex="0" autofocus></div>
+            <div class="pad-marker"></div>
+          </div>
+        </div>
 
-    <!-- The 3D world we look into. One wrapper per degree of freedom, since an
-         element can only carry one transform, nested in the order a view
-         transform composes: roll, then pitch, then the translations. -->
-    <div id="scene">
-      <div id="scene-roll">
-        <div id="scene-pitch">
-          <div id="scene-z">
-            <div id="scene-inner">
-              <!-- Spread through the world at different depths, planes and
-                   angles, so there's something to judge motion against. Each
-                   is placed by custom properties on .tile - see main.css. -->
-              <div id="square" class="tile"></div>
-              <div id="tile-floor" class="tile"></div>
-              <div id="tile-wall" class="tile"></div>
-              <div id="tile-ceiling" class="tile"></div>
-              <div id="tile-far" class="tile"></div>
+        <!-- The 3D world we look into. One wrapper per degree of freedom, since an
+             element can only carry one transform, nested in the order a view
+             transform composes: roll, then pitch, then the translations. -->
+        <div id="scene">
+          <div id="scene-roll">
+            <div id="scene-pitch">
+              <div id="scene-z">
+                <div id="scene-inner">
+                  <!-- Spread through the world at different depths, planes and
+                       angles, so there's something to judge motion against. Each
+                       is placed by custom properties on .tile - see main.css. -->
+                  <div id="square" class="tile"></div>
+                  <div id="tile-floor" class="tile"></div>
+                  <div id="tile-wall" class="tile"></div>
+                  <div id="tile-ceiling" class="tile"></div>
+                  <div id="tile-far" class="tile"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
